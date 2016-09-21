@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--控件样式部分，   尽量使用安卓原生的样式-->
+    <style name="Widget" />
+    <!-- 首页RadioButton样式 -->
+    <style name="Widget.TabIndicator_three" parent="@style/Widget">
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/white60</item>
+        <item name="android:button">@null</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:background">@drawable/btn_selector</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>

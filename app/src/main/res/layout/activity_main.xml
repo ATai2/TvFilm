@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorPrimary"
+              android:orientation="vertical"
+              tools:context=".modules.main.MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/relative"
+        android:layout_width="match_parent"
+        android:layout_height="100dip"
+        android:layout_gravity="top">
+
+        <RadioGroup
+            android:id="@+id/group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="18dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <!--android:background="@drawable/title_bar_bg"-->
+            <RadioButton
+                android:id="@+id/rab_hotrecomm"
+                style="@style/Widget.TabIndicator_three"
+                android:text="@string/tab_hotrecomm"
+                android:textSize="20sp"/>
+
+            <RadioButton
+                android:id="@+id/rab_category"
+                style="@style/Widget.TabIndicator_three"
+                android:text="@string/tab_catogory"
+                android:textSize="20sp"/>
+
+            <RadioButton
+                android:id="@+id/rab_sortlist"
+                style="@style/Widget.TabIndicator_three"
+                android:text="@string/tab_sortlist"
+                android:textSize="20sp"/>
+
+            <RadioButton
+                android:id="@+id/rab_album"
+                style="@style/Widget.TabIndicator_three"
+                android:scaleType="fitXY"
+                android:text="@string/tab_album"
+                android:textSize="20sp"/>
+
+            <RadioButton
+                android:id="@+id/rab_search"
+                style="@style/Widget.TabIndicator_three"
+                android:scaleType="fitXY"
+                android:text="@string/rab_search"
+                android:textSize="20sp"/>
+        </RadioGroup>
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/mVpContainer"
+        android:background="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_marginBottom="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginTop="0dp"
+        ></android.support.v4.view.ViewPager>
+</LinearLayout>

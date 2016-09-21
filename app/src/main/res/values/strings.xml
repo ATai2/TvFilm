@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">TvFilm</string>
+    <string name="shimmer">万千影片，尽在我手</string>
+    <string name="tab_hotrecomm">热门推荐</string>
+    <string name="tab_catogory">电影分类</string>
+    <string name="tab_sortlist">排行榜</string>
+    <string name="tab_album">专辑</string>
+    <string name="rab_search">搜索</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

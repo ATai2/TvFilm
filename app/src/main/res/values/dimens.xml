@@ -1,0 +1,8 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!--应用分类部分-->
+    <dimen name="item_category_small_width">180dp</dimen>
+    <dimen name="item_category_long_width">360dp</dimen>
+</resources>
