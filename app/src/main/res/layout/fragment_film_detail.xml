@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/appdetail_fragment"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="@color/gray"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relative">
+
+        <ImageView
+            android:id="@+id/iv_filmpic_detail"
+            android:layout_width="250dp"
+            android:layout_height="300dp"
+            android:layout_marginLeft="50dp"
+            android:background="@drawable/ic_launcher"/>
+
+        <TextView
+            android:id="@+id/tv_filmname_detail"
+            style="@style/TextAppearance.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@id/iv_filmpic_detail"
+            android:text="电影名"
+            android:textColor="@color/white"
+            android:textSize="34sp"/>
+
+        <TextView
+            android:id="@+id/tv_filmtype_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_filmname_detail"
+            android:layout_below="@id/tv_filmname_detail"
+            android:text="电影类型"/>
+        <TextView
+            android:id="@+id/tv_director_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_actors_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_desc_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_film_detail"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
+</LinearLayout>

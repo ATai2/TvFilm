@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Keyboard
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:horizontalGap="0px"
+    android:verticalGap="0px"
+    android:keyHeight="60dp">
+    <Row>
+        <Key android:codes="65" android:keyLabel="A" android:keyEdgeFlags="left"/>
+        <Key android:codes="66" android:keyLabel="B"/>
+        <Key android:codes="67" android:keyLabel="C"/>
+        <Key android:codes="68" android:keyLabel="D"/>
+        <Key android:codes="69" android:keyLabel="E" android:keyEdgeFlags="right"/>
+    </Row>
+    <Row>
+        <Key android:codes="70" android:keyLabel="F" android:keyEdgeFlags="left"/>
+        <Key android:codes="71" android:keyLabel="G"/>
+        <Key android:codes="72" android:keyLabel="H"/>
+        <Key android:codes="73" android:keyLabel="I"/>
+        <Key android:codes="74" android:keyLabel="J" android:keyEdgeFlags="right"/>
+    </Row>
+
+    <Row>
+        <Key android:codes="75" android:keyLabel="K" android:keyEdgeFlags="left"/>
+        <Key android:codes="76" android:keyLabel="L"/>
+        <Key android:codes="77" android:keyLabel="M"/>
+        <Key android:codes="78" android:keyLabel="N"/>
+        <Key android:codes="79" android:keyLabel="O" android:keyEdgeFlags="right"/>
+    </Row>
+    <Row>
+        <Key android:codes="80" android:keyLabel="P" android:keyEdgeFlags="left"/>
+        <Key android:codes="81" android:keyLabel="Q"/>
+        <Key android:codes="82" android:keyLabel="R"/>
+        <Key android:codes="83" android:keyLabel="S"/>
+        <Key android:codes="84" android:keyLabel="T" android:keyEdgeFlags="right"/>
+    </Row>
+    <Row>
+        <Key android:codes="85" android:keyLabel="U" android:keyEdgeFlags="left"/>
+        <Key android:codes="86" android:keyLabel="V"/>
+        <Key android:codes="87" android:keyLabel="W"/>
+        <Key android:codes="88" android:keyLabel="X"/>
+        <Key android:codes="89" android:keyLabel="Y" android:keyEdgeFlags="right"/>
+    </Row>
+    <Row android:rowEdgeFlags="bottom" android:keyWidth="60%p">
+        <Key  android:keyWidth="20%p" android:codes="90" android:keyLabel="Z" android:keyEdgeFlags="left"/>
+        <Key  android:keyWidth="20%p" android:codes="-2" android:keyLabel="123" />
+        <Key  android:keyWidth="20%p" android:codes="-5"
+             android:isRepeatable="true" android:keyEdgeFlags="right"
+            android:keyIcon="@drawable/keyboard_del" />
+    </Row>
+
+
+</Keyboard>

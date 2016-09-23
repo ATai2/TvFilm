@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RadioButton;
 
 import butterknife.ButterKnife;
 
@@ -20,7 +21,7 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCompatActivity {
 
-    T mPresenter;
+    protected T mPresenter;
 
     public void setPresenter(T presenter) {
         this.mPresenter = presenter;
@@ -36,13 +37,34 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(getLayoutID());
         ButterKnife.bind(this);
+        mPresenter = initPresenter();
         initView();
         initData();
+
     }
+
+    protected abstract T initPresenter();
 
     protected abstract void initData();
 
     protected abstract void initView();
 
     public abstract int getLayoutID();
+
+    public void setBackground(RadioButton radOne, RadioButton radTwo, RadioButton radThree, RadioButton radFour, RadioButton radFive) {
+        //  radOne.setBackgroundResource(R.drawable.title_bg);
+//        radOne.setBackground(null);
+//        radTwo.setBackground(null);
+//        radThree.setBackground(null);
+//        radFour.setBackground(null);
+//        radFive.setBackground(null);
+
+        radOne.setSelected(true);
+        radTwo.setSelected(false);
+        radThree.setSelected(false);
+        radFour.setSelected(false);
+        radFive.setSelected(false);
+
+
+    }
 }

@@ -16,9 +16,10 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@color/white60</item>
         <item name="android:button">@null</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:background">@drawable/tab_title_background</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
-        <item name="android:background">@drawable/btn_selector</item>
         <item name="android:gravity">center</item>
     </style>
     <!-- CustomProgressDialog样式 -->
@@ -33,6 +34,76 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+
+    <style name="Widget.TabIndicator" parent="@style/Widget">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">21dp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:background">@drawable/radio_selectot</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:button">@null</item>
+    </style>
+    <!-- appname样式 -->
+    <style name="TextAppearance" parent="@android:style/TextAppearance">
+        <item name="android:shadowDx">0.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">1.0</item>
+    </style>
+    <!-- category样式 -->
+    <style name="TextAppearance.Button" parent="@style/TextAppearance">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/lightcyan</item>
+        <item name="android:height">@dimen/button_height</item>
+    </style>
+
+    <style name="cardviewlong">
+        <item name="android:layout_width">@dimen/item_category_long_width</item>
+        <item name="android:layout_height">@dimen/item_category_small_width</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <style name="cardviewsmall">
+        <item name="android:layout_width">@dimen/item_category_small_width</item>
+        <item name="android:layout_height">@dimen/item_category_small_width</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <style name="textview_category" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:focusable">false</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:focusableInTouchMode">true</item>
+    </style>
+
+    <style name="categoryitem">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">60sp</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">true</item>
+    </style>
+
+    <style name="focusitem">
+        <item name="android:clipChildren">false</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
     </style>
 
 </resources>

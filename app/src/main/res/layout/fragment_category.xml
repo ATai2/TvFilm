@@ -5,8 +5,12 @@
                 tools:context="com.tuojin.tvfilm.modules.main.category.CategoryFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/mRvCategory"
+        android:id="@+id/rv_category"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:descendantFocusability="afterDescendants"
+        android:scrollbars="none"></android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

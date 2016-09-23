@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+    >
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/item_category1"
+        style="@style/cardviewlong"
+        app:cardElevation="8dp">
+
+        <ImageView
+            android:id="@+id/mIVCategory1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_green_light"
+            android:focusable="false"
+            android:scaleType="fitXY"/>
+
+        <TextView
+            android:id="@+id/mTVCategory1"
+            style="@style/textview_category"
+            android:text="@string/cd_cate_type"/>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/item_category_2"
+        style="@style/cardviewsmall"
+        android:layout_toRightOf="@id/item_category1"
+        app:cardElevation="8dp">
+
+        <ImageView
+            android:id="@+id/mIVCategory2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_green_light"/>
+
+        <TextView
+            android:id="@+id/mTVCategory2"
+            style="@style/textview_category"
+            android:text="@string/cd_cate_year"/>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/item_category_3"
+        style="@style/cardviewsmall"
+        android:layout_toRightOf="@id/item_category_2"
+        app:cardElevation="8dp">
+
+        <ImageView
+            android:id="@+id/mIVCategory3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_green_light"/>
+
+        <TextView
+            android:id="@+id/mTVCategory3"
+            style="@style/textview_category"
+            android:text="@string/cd_cate_direct"/>
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/item_category_4"
+        style="@style/cardviewsmall"
+        android:layout_below="@id/item_category1"
+        app:cardElevation="8dp">
+
+        <ImageView
+            android:id="@+id/mIVCategory4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_green_light"/>
+
+        <TextView
+            android:id="@+id/mTVCategory4"
+            style="@style/textview_category"
+            android:text="@string/cd_cate_area"/>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/item_category_5"
+        style="@style/cardviewlong"
+        android:layout_below="@id/item_category1"
+        android:layout_toRightOf="@id/item_category_4"
+        app:cardElevation="8dp">
+
+
+        <ImageView
+            android:id="@+id/mIVCategory5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_green_light"
+            android:focusable="false"
+            android:scaleType="fitXY"/>
+
+        <TextView
+            android:id="@+id/mTVCategory5"
+            style="@style/textview_category"
+            android:text="@string/cd_cate_live"/>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/item_category_6"
+        style="@style/cardviewsmall"
+        android:layout_below="@id/item_category1"
+        android:layout_toRightOf="@id/item_category_5"
+        app:cardElevation="8dp">
+
+        <ImageView
+            android:id="@+id/mIVCategory6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_green_light"/>
+
+        <TextView
+            android:id="@+id/mTVCategory6"
+            style="@style/textview_category"
+            android:text="@string/cd_cate_actor"/>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

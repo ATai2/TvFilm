@@ -1,11 +1,9 @@
 package com.tuojin.tvfilm.net;
 
+import com.google.gson.Gson;
 import com.koushikdutta.async.http.AsyncHttpClient;
 import com.koushikdutta.async.http.WebSocket;
 import com.tuojin.tvfilm.utils.LogUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * 文 件 名: TvFilmNetWorkWS
@@ -33,18 +31,13 @@ public class TvFilmNetWorkWS {
                         webSocket.setStringCallback(new WebSocket.StringCallback() {
                             public void onStringAvailable(String s) {
                                 LogUtils.d("ws", s);
-                                try {
-                                    JSONObject jsonObject = new JSONObject(s);
-                                    int status = jsonObject.getInt("status");
-                                    if (status == 3) {
-                                        success.excute(s);
-                                    } else {
-                                        failure.excute(s);
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                BaseApiResponse response = new Gson().fromJson(s, BaseApiResponse.class);
+                                int status = response.getStatus();
+                                if (status == 3) {
+                                    success.excute(s);
+                                } else {
+                                    failure.excute(s);
                                 }
-
                             }
                         });
 

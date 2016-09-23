@@ -9,4 +9,18 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cd_cate_type">类型</string>
+    <string name="cd_cate_year">年份</string>
+    <string name="cd_cate_direct">导演</string>
+    <string name="cd_cate_area">地区</string>
+    <string name="cd_cate_live">直播</string>
+    <string name="cd_cate_actor">演员</string>
+
+
+    <!-- viewpager 标题栏字体-->
+    <string name="fzlt_zhun_hei">FZLTZHUNHEI_GBK.ttf</string>
+    <string name="fzlt_cu_hei">FZLTHC_GBK.ttf</string>
+
+    <string name="nav_tab_normal_ttf">@string/fzlt_zhun_hei</string>
+    <string name="nav_tab_focus_ttf">@string/fzlt_cu_hei</string>
 </resources>

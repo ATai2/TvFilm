@@ -1,13 +1,8 @@
 package com.tuojin.tvfilm.modules.main.category;
 
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseFragment;
@@ -20,22 +15,17 @@ import java.util.List;
 
 import butterknife.BindView;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class CategoryFragment extends BaseFragment<CategoryContract.View, CategoryPresenterImpl> implements CategoryContract.View, BaseView {
 
     public static final String TAG = "CategoryFragment";
+    @BindView(R.id.rv_category)
+    RecyclerView mRvCategory;
+    private CategoryAdapter mCategoryAdapter;
 
-    @BindView(R.id.mRvCategory)
-    RecyclerView mMRvCategory;
-
-    CategoryAdapter mCategoryAdapter;
 
     public CategoryFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     protected int getLayoutId() {
@@ -44,9 +34,8 @@ public class CategoryFragment extends BaseFragment<CategoryContract.View, Catego
 
     @Override
     protected void initView() {
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL);
-        mMRvCategory.setHasFixedSize(true);
-        mMRvCategory.setLayoutManager(staggeredGridLayoutManager);
+        StaggeredGridLayoutManager layout = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL);
+        mRvCategory.setLayoutManager(layout);
     }
 
     @Override
@@ -54,18 +43,11 @@ public class CategoryFragment extends BaseFragment<CategoryContract.View, Catego
         return new CategoryPresenterImpl();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        return rootView;
-    }
-
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mMRvCategory.getChildCount() == 0) {
+        if (mRvCategory.getChildCount() == 0) {
             mPresenter.onResume();
         }
     }
@@ -73,7 +55,8 @@ public class CategoryFragment extends BaseFragment<CategoryContract.View, Catego
     @Override
     public void setRecycleCategoryList(List<CategoryInfo> datas) {
         mCategoryAdapter = new CategoryAdapter(mActivity, datas);
-        mMRvCategory.setAdapter(mCategoryAdapter);
-
+        mRvCategory.setAdapter(mCategoryAdapter);
     }
+
+
 }

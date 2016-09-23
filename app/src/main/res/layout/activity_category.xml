@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:background="@color/black"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/tab_container_category"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/tab_indicator_search"
+            style="@style/Widget.TabIndicator_three"
+            android:drawableLeft="@drawable/dcms_search"
+            android:text="搜索" />
+        <RadioButton
+            android:id="@+id/tab_indicator_screening"
+            style="@style/Widget.TabIndicator_three"
+            android:drawableLeft="@drawable/screening"
+            android:text="筛选" />
+        <view
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white"/>
+        <RadioButton
+            android:id="@+id/tab_indicator_action"
+            style="@style/Widget.TabIndicator"
+            android:text="动作" />
+
+        <RadioButton
+            android:id="@+id/tab_indicator_fiction"
+            style="@style/Widget.TabIndicator"
+            android:text="科幻" />
+
+        <RadioButton
+            android:id="@+id/tab_indicator_animation"
+            style="@style/Widget.TabIndicator"
+            android:text="动画" />
+
+        <RadioButton
+            android:id="@+id/tab_indicator_suspense"
+            style="@style/Widget.TabIndicator"
+            android:text="悬疑" />
+
+        <RadioButton
+            android:id="@+id/tab_indicator_emotional"
+            style="@style/Widget.TabIndicator"
+            android:text="情感" />
+
+        <RadioButton
+            android:id="@+id/tab_indicator_comedy"
+            style="@style/Widget.TabIndicator"
+            android:text="喜剧" />
+
+        <RadioButton
+            android:id="@+id/tab_indicator_all"
+            style="@style/Widget.TabIndicator"
+            android:text="全部" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/tab_container_category"
+        android:background="@mipmap/bg_index_right"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/index_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="35dp"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:text="类别"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:id="@+id/main_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="35dp"
+            android:layout_marginTop="114dp"
+            android:layout_toRightOf="@+id/include1"
+            android:descendantFocusability="afterDescendants"
+            />
+    </LinearLayout>
+</RelativeLayout>

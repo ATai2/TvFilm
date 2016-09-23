@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!--控件样式部分，   尽量使用安卓原生的样式-->
     <style name="Widget" />
+
+    <!-- category样式 -->
+    <style name="TextAppearance.Button" parent="@style/TextAppearance">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/lightcyan</item>
+        <item name="android:height">@dimen/button_height</item>
+    </style>
     <!-- 首页RadioButton样式 -->
     <style name="Widget.TabIndicator_three" parent="@style/Widget">
         <item name="android:layout_width">100dp</item>
@@ -11,7 +17,20 @@
         <item name="android:button">@null</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
-        <item name="android:background">@drawable/btn_selector</item>
+        <item name="android:background">@drawable/tab_title_background</item>
         <item name="android:gravity">center</item>
+    </style>
+    <!-- CustomProgressDialog样式 -->
+    <style name="CustomProgressDialog" parent="@style/CustomDialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <!-- progressDialog加载样式 -->
+    <style name="CustomDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
     </style>
 </resources>

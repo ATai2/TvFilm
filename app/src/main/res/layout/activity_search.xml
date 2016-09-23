@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_index_right">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/left_menu"
+        android:background="@drawable/bg_search_right"
+        android:descendantFocusability="afterDescendants">
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/search_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="40dp"
+            android:textColor="@color/gray"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="60dp"/>
+
+        <TextView
+            android:visibility="visible"
+            android:id="@+id/first_search_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="热搜排行榜"
+            android:textSize="40dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/greenyellow"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="60dp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="530dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="114dp"
+            android:descendantFocusability="afterDescendants" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/two_search_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="热搜排行榜"
+            android:textSize="40dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/grassgreen"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="220dp"
+            />
+        <android.support.v7.widget.RecyclerView
+            android:visibility="gone"
+            android:id="@+id/two_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:layout_below="@+id/two_search_text"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="50dp"
+            android:descendantFocusability="afterDescendants" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/left_menu"
+        android:layout_width="390dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_search_left"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="30dp"
+        android:paddingLeft="30dp">
+
+
+        <EditText
+            android:id="@+id/edit_search"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="40dp"
+            android:background="@null"
+            android:drawableLeft="@drawable/keyboard_search"
+            android:gravity="center"
+            android:paddingRight="20dp"
+            android:hint="编辑影片首字母或全拼"
+            android:textColorHint="@color/wheat"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:textSize="22dp"
+            android:textColor="@color/wheat"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:maxLength="10"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/wheat"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="afterDescendants">
+
+            <sitv.s003.dianbo.com.mysitvapp.keybord.SimpleKeyBoardView
+                android:id="@+id/keyboard_view"
+                android:layout_width="fill_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="80dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:keyTextColor="@color/white"
+                android:keyBackground="@android:color/transparent"
+                android:background="@android:color/transparent"
+                android:visibility="visible"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

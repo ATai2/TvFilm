@@ -1,6 +1,9 @@
 package com.tuojin.tvfilm.contract;
 
 import com.tuojin.tvfilm.base.BaseView;
+import com.tuojin.tvfilm.bean.FilmBean;
+
+import java.util.List;
 
 /**
  * 文 件 名: HotRecommContract
@@ -14,14 +17,17 @@ import com.tuojin.tvfilm.base.BaseView;
  */
 public class HotRecommContract {
     public interface View extends BaseView {
+        void setRecycleList(List<FilmBean> mDatas);
+
     }
 
     public interface Presenter {
         void onResume();
+        void loadData(List<FilmBean> mDatas);
     }
 
     public interface Model {
-        void getRecommList();
+       void getRecommList(int page);
     }
 
 

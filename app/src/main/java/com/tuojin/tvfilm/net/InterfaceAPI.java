@@ -12,4 +12,8 @@ package com.tuojin.tvfilm.net;
  */
 public interface InterfaceAPI {
 
+    String BASEIP="http://192.168.1.243:8081";
+    String PIC=BASEIP+"/MID";
+
+
 }
