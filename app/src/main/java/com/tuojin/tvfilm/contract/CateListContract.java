@@ -1,5 +1,9 @@
 package com.tuojin.tvfilm.contract;
 
+import com.tuojin.tvfilm.bean.DirectListBean;
+
+import java.util.List;
+
 /**
  * 文 件 名: CateListContract
  * 创 建 人: Administrator
@@ -12,10 +16,13 @@ package com.tuojin.tvfilm.contract;
  */
 public class CateListContract {
 public interface View{
+    void initViewRadioButton(List<DirectListBean.DataBean.DirectorBean> directorBeanList);
 }
 
 public interface Presenter{
     void initRadioButton(int type);
+
+    void initViewRadioButton(List<DirectListBean.DataBean.DirectorBean> directorBeanList);
 }
 
 public interface Model{

@@ -142,6 +142,7 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
             }
         });
         mRbHotRecom.setFocusable(true);
+        mRbHotRecom.setChecked(true);
     }
 
     @Override

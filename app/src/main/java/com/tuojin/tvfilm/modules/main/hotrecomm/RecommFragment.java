@@ -1,9 +1,13 @@
 package com.tuojin.tvfilm.modules.main.hotrecomm;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseFragment;
@@ -32,6 +36,7 @@ public class RecommFragment extends BaseFragment<HotRecommContract.View, HotReco
     @BindView(R.id.rv_recomm)
     RecyclerView mRvRecomm;
     private RecommAdapter mAdapter;
+    private List<FilmBean> mList;
 
     @Override
     protected int getLayoutId() {
@@ -41,12 +46,21 @@ public class RecommFragment extends BaseFragment<HotRecommContract.View, HotReco
 
     @Override
     protected void initView() {
-        StaggeredGridLayoutManager layout = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.HORIZONTAL);
+        StaggeredGridLayoutManager layout = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL);
+        mRvRecomm.stopScroll();
+        mRvRecomm.setHasFixedSize(true);
+        layout.setOrientation(StaggeredGridLayoutManager.HORIZONTAL);
         mRvRecomm.setHasFixedSize(true);
         mRvRecomm.setLayoutManager(layout);
-        mRvRecomm.stopScroll();
-        mRvRecomm.setAdapter(mAdapter);
 
+//        mRvRecomm.setAdapter(mAdapter);
+
+        mRvRecomm.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
+            @Override
+            public void onGlobalFocusChanged(View view, View view1) {
+
+            }
+        });
     }
 
     @Override
@@ -58,24 +72,43 @@ public class RecommFragment extends BaseFragment<HotRecommContract.View, HotReco
     @Override
     public void onResume() {
         super.onResume();
-        if (mRvRecomm.getChildCount()==0){
+        if (mRvRecomm.getChildCount() == 0) {
             mPresenter.onResume();
         }
     }
 
-    @Override
-    public void setRecycleList(List<FilmBean> mDatas) {
-        mAdapter=new RecommAdapter(mActivity,mDatas);
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 0) {
+                changerView();
+            }
+
+        }
+    };
+
+    public void changerView() {
+        mAdapter = new RecommAdapter(mActivity, mList);
         mRvRecomm.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
         mAdapter.setListener(new RecommAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(FilmBean bean) {
-                Log.d(TAG, "onclick"+bean.toString());
+                Log.d(TAG, "onclick" + bean.toString());
                 Intent intent = new Intent(mActivity, FilmDetailActivity.class);
                 intent.putExtra("film", bean);
                 mActivity.startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void setRecycleList(List<FilmBean> mDatas) {
+//        new Handler();
+        mList = mDatas;
+        mHandler.sendEmptyMessage(0);
+
 //        mAdapter.notifyDataSetChanged();
     }
 }

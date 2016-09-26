@@ -1,6 +1,7 @@
 package com.tuojin.tvfilm.modules.main.category;
 
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
@@ -9,6 +10,7 @@ import com.tuojin.tvfilm.base.BaseFragment;
 import com.tuojin.tvfilm.base.BaseView;
 import com.tuojin.tvfilm.bean.CategoryInfo;
 import com.tuojin.tvfilm.contract.CategoryContract;
+import com.tuojin.tvfilm.modules.catelist.CategoryGeneralActivity;
 import com.tuojin.tvfilm.presenter.CategoryPresenterImpl;
 
 import java.util.List;
@@ -56,6 +58,14 @@ public class CategoryFragment extends BaseFragment<CategoryContract.View, Catego
     public void setRecycleCategoryList(List<CategoryInfo> datas) {
         mCategoryAdapter = new CategoryAdapter(mActivity, datas);
         mRvCategory.setAdapter(mCategoryAdapter);
+        mCategoryAdapter.setListener(new CategoryAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int bean) {
+                Intent intent=new Intent(mActivity, CategoryGeneralActivity.class);
+                intent.putExtra("position",bean);
+                startActivity(intent);
+            }
+        });
     }
 
 

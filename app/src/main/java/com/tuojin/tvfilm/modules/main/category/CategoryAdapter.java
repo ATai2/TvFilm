@@ -30,6 +30,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     Context mContext;
     List<CategoryInfo> mList;
+    OnItemClickListener mListener;
+
+    public void setListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
+    interface OnItemClickListener {
+        void onItemClick(int bean);
+    }
 
     public CategoryAdapter(Context context, List<CategoryInfo> list) {
         mContext = context;
@@ -56,10 +65,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     }
 
     @Override
-    public void onBindViewHolder(CategoryViewHolder holder, int position) {
+    public void onBindViewHolder(CategoryViewHolder holder, final int position) {
         //title
         holder.mTVCategoryLong.setText(mList.get(position).getTitle());
         ImageLoaderUtils.setAttributeAnimation(mContext, holder.itemView);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onItemClick(position);
+            }
+        });
         //pic
 //        holder.mIVCategoryLong.setImageBitmap();
     }

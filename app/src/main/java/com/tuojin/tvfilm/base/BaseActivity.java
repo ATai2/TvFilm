@@ -29,12 +29,13 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //设置无标题
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //设置全屏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        super.onCreate(savedInstanceState);
+        //设置无标题
+
         setContentView(getLayoutID());
         ButterKnife.bind(this);
         mPresenter = initPresenter();
@@ -44,6 +45,11 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
     }
 
     protected abstract T initPresenter();
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     protected abstract void initData();
 

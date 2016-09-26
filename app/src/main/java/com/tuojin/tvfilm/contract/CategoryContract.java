@@ -1,5 +1,6 @@
 package com.tuojin.tvfilm.contract;
 
+import com.tuojin.tvfilm.base.BaseView;
 import com.tuojin.tvfilm.bean.CategoryInfo;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  * 修改备注：
  */
 public class CategoryContract {
-    public interface View {
+    public interface View extends BaseView {
         void setRecycleCategoryList(final List<CategoryInfo> datas);
     }
 
