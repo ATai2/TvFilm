@@ -2,6 +2,7 @@ package com.tuojin.tvfilm.modules.catelist;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -26,7 +27,7 @@ import butterknife.OnClick;
  * 修改时间：
  * 修改备注：
  */
-public class CateListActivity extends BaseActivity<CateListContract.View, CateListPresenterImpl> {
+public class CateListActivity<T> extends BaseActivity<CateListContract.View<T>, CateListPresenterImpl<T>> {
 
 
     @BindView(R.id.tab_indicator_search)
@@ -51,6 +52,7 @@ public class CateListActivity extends BaseActivity<CateListContract.View, CateLi
     RadioButton mTabIndicatorAll;
 
     private int mType;
+    private FragmentManager mFragmentManager;
 
     @Override
     protected CateListPresenterImpl initPresenter() {
@@ -66,6 +68,13 @@ public class CateListActivity extends BaseActivity<CateListContract.View, CateLi
     protected void initView() {
         Intent intent = getIntent();
         mType = intent.getIntExtra("type", 0);
+
+
+        mFragmentManager = getSupportFragmentManager();
+        showFragment(0);
+    }
+
+    private void showFragment(int i) {
 
     }
 

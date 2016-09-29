@@ -8,5 +8,12 @@
     <!--分类的图片-->
     <integer-array name="category_pic">
         <!--<item>@drawable/1.png</item>-->
+        <item>@drawable/c_type</item>
+        <item>@drawable/c_area</item>
+        <item>@drawable/c_live</item>
+        <item>@drawable/c_time</item>
+        <item>@drawable/c_director</item>
+        <item>@drawable/c_actor</item>
+
     </integer-array>
 </resources>

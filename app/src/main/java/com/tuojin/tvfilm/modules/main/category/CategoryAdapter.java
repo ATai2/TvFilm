@@ -27,10 +27,12 @@ import java.util.List;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     public static final int LONG = 0;//长类型
     public static final int SMALL = 1;//短类型
+    private final int[] mIntArray;
 
     Context mContext;
     List<CategoryInfo> mList;
     OnItemClickListener mListener;
+
 
     public void setListener(OnItemClickListener listener) {
         mListener = listener;
@@ -43,6 +45,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public CategoryAdapter(Context context, List<CategoryInfo> list) {
         mContext = context;
         mList = list;
+        mIntArray = new int[]{R.drawable.c_type, R.drawable.c_time
+        , R.drawable.c_live, R.drawable.c_area
+        , R.drawable.c_director, R.drawable.c_actor};
+
     }
 
     @Override
@@ -68,7 +74,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(CategoryViewHolder holder, final int position) {
         //title
         holder.mTVCategoryLong.setText(mList.get(position).getTitle());
-        ImageLoaderUtils.setAttributeAnimation(mContext, holder.itemView);
+        holder.mIVCategoryLong.setImageResource(mIntArray[position]);
+        ImageLoaderUtils.setAnimation(mContext, holder.itemView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

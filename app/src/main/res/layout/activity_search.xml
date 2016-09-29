@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_index_right">
+    android:background="@mipmap/bg">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/left_menu"
-        android:background="@drawable/bg_search_right"
+
         android:descendantFocusability="afterDescendants">
 
         <TextView
@@ -73,7 +73,7 @@
         android:id="@+id/left_menu"
         android:layout_width="390dp"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_search_left"
+
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingTop="30dp"
@@ -113,7 +113,7 @@
             android:layout_height="wrap_content"
             android:descendantFocusability="afterDescendants">
 
-            <sitv.s003.dianbo.com.mysitvapp.keybord.SimpleKeyBoardView
+            <com.tuojin.tvfilm.keybord.SimpleKeyBoardView
                 android:id="@+id/keyboard_view"
                 android:layout_width="fill_parent"
                 android:layout_height="300dp"

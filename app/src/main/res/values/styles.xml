@@ -12,14 +12,16 @@
     <style name="Widget" />
     <!-- 首页RadioButton样式 -->
     <style name="Widget.TabIndicator_three" parent="@style/Widget">
-        <item name="android:layout_width">100dp</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/white60</item>
         <item name="android:button">@null</item>
         <item name="android:textSize">30sp</item>
         <item name="android:background">@drawable/tab_title_background</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
+        <item name="android:scaleType">centerCrop</item>
         <item name="android:gravity">center</item>
     </style>
     <!-- CustomProgressDialog样式 -->

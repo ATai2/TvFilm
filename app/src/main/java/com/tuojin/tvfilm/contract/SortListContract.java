@@ -20,6 +20,9 @@ public interface Presenter{
 }
 
 public interface Model{
+    void getHotFilmList(int page);
+    void getRecentFilmList(int page);
+    void  getDouBanFilmList(int page);
 }
 
 

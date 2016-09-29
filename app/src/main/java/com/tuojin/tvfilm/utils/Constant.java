@@ -17,4 +17,6 @@ public interface Constant {
     int AREA=104;
     int LIVE=105;
     int ACTOR=106;
+//    CateFilmListActivty更新电影列表
+    int CFLA_INITLIST=201;
 }

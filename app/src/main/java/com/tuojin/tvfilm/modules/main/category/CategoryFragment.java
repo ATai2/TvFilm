@@ -10,7 +10,7 @@ import com.tuojin.tvfilm.base.BaseFragment;
 import com.tuojin.tvfilm.base.BaseView;
 import com.tuojin.tvfilm.bean.CategoryInfo;
 import com.tuojin.tvfilm.contract.CategoryContract;
-import com.tuojin.tvfilm.modules.catelist.CategoryGeneralActivity;
+import com.tuojin.tvfilm.modules.catelist.framecatelist.CateFilmListActivty;
 import com.tuojin.tvfilm.presenter.CategoryPresenterImpl;
 
 import java.util.List;
@@ -61,7 +61,7 @@ public class CategoryFragment extends BaseFragment<CategoryContract.View, Catego
         mCategoryAdapter.setListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int bean) {
-                Intent intent=new Intent(mActivity, CategoryGeneralActivity.class);
+                Intent intent=new Intent(mActivity, CateFilmListActivty.class);
                 intent.putExtra("position",bean);
                 startActivity(intent);
             }

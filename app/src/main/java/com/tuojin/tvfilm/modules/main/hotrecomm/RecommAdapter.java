@@ -47,7 +47,6 @@ public class RecommAdapter extends RecyclerView.Adapter<RecommAdapter.RecommView
         int i = 0;
     }
 
-
     @Override
     public RecommViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_recomm, parent, false);
@@ -98,7 +97,6 @@ public class RecommAdapter extends RecyclerView.Adapter<RecommAdapter.RecommView
             super(view);
             ButterKnife.bind(this, view);
             ImageLoaderUtils.setAnimation(mContext, itemView);
-//            itemView.setOnClickListener();
         }
     }
 }

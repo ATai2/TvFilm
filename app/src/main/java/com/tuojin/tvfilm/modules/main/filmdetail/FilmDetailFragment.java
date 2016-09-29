@@ -82,6 +82,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
                 mTvDirectorDetail.setText("导演：" + mBean.getDirector());
                 mTvDescDetail.setText(mBean.getBrief());
                 mBtnPlay.setFocusable(true);
+
             }
         }
     };

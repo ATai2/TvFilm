@@ -2,7 +2,7 @@
               android:id="@+id/appdetail_fragment"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-              android:background="@color/gray"
+              android:background="@mipmap/bg"
               android:orientation="vertical"
               android:padding="20dp">
 
@@ -57,29 +57,51 @@
                 android:layout_height="wrap_content"/>
 
             <!--<ScrollView-->
-                <!--android:layout_width="890dp"-->
-                <!--android:layout_height="180dp">-->
+            <!--android:layout_width="890dp"-->
+            <!--android:layout_height="180dp">-->
 
-                <TextView
-                    android:id="@+id/tv_desc_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:textColor="@color/azure"/>
+            <TextView
+                android:id="@+id/tv_desc_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:textColor="@color/azure"/>
             <!--</ScrollView>-->
             <ImageButton
                 android:id="@+id/btn_play"
-                android:focusable="true"
-                android:background="@drawable/ic_play_circle_filled_red_a700_48dp"
                 android:layout_width="80dp"
-                android:layout_height="80dp"/>
+                android:layout_height="80dp"
+                android:background="@drawable/seletor_play_button"
+                android:focusable="true"/>
         </LinearLayout>
 
 
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_film_detail"
+    <LinearLayout
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
+        android:layout_height="200dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:ems="1"
+            android:gravity="center"
+            android:text="猜你喜欢"
+            android:textColor="@color/wheat"
+            android:textSize="30sp"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/aquamarine"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_film_detail"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+    </LinearLayout>
+
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.tuojin.tvfilm.modules.main;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
@@ -18,6 +19,7 @@ import com.tuojin.tvfilm.modules.main.category.CategoryFragment;
 import com.tuojin.tvfilm.modules.main.hotrecomm.RecommFragment;
 import com.tuojin.tvfilm.modules.main.search.SearchFragment;
 import com.tuojin.tvfilm.modules.main.sortlist.SortListFragment;
+import com.tuojin.tvfilm.modules.search.SearchActivity;
 import com.tuojin.tvfilm.presenter.HotRecommPresenterImpl;
 import com.tuojin.tvfilm.utils.LogUtils;
 
@@ -61,6 +63,7 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
     List<BaseFragment> mFragmentList;
     int mPressedCount = 0;
     int type;
+    private int[] mIntArray;
 
 
     @Override
@@ -70,7 +73,7 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
 
     @Override
     protected void initData() {
-
+//        mIntArray = getResources().getIntArray(R.array.category_pic);
     }
 
     @Override
@@ -187,6 +190,7 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
             case R.id.rab_album:
                 break;
             case R.id.rab_search:
+                startActivity(new Intent(this, SearchActivity.class));
                 break;
         }
     }
@@ -235,7 +239,7 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
             case R.id.rab_search:
                 LogUtils.d("11", "rab_search");
 //                mRabSearch.setTextColor(Color.WHITE);
-                mVpContainer.setCurrentItem(4);
+//                mVpContainer.setCurrentItem(4);
                 break;
         }
     }

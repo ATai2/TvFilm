@@ -1,41 +1,40 @@
 package com.tuojin.tvfilm.modules.catelist.framecatelist;
 
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseActivity;
 import com.tuojin.tvfilm.bean.DirectListBean;
 import com.tuojin.tvfilm.bean.FilmBean;
+import com.tuojin.tvfilm.bean.FilmTypeBean;
 import com.tuojin.tvfilm.contract.CateListFilmContract;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
-import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
+import com.tuojin.tvfilm.modules.catelist.framecatelist.adapter.RabDirectorAdapter;
+import com.tuojin.tvfilm.modules.catelist.framecatelist.adapter.RabTypeAdapter;
 import com.tuojin.tvfilm.presenter.CateListFilmPresenterImpl;
 import com.tuojin.tvfilm.utils.Constant;
-import com.tuojin.tvfilm.utils.LogUtils;
 
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * 文 件 名: CateFilmListActivty
  * 创 建 人: Administrator
  * 创建日期: 2016/9/27 13:06
- * 文件描述：  radiobutton 限定个数为6个，在网络请求中限定，加载更多时换页。
+ * 文件描述：  radiobutton 限定个数为6个，在网络请求中限定，加载更多时换页。--done
+ * 使用listview问题已解决
  * 邮   箱:
  * 博   客:
  * 修改时间：
@@ -46,9 +45,8 @@ public class CateFilmListActivty extends BaseActivity<CateListFilmContract.View,
 
     @BindView(R.id.index_type)
     TextView mIndexType;
-
     @BindView(R.id.rv_radbs_recy)
-    RecyclerView mRvRadbsRecy;
+    ListView mRvRadbsRecy;
     @BindView(R.id.tab_container)
     LinearLayout mTabContainer;
     @BindView(R.id.rv_filmlist)
@@ -64,6 +62,12 @@ public class CateFilmListActivty extends BaseActivity<CateListFilmContract.View,
     private List<FilmBean> mFilmBeanList;
     private CommonAdapter<DirectListBean.DataBean.DirectorBean> mAdapter;
     private CommonAdapter<FilmBean> mFilmBeanCommonAdapter;
+    private DirectorRadAdapter mBtnAdapter;
+    private RabDirectorAdapter mRabDirectorAdapter;
+    private RadioButton mCurrentRadioBtn;
+    private RabTypeAdapter mRabTypeAdapter;
+    private List<FilmTypeBean> mTypeList;
+
 
     @Override
     protected CateListFilmPresenterImpl initPresenter() {
@@ -109,14 +113,17 @@ public class CateFilmListActivty extends BaseActivity<CateListFilmContract.View,
         mTabIndicatorSearch.requestFocus();
 //        mRvRadbsRecy.requestFocus();
 
-        LinearLayoutManager layout = new LinearLayoutManager(this);
-        layout.setOrientation(LinearLayoutManager.VERTICAL);
-        mRvRadbsRecy.setLayoutManager(layout);
-        mRvRadbsRecy.setHasFixedSize(true);
+//        LinearLayoutManager layout = new LinearLayoutManager(this);
+//        layout.setOrientation(LinearLayoutManager.VERTICAL);
+//        mRvRadbsRecy.setLayoutManager(layout);
+//        mRvRadbsRecy.setHasFixedSize(true);
 
+
+        mRvRadbsRecy.setItemsCanFocus(true);//避免多焦点
         StaggeredGridLayoutManager staggerlm = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
         mRvFilmlist.setLayoutManager(staggerlm);
         mRvFilmlist.setHasFixedSize(true);
+
     }
 
     @Override
@@ -165,12 +172,12 @@ public class CateFilmListActivty extends BaseActivity<CateListFilmContract.View,
     };
 
     private void initFilmList() {
-        mFilmBeanCommonAdapter = new CommonAdapter<FilmBean>(this,R.layout.item_recomm,mFilmBeanList,0){
+        mFilmBeanCommonAdapter = new CommonAdapter<FilmBean>(this, R.layout.item_recomm, mFilmBeanList, 0) {
 
             @Override
             public void convert(ViewHolder holder, FilmBean bean) {
-                holder.setText(R.id.tv_recomm,bean.getMovie_name());
-                holder.setImageResource(R.id.iv_recomm,bean.getPoster());
+                holder.setText(R.id.tv_recomm, bean.getMovie_name());
+                holder.setImageResource(R.id.iv_recomm, bean.getPoster());
             }
         };
         mRvFilmlist.setAdapter(mFilmBeanCommonAdapter);
@@ -178,38 +185,13 @@ public class CateFilmListActivty extends BaseActivity<CateListFilmContract.View,
     }
 
     private void initDirector() {
-//        for (int i = 0; i < mDirectorBeanList.size(); i++) {
-//            RadioButton radioButton = new RadioButton(this);
-//            DirectListBean.DataBean.DirectorBean directorBean = mDirectorBeanList.get(i);
-//            radioButton.setText(directorBean.getMovie_director());
-//            radioButton.setTag(directorBean);
-//            radioButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                }
-//            });
-//            mTabContainer.addView(radioButton);
-//        }
-//        int i = 0;
+        mRabDirectorAdapter = new RabDirectorAdapter(mDirectorBeanList, this, mPresenter);
+        mRvRadbsRecy.setAdapter(mRabDirectorAdapter);
+    }
 
-        mAdapter = new CommonAdapter<DirectListBean.DataBean.DirectorBean>(this,
-                R.layout.item_radbtn, mDirectorBeanList, 0) {
-            @Override
-            public void convert(ViewHolder holder, DirectListBean.DataBean.DirectorBean directorBean) {
-                holder.setText(R.id.radbtn_item, directorBean.getMovie_director());
-            }
-        };
-        mRvRadbsRecy.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new OnItemClickListener<DirectListBean.DataBean.DirectorBean>() {
-
-            @Override
-            public void onItemClick(ViewGroup parent, View view, DirectListBean.DataBean.DirectorBean directBean, int position) {
-                LogUtils.d("12","onItemClick");
-                mPresenter.onItemClick(CateFilmListActivty.this, directBean);
-            }
-        });
-
+    private void initType() {
+        new RabTypeAdapter(mTypeList, this, mPresenter);
+        mRvRadbsRecy.setAdapter(mRabTypeAdapter);
     }
 
     @Override
@@ -219,31 +201,30 @@ public class CateFilmListActivty extends BaseActivity<CateListFilmContract.View,
     }
 
     @Override
-    public void initDirectorFragment(List<FilmBean> data1) {
+    public void initFilmFragment(List<FilmBean> data1) {
         mFilmBeanList = data1;
         mHandler.sendEmptyMessage(CFLA_INITLIST);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == event.KEYCODE_DPAD_LEFT) {
-
+            Toast.makeText(this, "lkdslfj", Toast.LENGTH_SHORT).show();
+            int i = 0;
 
         }
+//判断确定键按下，同时是RadioButton中获得焦点。
+        if (keyCode == event.KEYCODE_DPAD_CENTER) {
+            Toast.makeText(this, "center", Toast.LENGTH_SHORT).show();
 
-
+            int i = 0;
+        }
 
         return super.onKeyDown(keyCode, event);
 
     }
+
 
     @OnClick(R.id.tab_indicator_search)
     public void onClick() {

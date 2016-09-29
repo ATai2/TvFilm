@@ -1,7 +1,5 @@
 package com.tuojin.tvfilm.contract;
 
-import com.tuojin.tvfilm.bean.DirectListBean;
-
 import java.util.List;
 
 /**
@@ -15,14 +13,14 @@ import java.util.List;
  * 修改备注：
  */
 public class CateListContract {
-public interface View{
-    void initViewRadioButton(List<DirectListBean.DataBean.DirectorBean> directorBeanList);
+public interface View<T>{
+    void initViewRadioButton(List<T> directorBeanList);
 }
 
-public interface Presenter{
+public interface Presenter<T>{
     void initRadioButton(int type);
 
-    void initViewRadioButton(List<DirectListBean.DataBean.DirectorBean> directorBeanList);
+    void initViewRadioButton(List<T> directorBeanList);
 }
 
 public interface Model{

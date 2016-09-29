@@ -3,19 +3,20 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/colorPrimary"
+              android:background="@mipmap/bg"
               android:orientation="vertical"
               tools:context=".modules.main.MainActivity">
 
     <RelativeLayout
         android:id="@+id/relative"
         android:layout_width="match_parent"
+        android:gravity="center"
         android:layout_height="100dp"
         android:layout_gravity="top">
 
         <RadioGroup
             android:id="@+id/group"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="18dp"
             android:gravity="center"
@@ -24,34 +25,33 @@
             <RadioButton
                 android:id="@+id/rab_hotrecomm"
                 style="@style/Widget.TabIndicator_three"
-                android:text="@string/tab_hotrecomm"
-                android:textSize="20sp"/>
+                android:background="@drawable/btn_selector_recommend"
+                />
 
             <RadioButton
                 android:id="@+id/rab_category"
                 style="@style/Widget.TabIndicator_three"
-                android:text="@string/tab_catogory"
-                android:textSize="20sp"/>
+                android:background="@drawable/btn_selector_category"
+                />
 
             <RadioButton
                 android:id="@+id/rab_sortlist"
                 style="@style/Widget.TabIndicator_three"
-                android:text="@string/tab_sortlist"
-                android:textSize="20sp"/>
+                android:background="@drawable/btn_selector_sort"
+                />
 
             <RadioButton
                 android:id="@+id/rab_album"
                 style="@style/Widget.TabIndicator_three"
-                android:scaleType="fitXY"
-                android:text="@string/tab_album"
-                android:textSize="20sp"/>
+                android:background="@drawable/btn_selector_album"
+
+                />
 
             <RadioButton
                 android:id="@+id/rab_search"
                 style="@style/Widget.TabIndicator_three"
-                android:scaleType="fitXY"
-                android:text="@string/rab_search"
-                android:textSize="20sp"/>
+                android:background="@drawable/btn_selector_search"
+               />
         </RadioGroup>
     </RelativeLayout>
 
@@ -59,8 +59,6 @@
         android:id="@+id/mVpContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-        android:background="@color/white60"
         android:descendantFocusability="afterDescendants"
         android:focusable="true"
         />

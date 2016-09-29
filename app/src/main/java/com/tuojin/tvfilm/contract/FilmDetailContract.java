@@ -28,6 +28,8 @@ public interface Presenter{
 
 public interface Model{
     void onResume(String mid,String uuid);
+
+    void onResumeInitRecycleView();
 }
 
 

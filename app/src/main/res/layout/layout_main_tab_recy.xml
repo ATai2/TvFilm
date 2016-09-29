@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="182dp"
+              android:layout_height="match_parent"
+              android:background="@drawable/bg_left"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/tab_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/tab_indicator_search"
+            style="@style/Widget.TabIndicator_three"
+            android:drawableLeft="@drawable/dcms_search"
+            android:text="返回"/>
+        <TextView
+            android:id="@+id/tv_name"
+            android:text="导演列表"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            style="@style/Widget.TabIndicator_three"
+            android:layout_weight="1"
+            android:focusable="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+     <ListView
+         android:id="@+id/rv_radbs_recy"
+         android:scrollbarFadeDuration="0"
+         android:descendantFocusability="afterDescendants"
+         android:layout_width="match_parent"
+         android:layout_height="0dp"
+         android:layout_weight="1000"></ListView>
+    </LinearLayout>
+</LinearLayout>
