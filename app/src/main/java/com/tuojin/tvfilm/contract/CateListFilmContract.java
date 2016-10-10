@@ -1,7 +1,7 @@
 package com.tuojin.tvfilm.contract;
 
 import com.tuojin.tvfilm.base.BaseView;
-import com.tuojin.tvfilm.bean.DirectListBean;
+import com.tuojin.tvfilm.bean.DirectorBean;
 import com.tuojin.tvfilm.bean.FilmBean;
 import com.tuojin.tvfilm.bean.FilmTypeBean;
 import com.tuojin.tvfilm.modules.catelist.framecatelist.CateFilmListActivty;
@@ -20,17 +20,21 @@ import java.util.List;
  */
 public class CateListFilmContract {
 public interface View extends BaseView{
-    void initViewRadioGroup(List<DirectListBean.DataBean.DirectorBean> list);
+    void initViewRadioGroup(List<DirectorBean> list);
 
     void initFilmFragment(List<FilmBean> data1);
+
+    void refreshUIs();
+
+//    void showLoading();
 }
 
 public interface Presenter{
     void initRadioGroup(int position);
 
-    void initViewRadioGroup(List<DirectListBean.DataBean.DirectorBean> list);
+    void initViewRadioGroup(List<DirectorBean> list);
 
-    void onItemClick(CateFilmListActivty cateFilmListActivty, DirectListBean.DataBean.DirectorBean directListBean);
+    void onItemClick(CateFilmListActivty cateFilmListActivty, DirectorBean directListBean);
 
     void initFilmFragment(List<FilmBean> data1);
 
@@ -40,9 +44,11 @@ public interface Presenter{
 public interface Model{
     void initRadioGroup(int position);
 
-    void onItemClick(DirectListBean.DataBean.DirectorBean directBean);
+    void onItemClick(DirectorBean directBean);
 
     void onFilmTypeItemClick(FilmTypeBean filmTypeBean);
+
+    void onFilmTypeItemInit(String catcode);
 }
 
 

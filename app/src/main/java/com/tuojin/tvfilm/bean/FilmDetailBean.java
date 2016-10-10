@@ -22,11 +22,6 @@ public class FilmDetailBean {
 
     private String timeStamp;
     private int status;
-    /**
-     * data : {"score":"7.2","expiredate":"2017-03-31 23:59:59.0","type":"","publishdate":"2016-02-08","createtime":null,"filmlength":"93","movie_clickcount":0,"video":"/opt/video/nasbak/BESTV160422133926003485/DCP/023416ed-c7ed-48db-b1b3-78262fe7348e/wav_MeiRenYu_ac3_aud.mxf","movie_name":"美人鱼","filmhlength":"","audio":"/opt/video/nasbak/BESTV160422133926003485/DCP/023416ed-c7ed-48db-b1b3-78262fe7348e/avc_MeiRenYu_ac3_vid.mxf","status":0,"kdm_addr":"/opt/video/nasbak/BESTV160422133926003485/KDM/SMET15128361/023416ed-c7ed-48db-b1b3-78262fe7348e_SMET15128361_170331235959_9999.xml","director":"周星驰","moviecountry":"","file_desc":"","max_playtimes":0,"modifytime":null,"movieCountry":"","duration":"","movie_ename":"","cast":"邓超 / 罗志祥 / 张雨绮 / 林允 / 徐克 / 吴亦凡 / 李尚正 / 卢正雨 / 白客 / 孔连顺 / 田启文 / 文章 / 杨能 / 张美娥 / 李叶青 / 林子聪","poster":"/BESTV160422133926003485/POSTER/BESTV160422133926003485.jpg","filename":"美人鱼","uuid":"023416ed-c7ed-48db-b1b3-78262fe7348e","mid":"BESTV160422133926003485","brief":"白手起家的富豪刘轩（邓超 饰）新拍下了一块地皮，并联合了女强人李若兰（张雨绮 饰）使用恐怖的声纳技术驱赶鱼类，用于填海造地。人鱼一族长期居住在附近区域的海里，为了继续生存，带头大哥章鱼八哥（罗志祥 饰）派出了美人鱼珊珊（林允 饰）\u201c色诱\u201d刘轩，准备刺杀。没想到珊珊在卧底过程中与刘轩暗生情愫，一次次破坏暗杀计划，而李若兰却在准备一个更丧心病狂的邪恶计划\u2026\u2026"}
-     * user : PAD1465889962927
-     */
-
     private DataBean data;
     private String msgType;
     private int code;

@@ -1,5 +1,10 @@
 package com.tuojin.tvfilm.contract;
 
+import com.tuojin.tvfilm.base.BaseView;
+import com.tuojin.tvfilm.bean.FilmBean;
+
+import java.util.List;
+
 /**
  * 文 件 名: SearchContract
  * 创 建 人: Administrator
@@ -11,13 +16,18 @@ package com.tuojin.tvfilm.contract;
  * 修改备注：
  */
 public class SearchContract {
-public interface View{
+public interface View extends BaseView{
+    void refreshUI(List<FilmBean> beanList);
 }
 
 public interface Presenter{
+    void search(String key);
+
+    void refreshUI(List<FilmBean> beanList);
 }
 
 public interface Model{
+    void search(String key);
 }
 
 

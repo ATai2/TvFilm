@@ -83,7 +83,7 @@ public class ImageLoaderUtils implements Handler.Callback {
             if (((BaseActivity) mContext).isFinishing())
                 return;
         }
-        Glide.with(mContext).load(InterfaceURL.PIC + uri)
+        Glide.with(mContext).load(InterfaceURL.BASEIP + uri)
                 .asBitmap()
                 .placeholder(R.drawable.ic_launcher)
                 .centerCrop()
@@ -247,6 +247,26 @@ public class ImageLoaderUtils implements Handler.Callback {
                 return;
         }
         Glide.with(mContext).load(InterfaceURL.PIC + uri)
+                .asBitmap()
+                .placeholder(R.drawable.ic_launcher)
+                .centerCrop()
+                .error(R.drawable.ic_launcher)
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        iv.setImageBitmap(resource);
+                    }
+                });
+    }
+    public static void showPictureWithApplicationWithNoMID(Context mContext, String uri, final ImageView iv) {
+        //if (DBG) Log.v(TAG, "showPicture() uri : " + uri);
+        if (mContext instanceof BaseActivity) {
+            if (((BaseActivity) mContext).isFinishing())
+                return;
+        }
+        uri=uri.replace("\\\\","/");
+        String pic = InterfaceURL.BASEIP + uri;
+        Glide.with(mContext).load(pic)
                 .asBitmap()
                 .placeholder(R.drawable.ic_launcher)
                 .centerCrop()

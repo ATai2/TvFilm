@@ -10,7 +10,7 @@ import android.widget.RadioButton;
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseActivity;
 import com.tuojin.tvfilm.contract.CateListContract;
-import com.tuojin.tvfilm.modules.search.SearchActivity;
+//import com.tuojin.tvfilm.modules.search.SearchActivity;
 import com.tuojin.tvfilm.presenter.CateListPresenterImpl;
 
 import butterknife.BindView;
@@ -99,7 +99,7 @@ public class CateListActivity<T> extends BaseActivity<CateListContract.View<T>, 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tab_indicator_search:
-                startActivity(new Intent(this, SearchActivity.class));
+//                startActivity(new Intent(this, SearchActivity.class));
                 break;
             case R.id.tab_indicator_screening:
 //                筛选
@@ -119,5 +119,15 @@ public class CateListActivity<T> extends BaseActivity<CateListContract.View<T>, 
             case R.id.tab_indicator_all:
                 break;
         }
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showMessage(String msg) {
+
     }
 }

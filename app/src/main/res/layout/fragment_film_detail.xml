@@ -24,17 +24,41 @@
             android:layout_toRightOf="@id/iv_filmpic_detail"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_filmname_detail"
-                style="@style/TextAppearance.Button"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="35dp"
-                android:layout_marginTop="30dp"
-                android:layout_toRightOf="@id/iv_filmpic_detail"
-                android:text="电影名"
-                android:textColor="@color/white"
-                android:textSize="34sp"/>
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_filmname_detail"
+                    style="@style/TextAppearance.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginTop="30dp"
+                    android:text="电影名"
+                    android:textColor="@color/white"
+                    android:textSize="34sp"/>
+
+                <TextView
+                    android:id="@+id/tv_dbscore_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="豆瓣评分"
+                    android:textColor="@color/white"
+                    android:layout_alignBaseline="@id/tv_filmname_detail"
+                    android:layout_marginLeft="100dp"
+                    android:layout_toRightOf="@id/tv_filmname_detail"/>
+                <TextView
+                    android:id="@+id/tv_dbscore_scor_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="豆瓣评分"
+                    android:textSize="24sp"
+                    android:textColor="@color/gold"
+                    android:layout_alignBaseline="@id/tv_filmname_detail"
+
+                    android:layout_toRightOf="@id/tv_dbscore_detail"/>
+            </RelativeLayout>
 
 
             <TextView
@@ -67,21 +91,40 @@
                 android:layout_marginTop="40dp"
                 android:textColor="@color/azure"/>
             <!--</ScrollView>-->
-            <ImageButton
-                android:id="@+id/btn_play"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/seletor_play_button"
-                android:focusable="true"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_selector"
+                    android:focusable="true"
+                    android:nextFocusRight="@+id/btn_stop"
+                    android:text="播放"
+                    android:textColor="@color/aquamarine"
+                    android:textSize="32sp"/>
+
+                <ImageButton
+                    android:id="@+id/btn_stop"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/seletor_stop_button"
+                    android:focusable="true"
+                    android:nextFocusLeft="@id/btn_play"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
         </LinearLayout>
 
 
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_marginTop="50dp"
         android:orientation="horizontal">
 
         <TextView

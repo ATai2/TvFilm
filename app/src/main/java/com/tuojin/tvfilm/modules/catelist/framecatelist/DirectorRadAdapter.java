@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 
 import com.tuojin.tvfilm.R;
-import com.tuojin.tvfilm.bean.DirectListBean;
+import com.tuojin.tvfilm.bean.DirectorBean;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ import java.util.List;
  * 修改备注：
  */
 public class DirectorRadAdapter extends RecyclerView.Adapter<DirectorRadAdapter.RadioBtnViewHolder> {
-    List<DirectListBean.DataBean.DirectorBean> mList;
+    List<DirectorBean> mList;
     Context mContext;
     OnItemClickListener mListener;
 
@@ -33,7 +33,7 @@ public class DirectorRadAdapter extends RecyclerView.Adapter<DirectorRadAdapter.
     }
 
     interface OnItemClickListener {
-        void onItemClick(DirectListBean.DataBean.DirectorBean bean);
+        void onItemClick(DirectorBean bean);
     }
 
     public DirectorRadAdapter(Context context, List list) {
@@ -50,7 +50,7 @@ public class DirectorRadAdapter extends RecyclerView.Adapter<DirectorRadAdapter.
 
     @Override
     public void onBindViewHolder(RadioBtnViewHolder holder, int position) {
-        final DirectListBean.DataBean.DirectorBean bean = mList.get(position);
+        final DirectorBean bean = mList.get(position);
         holder.mBtn.setText(bean.getMovie_director());
         holder.mBtn.setTag(bean);
         final int flag = position;

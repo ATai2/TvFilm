@@ -12,9 +12,9 @@
     <style name="Widget" />
     <!-- 首页RadioButton样式 -->
     <style name="Widget.TabIndicator_three" parent="@style/Widget">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">115dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">35dp</item>
         <item name="android:textColor">@color/white60</item>
         <item name="android:button">@null</item>
         <item name="android:textSize">30sp</item>
@@ -29,6 +29,7 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
     <!-- progressDialog加载样式 -->
     <style name="CustomDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
@@ -106,6 +107,19 @@
         <item name="android:clipToPadding">false</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
+    </style>
+
+    <style name="SortFragStyle" parent="Widget">
+        <item name="android:layout_width">500dp</item>
+        <item name="android:layout_height">250dp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+    <style name="SortFragStyleSmall" parent="Widget">
+        <item name="android:layout_width">250dp</item>
+        <item name="android:layout_height">250dp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:layout_margin">5dp</item>
     </style>
 
 </resources>

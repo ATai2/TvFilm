@@ -1,6 +1,6 @@
 package com.tuojin.tvfilm.presenter;
 
-import com.tuojin.tvfilm.bean.DirectListBean;
+import com.tuojin.tvfilm.bean.DirectorBean;
 
 import org.junit.Test;
 
@@ -26,7 +26,7 @@ public class CateListPresenterImplTest {
     }
     @Test
     public  void testDirector(){
-        CateListPresenterImpl<DirectListBean.DataBean.DirectorBean> presenter=new CateListPresenterImpl<>();
+        CateListPresenterImpl<DirectorBean> presenter=new CateListPresenterImpl<>();
         presenter.initRadioButton(0);
         int i=1;
     }

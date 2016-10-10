@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -11,8 +12,18 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.tuojin.myapplication.MainActivity">
 
-  <android.support.v7.widget.RecyclerView
-      android:id="@+id/rv"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/ivm"
+        android:layout_width="200dp"
+        android:layout_height="300dp"
+        android:background="@color/colorAccent"
+        android:scaleType="fitXY"/>
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdv"
+        android:layout_width="200dp"
+        android:layout_height="300dp"/>
+    <!--<android.support.v7.widget.RecyclerView-->
+    <!--android:id="@+id/rv"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>-->
+</LinearLayout>

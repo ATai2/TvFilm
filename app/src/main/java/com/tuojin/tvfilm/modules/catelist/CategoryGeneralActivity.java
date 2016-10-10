@@ -169,4 +169,14 @@ public class CategoryGeneralActivity<T> extends BaseActivity<CateListContract.Vi
     public void initViewRadioButton(List directorBeanList) {
         mList = directorBeanList;
     }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showMessage(String msg) {
+
+    }
 }

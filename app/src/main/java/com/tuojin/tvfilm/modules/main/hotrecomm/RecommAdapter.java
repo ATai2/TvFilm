@@ -63,8 +63,11 @@ public class RecommAdapter extends RecyclerView.Adapter<RecommAdapter.RecommView
     @Override
     public void onBindViewHolder(RecommViewHolder holder, int position) {
         final FilmBean filmBean = mList.get(position);
-        ImageLoaderUtils.showRecommIcom(mContext, filmBean.getPoster(), holder.mIvRecomm);
-        holder.mTvRecomm.setText(filmBean.getMovie_name());
+        String poster = "/MID"+filmBean.getPoster();
+        ImageLoaderUtils.showRecommIcom(mContext, poster, holder.mIvRecomm);
+
+        String movie_name = filmBean.getMovie_name();
+        holder.mTvRecomm.setText(movie_name);
 //        holder.mIvRecomm.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

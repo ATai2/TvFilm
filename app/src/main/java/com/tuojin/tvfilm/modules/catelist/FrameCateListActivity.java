@@ -133,4 +133,13 @@ public class FrameCateListActivity extends BaseActivity<HotRecommContract.View, 
         return R.layout.activity_frame_catelist;
     }
 
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showMessage(String msg) {
+
+    }
 }

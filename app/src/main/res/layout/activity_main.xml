@@ -10,9 +10,9 @@
     <RelativeLayout
         android:id="@+id/relative"
         android:layout_width="match_parent"
-        android:gravity="center"
         android:layout_height="100dp"
-        android:layout_gravity="top">
+        android:layout_gravity="top"
+        android:gravity="center">
 
         <RadioGroup
             android:id="@+id/group"
@@ -44,14 +44,14 @@
                 android:id="@+id/rab_album"
                 style="@style/Widget.TabIndicator_three"
                 android:background="@drawable/btn_selector_album"
-
                 />
 
             <RadioButton
                 android:id="@+id/rab_search"
                 style="@style/Widget.TabIndicator_three"
                 android:background="@drawable/btn_selector_search"
-               />
+                android:nextFocusDown="@+id/edit_search"
+                />
         </RadioGroup>
     </RelativeLayout>
 

@@ -9,7 +9,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.tuojin.tvfilm.R;
-import com.tuojin.tvfilm.bean.DirectListBean;
+import com.tuojin.tvfilm.bean.DirectorBean;
 import com.tuojin.tvfilm.modules.catelist.framecatelist.CateFilmListActivty;
 import com.tuojin.tvfilm.presenter.CateListFilmPresenterImpl;
 
@@ -30,17 +30,17 @@ import butterknife.ButterKnife;
  */
 public class RabActorAdapter extends BaseAdapter {
 
-    List<DirectListBean.DataBean.DirectorBean> mList;
+    List<DirectorBean> mList;
     Context mContext;
     CateListFilmPresenterImpl mPresenter;
 
-    public RabActorAdapter(List<DirectListBean.DataBean.DirectorBean> list, Context context, CateListFilmPresenterImpl presenter) {
+    public RabActorAdapter(List<DirectorBean> list, Context context, CateListFilmPresenterImpl presenter) {
         mList = list;
         mContext = context;
         mPresenter = presenter;
     }
 
-    public RabActorAdapter(List<DirectListBean.DataBean.DirectorBean> list, Context context) {
+    public RabActorAdapter(List<DirectorBean> list, Context context) {
         mList = list;
         mContext = context;
     }

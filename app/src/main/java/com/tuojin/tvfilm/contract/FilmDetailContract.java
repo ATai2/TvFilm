@@ -1,7 +1,10 @@
 package com.tuojin.tvfilm.contract;
 
 import com.tuojin.tvfilm.base.BaseView;
+import com.tuojin.tvfilm.bean.FilmBean;
 import com.tuojin.tvfilm.bean.FilmDetailBean;
+
+import java.util.List;
 
 /**
  * 文 件 名: FilmDetailContract
@@ -17,6 +20,8 @@ public class FilmDetailContract {
 public interface View extends BaseView{
     //刷新界面数据
     void refresh(FilmDetailBean.DataBean.FilmDetailDataBean bean);
+
+    void initListUI(List<FilmBean> mDatas);
 }
 
 public interface Presenter{
@@ -24,12 +29,22 @@ public interface Presenter{
     void onResume(String mid,String uuid);
     //更新页面数据
     void refresh(FilmDetailBean.DataBean.FilmDetailDataBean bean);
+
+    void play(FilmDetailBean.DataBean.FilmDetailDataBean film);
+
+    void initList();
+
+    void initListUI(List<FilmBean> mDatas);
 }
 
 public interface Model{
     void onResume(String mid,String uuid);
 
     void onResumeInitRecycleView();
+
+    void play(FilmDetailBean.DataBean.FilmDetailDataBean bean);
+
+    void initList();
 }
 
 

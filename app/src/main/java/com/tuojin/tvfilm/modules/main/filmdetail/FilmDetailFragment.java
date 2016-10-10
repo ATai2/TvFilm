@@ -1,30 +1,39 @@
 package com.tuojin.tvfilm.modules.main.filmdetail;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseFragment;
 import com.tuojin.tvfilm.bean.FilmBean;
 import com.tuojin.tvfilm.bean.FilmDetailBean;
 import com.tuojin.tvfilm.contract.FilmDetailContract;
+import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
+import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
+import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
+import com.tuojin.tvfilm.modules.main.FilmDetailActivity;
 import com.tuojin.tvfilm.presenter.FilmDetailPresenterImpl;
 import com.tuojin.tvfilm.utils.ImageLoaderUtils;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,8 +59,15 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     @BindView(R.id.appdetail_fragment)
     LinearLayout mAppdetailFragment;
     @BindView(R.id.btn_play)
-    ImageButton mBtnPlay;
+    Button mBtnPlay;
+    @BindView(R.id.btn_stop)
+    ImageButton mBtnStop;
+    @BindView(R.id.tv_dbscore_detail)
+    TextView mTvDbscoreDetail;
+    @BindView(R.id.tv_dbscore_scor_detail)
+    TextView mTvDbscoreScorDetail;
     private FilmDetailBean.DataBean.FilmDetailDataBean mBean;
+    private Boolean isPlaying;
 
     @Override
     protected int getLayoutId() {
@@ -63,6 +79,24 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         Bundle arguments = getArguments();
         mFilm = arguments.getParcelable("film");
 
+        LinearLayoutManager layout = new LinearLayoutManager(mActivity);
+        layout.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mRvFilmDetail.setLayoutManager(layout);
+
+
+        mBtnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                if (isPlaying) {
+//                    Toast.makeText(mActivity, "影片暂停", Toast.LENGTH_SHORT).show();
+////            mPresenter.play();
+//                } else {
+                Toast.makeText(mActivity, "播放影片", Toast.LENGTH_SHORT).show();
+                mPresenter.play(mBean);
+//                }
+//                isPlaying=!isPlaying;
+            }
+        });
     }
 
     @Override
@@ -75,14 +109,35 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 0) {
-                ImageLoaderUtils.showRecommIcom(mActivity, mBean.getPoster(), mIvFilmpicDetail);
+                ImageLoaderUtils.showRecommIcom(mActivity, "/MID" + mBean.getPoster(), mIvFilmpicDetail);
                 mTvFilmnameDetail.setText(mBean.getMovie_name());
-                mTvFilmtypeDetail.setText("电影类型：" + mBean.getType());
+                mTvFilmtypeDetail.setText("电影类型：" + mBean.getType() + "  地区：" + mBean.getMovieCountry() + "    年份：" + mBean.getPublishdate());
                 mTvActorsDetail.setText("演员：" + mBean.getCast());
                 mTvDirectorDetail.setText("导演：" + mBean.getDirector());
+                mTvDbscoreScorDetail.setText(mBean.getScore());
                 mTvDescDetail.setText(mBean.getBrief());
                 mBtnPlay.setFocusable(true);
 
+            } else if (msg.what == 1) {
+
+                CommonAdapter<FilmBean> adapter = new CommonAdapter<FilmBean>(mActivity, R.layout.item_other, mList, 0) {
+                    @Override
+                    public void convert(ViewHolder holder, FilmBean bean) {
+                        holder.setText(R.id.movie_title_other, bean.getMovie_name());
+                        holder.setImageResource(R.id.movie_image_other, bean.getPoster());
+                        holder.setScaleAnimation(R.id.movie_title_other);
+                    }
+                };
+                adapter.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(ViewGroup parent, View view, Object o, int position) {
+                        Intent intent = new Intent(mActivity, FilmDetailActivity.class);
+                        FilmBean bean = mList.get(position);
+                        intent.putExtra("film", bean);
+                        mActivity.startActivity(intent);
+                    }
+                });
+                mRvFilmDetail.setAdapter(adapter);
             }
         }
     };
@@ -94,21 +149,57 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         mHandler.sendEmptyMessage(0);
     }
 
+    List<FilmBean> mList;
+
+    @Override
+    public void initListUI(List<FilmBean> mDatas) {
+        mList = mDatas;
+        mHandler.sendEmptyMessage(1);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         mPresenter.onResume(mFilm.getMid(), mFilm.getUuid());
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    sleep(200L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                mPresenter.initList();
+            }
+        }.start();
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         return rootView;
     }
 
-    @OnClick(R.id.btn_play)
-    public void onClick() {
-    }
+    boolean begin;
+
+    //这里需要考虑影片播放的情况
+//    @OnClick({R.id.btn_play})
+//    public void onClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.btn_play:
+//                if (isPlaying) {
+//                    Toast.makeText(mActivity, "影片暂停", Toast.LENGTH_SHORT).show();
+////            mPresenter.play();
+//                } else {
+//                    Toast.makeText(mActivity, "播放影片", Toast.LENGTH_SHORT).show();
+//                    mPresenter.play(mFilm);
+//                }
+//                isPlaying = !isPlaying;
+//                break;
+//        }
+//    }
 }

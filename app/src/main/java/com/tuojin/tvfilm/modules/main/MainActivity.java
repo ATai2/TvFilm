@@ -1,11 +1,9 @@
 package com.tuojin.tvfilm.modules.main;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -17,9 +15,8 @@ import com.tuojin.tvfilm.contract.HotRecommContract;
 import com.tuojin.tvfilm.modules.main.album.AlbumFragment;
 import com.tuojin.tvfilm.modules.main.category.CategoryFragment;
 import com.tuojin.tvfilm.modules.main.hotrecomm.RecommFragment;
-import com.tuojin.tvfilm.modules.main.search.SearchFragment;
 import com.tuojin.tvfilm.modules.main.sortlist.SortListFragment;
-import com.tuojin.tvfilm.modules.search.SearchActivity;
+import com.tuojin.tvfilm.modules.search.SearchFragment;
 import com.tuojin.tvfilm.presenter.HotRecommPresenterImpl;
 import com.tuojin.tvfilm.utils.LogUtils;
 
@@ -78,15 +75,10 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
 
     @Override
     protected void initView() {
+        mRbHotRecom.requestFocus();
+
         mVpContainer.setOffscreenPageLimit(5);
         mVpContainer.setCurrentItem(0);
-        mVpContainer.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
-            @Override
-            public void onGlobalFocusChanged(View view, View view1) {
-
-            }
-        });
-
         //设置焦点改变监听
         mRbHotRecom.setOnFocusChangeListener(this);
         mRbCatgory.setOnFocusChangeListener(this);
@@ -144,8 +136,8 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
 
             }
         });
-        mRbHotRecom.setFocusable(true);
-        mRbHotRecom.setChecked(true);
+        mRbHotRecom.setBackground(getResources().getDrawable(R.drawable.btn_selector_recommend));
+        mRbHotRecom.requestFocus();
     }
 
     @Override
@@ -190,7 +182,7 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
             case R.id.rab_album:
                 break;
             case R.id.rab_search:
-                startActivity(new Intent(this, SearchActivity.class));
+//                startActivity(new Intent(this, SearchActivity.class));
                 break;
         }
     }
@@ -239,8 +231,18 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
             case R.id.rab_search:
                 LogUtils.d("11", "rab_search");
 //                mRabSearch.setTextColor(Color.WHITE);
-//                mVpContainer.setCurrentItem(4);
+                mVpContainer.setCurrentItem(4);
                 break;
         }
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showMessage(String msg) {
+
     }
 }

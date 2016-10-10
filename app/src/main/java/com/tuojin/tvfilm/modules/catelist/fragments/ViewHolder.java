@@ -17,6 +17,7 @@ import android.view.animation.AlphaAnimation;
 import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -77,9 +78,20 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    public ViewHolder setRadioButtonText(int viewId, String text) {
+        RadioButton tv = getView(viewId);
+        tv.setText(text);
+        return this;
+    }
+
     public ViewHolder setImageResource(int viewId, String resId) {
         ImageView view = getView(viewId);
         ImageLoaderUtils.showPictureWithApplication(mContext, resId, view);
+        return this;
+    }
+    public ViewHolder setImageResourceNoMID(int viewId, String resId) {
+        ImageView view = getView(viewId);
+        ImageLoaderUtils.showPictureWithApplicationWithNoMID(mContext, resId, view);
         return this;
     }
 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/include1"
+        android:background="@mipmap/bg"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/index_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="35dp"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:text="类别"
+            android:visibility="visible" />
+
+        <FrameLayout
+            android:id="@+id/main_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="530dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="35dp"
+            android:layout_marginTop="60dp"
+            android:layout_toRightOf="@+id/include1"
+            android:descendantFocusability="afterDescendants"
+            />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/include1"
+        layout="@layout/layout_sort_new" />
+
+</RelativeLayout>
+

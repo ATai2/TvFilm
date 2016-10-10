@@ -90,34 +90,5 @@ public class DirectListBean {
             this.data = data;
         }
 
-        public static class DirectorBean {
-            private int id;
-            private String img;
-            private String movie_director;
-
-            public int getId() {
-                return id;
-            }
-
-            public void setId(int id) {
-                this.id = id;
-            }
-
-            public String getImg() {
-                return img;
-            }
-
-            public void setImg(String img) {
-                this.img = img;
-            }
-
-            public String getMovie_director() {
-                return movie_director;
-            }
-
-            public void setMovie_director(String movie_director) {
-                this.movie_director = movie_director;
-            }
-        }
     }
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="182dp"
+              android:layout_height="match_parent"
+              android:background="@drawable/bg_left"
+              android:orientation="vertical">
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/tab_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/tab_indicator_search"
+                style="@style/Widget.TabIndicator"
+                android:text="返回"/>
+
+            <RadioButton
+                android:id="@+id/tab_indicator_action"
+                style="@style/Widget.TabIndicator"
+                android:text="动作"/>
+
+            <RadioButton
+                android:id="@+id/tab_indicator_fiction"
+                style="@style/Widget.TabIndicator"
+                android:text="科幻"/>
+
+            <RadioButton
+                android:id="@+id/tab_indicator_animation"
+                style="@style/Widget.TabIndicator"
+                android:text="动画"/>
+
+            <RadioButton
+                android:id="@+id/tab_indicator_suspense"
+                style="@style/Widget.TabIndicator"
+                android:text="悬疑"/>
+
+            <RadioButton
+                android:id="@+id/tab_indicator_emotional"
+                style="@style/Widget.TabIndicator"
+                android:text="情感"/>
+
+            <RadioButton
+                android:id="@+id/tab_indicator_comedy"
+                style="@style/Widget.TabIndicator"
+                android:text="喜剧"/>
+
+        </LinearLayout>
+    </RadioGroup>
+
+</LinearLayout>

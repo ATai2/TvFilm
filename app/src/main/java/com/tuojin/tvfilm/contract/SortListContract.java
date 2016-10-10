@@ -1,6 +1,9 @@
 package com.tuojin.tvfilm.contract;
 
 import com.tuojin.tvfilm.base.BaseView;
+import com.tuojin.tvfilm.bean.FilmBean;
+
+import java.util.List;
 
 /**
  * 文 件 名: SortListContract
@@ -14,9 +17,16 @@ import com.tuojin.tvfilm.base.BaseView;
  */
 public class SortListContract {
 public interface View extends BaseView {
+    //RecyclerView初始化
+    void setRecyclerItem(List<FilmBean> mList);
+
+    void refreshUI();
 }
 
 public interface Presenter{
+    void onResume(int catcode,int page);
+
+    void refreshUI(List<FilmBean> beanList);
 }
 
 public interface Model{

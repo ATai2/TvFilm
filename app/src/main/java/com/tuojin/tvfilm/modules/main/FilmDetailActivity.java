@@ -72,4 +72,13 @@ public class FilmDetailActivity extends BaseActivity<FilmDetailContract.View, Fi
         return R.layout.activity_detail;
     }
 
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showMessage(String msg) {
+
+    }
 }

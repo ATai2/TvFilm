@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseActivity;
-import com.tuojin.tvfilm.bean.DirectListBean;
+import com.tuojin.tvfilm.bean.DirectorBean;
 import com.tuojin.tvfilm.bean.FilmBean;
 import com.tuojin.tvfilm.bean.FilmTypeBean;
 import com.tuojin.tvfilm.contract.CateListFilmContract;
@@ -57,10 +57,10 @@ public class CateFilmListActivty extends BaseActivity<CateListFilmContract.View,
     TextView mTvName;
     private int type;
     private int mPosition;
-    private List<DirectListBean.DataBean.DirectorBean> mDirectorBeanList;
+    private List<DirectorBean> mDirectorBeanList;
     private int mChildAdapterPosition;
     private List<FilmBean> mFilmBeanList;
-    private CommonAdapter<DirectListBean.DataBean.DirectorBean> mAdapter;
+    private CommonAdapter<DirectorBean> mAdapter;
     private CommonAdapter<FilmBean> mFilmBeanCommonAdapter;
     private DirectorRadAdapter mBtnAdapter;
     private RabDirectorAdapter mRabDirectorAdapter;
@@ -86,7 +86,9 @@ public class CateFilmListActivty extends BaseActivity<CateListFilmContract.View,
     protected void initView() {
         mPosition = getIntent().getIntExtra("position", 0);
         mPresenter.attach(this);
+
         mPresenter.initRadioGroup(mPosition);
+
         String type = "";
         switch (mPosition) {
             case 0:
@@ -195,7 +197,7 @@ public class CateFilmListActivty extends BaseActivity<CateListFilmContract.View,
     }
 
     @Override
-    public void initViewRadioGroup(List<DirectListBean.DataBean.DirectorBean> list) {
+    public void initViewRadioGroup(List<DirectorBean> list) {
         mDirectorBeanList = list;
         mHandler.sendEmptyMessage(0);
     }
@@ -206,12 +208,21 @@ public class CateFilmListActivty extends BaseActivity<CateListFilmContract.View,
         mHandler.sendEmptyMessage(CFLA_INITLIST);
     }
 
+    @Override
+    public void refreshUIs() {
+
+    }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == event.KEYCODE_DPAD_LEFT) {
             Toast.makeText(this, "lkdslfj", Toast.LENGTH_SHORT).show();
             int i = 0;
+
+
+            mCurrentRadioBtn.requestFocus();
+
 
         }
 //判断确定键按下，同时是RadioButton中获得焦点。
@@ -224,7 +235,6 @@ public class CateFilmListActivty extends BaseActivity<CateListFilmContract.View,
         return super.onKeyDown(keyCode, event);
 
     }
-
 
     @OnClick(R.id.tab_indicator_search)
     public void onClick() {

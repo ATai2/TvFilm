@@ -1,7 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
 
-</LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_sort"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:descendantFocusability="afterDescendants"
+        android:paddingBottom="60dp"
+        android:paddingLeft="120dp"
+        android:paddingRight="120dp"
+        android:paddingTop="60dp"
+        android:scrollbars="none"></android.support.v7.widget.RecyclerView>
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_sort_new"-->
+    <!--style="@style/SortFragStyle"-->
+    <!--android:nextFocusDown="@+id/iv_sort_hot"-->
+    <!--android:nextFocusRight="@+id/iv_sort_big"-->
+    <!--android:background="@mipmap/sort_new"/>-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_sort_big"-->
+    <!--style="@style/SortFragStyle"-->
+    <!--android:nextFocusDown="@+id/iv_sort_ad"-->
+    <!--android:nextFocusLeft="@+id/iv_sort_new"-->
+    <!--android:layout_toRightOf="@id/iv_sort_new"-->
+    <!--android:background="@mipmap/sort_big"/>-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_sort_hot"-->
+    <!--android:layout_below="@id/iv_sort_new"-->
+    <!--style="@style/SortFragStyle"-->
+    <!--android:nextFocusUp="@+id/iv_sort_new"-->
+    <!--android:nextFocusRight="@+id/iv_sort_ad"-->
+    <!--android:background="@mipmap/sort_hot"/>-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_sort_ad"-->
+    <!--style="@style/SortFragStyleSmall"-->
+    <!--android:nextFocusUp="@+id/iv_sort_big"-->
+    <!--android:nextFocusLeft="@+id/iv_sort_hot"-->
+    <!--android:nextFocusRight="@+id/iv_sort_douban"-->
+    <!--android:layout_below="@id/iv_sort_new"-->
+    <!--android:layout_toRightOf="@id/iv_sort_hot"-->
+    <!--android:background="@mipmap/sort_ad"/>-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_sort_douban"-->
+    <!--style="@style/SortFragStyleSmall"-->
+    <!--android:layout_below="@+id/iv_sort_new"-->
+    <!--android:layout_toRightOf="@+id/iv_sort_ad"-->
+    <!--android:background="@mipmap/sort_douban"/>-->
+</RelativeLayout>

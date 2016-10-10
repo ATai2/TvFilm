@@ -10,7 +10,8 @@ import com.tuojin.tvfilm.base.BaseFragment;
 import com.tuojin.tvfilm.base.BaseView;
 import com.tuojin.tvfilm.bean.CategoryInfo;
 import com.tuojin.tvfilm.contract.CategoryContract;
-import com.tuojin.tvfilm.modules.catelist.framecatelist.CateFilmListActivty;
+import com.tuojin.tvfilm.modules.catelist.DirectorListActivity;
+import com.tuojin.tvfilm.modules.catelist.TypeListActivity;
 import com.tuojin.tvfilm.presenter.CategoryPresenterImpl;
 
 import java.util.List;
@@ -23,8 +24,6 @@ public class CategoryFragment extends BaseFragment<CategoryContract.View, Catego
     @BindView(R.id.rv_category)
     RecyclerView mRvCategory;
     private CategoryAdapter mCategoryAdapter;
-
-
     public CategoryFragment() {
         // Required empty public constructor
     }
@@ -61,9 +60,41 @@ public class CategoryFragment extends BaseFragment<CategoryContract.View, Catego
         mCategoryAdapter.setListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int bean) {
-                Intent intent=new Intent(mActivity, CateFilmListActivty.class);
-                intent.putExtra("position",bean);
+                Intent intent = new Intent();
+                switch (bean) {
+                    case 0:
+                        intent.setClass(mActivity, TypeListActivity.class);
+                        break;
+                    case 1:
+//                        intent.setClass(mActivity, .class);
+                        break;
+
+                    case 4:
+                        intent.setClass(mActivity, DirectorListActivity.class);
+                        break;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                }
+
                 startActivity(intent);
+
+//                Intent intent=new Intent(mActivity, CateFilmListActivty.class);
+//                intent.putExtra("position",bean);
+//                startActivity(intent);
             }
         });
     }

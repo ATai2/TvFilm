@@ -4,7 +4,7 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 
 import com.open.androidtvwidget.leanback.mode.OpenPresenter;
-import com.tuojin.tvfilm.bean.DirectListBean;
+import com.tuojin.tvfilm.bean.DirectorBean;
 import com.tuojin.tvfilm.bean.FilmTypeBean;
 
 import java.util.List;
@@ -47,8 +47,8 @@ public class LeftMenuPresenter<T> extends OpenPresenter {
         T t=mList.get(position);
         String str="";
         //补充其他类型
-        if (t instanceof DirectListBean.DataBean.DirectorBean) {
-            str=((DirectListBean.DataBean.DirectorBean) t).getMovie_director();
+        if (t instanceof DirectorBean) {
+            str=((DirectorBean) t).getMovie_director();
         } else if (t instanceof FilmTypeBean) {
             str=((FilmTypeBean) t).getMovieType();
         }
