@@ -22,6 +22,8 @@ public interface View extends BaseView{
 
 public interface Presenter{
     void onClick(int type);
+
+    void onResume(int sortType);
 }
 
 public interface Model{

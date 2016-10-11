@@ -106,7 +106,7 @@ public abstract class BaseFragment<V,T extends BasePresenter<V>> extends Fragmen
 
     @Override
     public void showMessage(String msg) {
-        Toast.makeText(mActivity, msg, Toast.LENGTH_LONG).show();
         stopProgressDialog();
+        Toast.makeText(mActivity, msg, Toast.LENGTH_LONG).show();
     }
 }

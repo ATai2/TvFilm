@@ -15,8 +15,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
             android:textColor="@color/white"
+            android:focusable="false"
             android:textSize="25dp"
-            android:text="类别"
+            android:text="地区"
             />
 
         <android.support.v7.widget.RecyclerView

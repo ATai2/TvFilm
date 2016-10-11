@@ -32,7 +32,6 @@ import butterknife.BindView;
  */
 public class RecommFragment extends BaseFragment<HotRecommContract.View, HotRecommPresenterImpl> implements HotRecommContract.View {
 
-
     @BindView(R.id.rv_recomm)
     RecyclerView mRvRecomm;
     private RecommAdapter mAdapter;
@@ -52,9 +51,6 @@ public class RecommFragment extends BaseFragment<HotRecommContract.View, HotReco
         layout.setOrientation(StaggeredGridLayoutManager.HORIZONTAL);
         mRvRecomm.setHasFixedSize(true);
         mRvRecomm.setLayoutManager(layout);
-
-//        mRvRecomm.setAdapter(mAdapter);
-
         mRvRecomm.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
             @Override
             public void onGlobalFocusChanged(View view, View view1) {
@@ -91,7 +87,6 @@ public class RecommFragment extends BaseFragment<HotRecommContract.View, HotReco
     public void changerView() {
         mAdapter = new RecommAdapter(mActivity, mList);
         mRvRecomm.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
         mAdapter.setListener(new RecommAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(FilmBean bean) {
@@ -105,10 +100,7 @@ public class RecommFragment extends BaseFragment<HotRecommContract.View, HotReco
 
     @Override
     public void setRecycleList(List<FilmBean> mDatas) {
-//        new Handler();
         mList = mDatas;
         mHandler.sendEmptyMessage(0);
-
-//        mAdapter.notifyDataSetChanged();
     }
 }

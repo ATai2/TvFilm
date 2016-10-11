@@ -24,7 +24,6 @@ public class TvFilmNetWorkWS {
                     public void onCompleted(Exception ex, WebSocket webSocket) {
                         if (ex != null) {
                             ex.printStackTrace();
-//                            LogUtils.d();
                             return;
                         }
                         webSocket.send(cmd);
@@ -40,7 +39,6 @@ public class TvFilmNetWorkWS {
                                 }
                             }
                         });
-
                     }
                 });
     }

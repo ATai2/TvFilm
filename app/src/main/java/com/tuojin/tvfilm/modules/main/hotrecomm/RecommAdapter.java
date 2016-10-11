@@ -51,12 +51,6 @@ public class RecommAdapter extends RecyclerView.Adapter<RecommAdapter.RecommView
     public RecommViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_recomm, parent, false);
         RecommViewHolder holder = new RecommViewHolder(view);
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mListener.onItemClick();
-//            }
-//        });
         return holder;
     }
 
@@ -65,17 +59,8 @@ public class RecommAdapter extends RecyclerView.Adapter<RecommAdapter.RecommView
         final FilmBean filmBean = mList.get(position);
         String poster = "/MID"+filmBean.getPoster();
         ImageLoaderUtils.showRecommIcom(mContext, poster, holder.mIvRecomm);
-
         String movie_name = filmBean.getMovie_name();
         holder.mTvRecomm.setText(movie_name);
-//        holder.mIvRecomm.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                Intent intent = new Intent(mContext, FilmDetailActivity.class);
-////                intent.putExtra("film", filmBean);
-////                mContext.startActivity(intent);
-//            }
-//        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

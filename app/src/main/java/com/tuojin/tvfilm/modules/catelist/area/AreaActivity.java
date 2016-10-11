@@ -1,10 +1,11 @@
-package com.tuojin.tvfilm.modules.catelist.AreaActivity;
+package com.tuojin.tvfilm.modules.catelist.area;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -22,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 文 件 名: AreaActivity
@@ -39,13 +39,14 @@ public class AreaActivity extends BaseActivity<AreaContract.View, AreaPresenterI
     TextView mIndexType;
     @BindView(R.id.main_fragment)
     RecyclerView mMainFragment;
-    @BindView(R.id.tab_indicator_search)
-    RadioButton mTabIndicatorSearch;
+    @BindView(R.id.iv_back)
+    ImageButton mTabIndicatorBack;
     @BindView(R.id.rv_menu)
     RecyclerView mRvMenu;
-    private List<String> mMenuList;
-    private CommonAdapter<String> mMenuAdapter;
-    private List<AreaBean> mList=new ArrayList<>();
+    List<String> mMenuList;
+    CommonAdapter<String> mMenuAdapter;
+    List<AreaBean> mList = new ArrayList<>();
+
 
     @Override
     protected AreaPresenterImpl initPresenter() {
@@ -65,28 +66,29 @@ public class AreaActivity extends BaseActivity<AreaContract.View, AreaPresenterI
         LinearLayoutManager layout = new LinearLayoutManager(this);
         layout.setOrientation(LinearLayoutManager.VERTICAL);
         mRvMenu.setLayoutManager(layout);
-
         FocusGridLayoutManager focusGridLayoutManager = new FocusGridLayoutManager(mActivity, 5);
         focusGridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mMainFragment.setLayoutManager(focusGridLayoutManager);
 
         mMenuList = new ArrayList<>();
-        for (int i = 'A'; i <='Z' ; i++) {
-           mMenuList.add(String.valueOf((char)i));
+        for (int i = 'A'; i <= 'Z'; i++) {
+            mMenuList.add(String.valueOf((char) i));
         }
+
 
         mMenuAdapter = new CommonAdapter<String>(this, R.layout.item_radbtn, mMenuList, 0) {
             @Override
             public void convert(ViewHolder holder, String s) {
-                holder.setRadioButtonText(R.id.radbtn_item,s);
+                holder.setRadioButtonText(R.id.radbtn_item, s);
             }
         };
+
         mRvMenu.setAdapter(mMenuAdapter);
 
-        CommonAdapter<AreaBean> mAdapter=new CommonAdapter<AreaBean>(this,R.layout.item_other,mList,0) {
+        CommonAdapter<AreaBean> mAdapter = new CommonAdapter<AreaBean>(this, R.layout.item_other, mList, 0) {
             @Override
             public void convert(ViewHolder holder, AreaBean areaBean) {
-                holder.setText(R.id.movie_title_other,areaBean.getMovie_country() );
+                holder.setText(R.id.movie_title_other, areaBean.getMovie_country());
                 holder.setImageResourceNoMID(R.id.movie_image_other, areaBean.getImg());
                 holder.setScaleAnimation(R.id.movie_title_other);
             }
@@ -100,6 +102,7 @@ public class AreaActivity extends BaseActivity<AreaContract.View, AreaPresenterI
         });
         mMainFragment.setAdapter(mAdapter);
 
+        mTabIndicatorBack.requestFocus();
     }
 
     @Override
@@ -117,10 +120,32 @@ public class AreaActivity extends BaseActivity<AreaContract.View, AreaPresenterI
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    private class LeftMenuAdapter extends RecyclerView.Adapter<LeftMenuAdapter.MyViewHolder> {
+
+        @Override
+        public LeftMenuAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(AreaActivity.this).inflate(R.layout.item_radbtn, parent, false);
+            return new MyViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(LeftMenuAdapter.MyViewHolder holder, int position) {
+            holder.mRadbtnItem.setText(mMenuList.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return mMenuList.size();
+        }
+
+        class MyViewHolder extends RecyclerView.ViewHolder {
+            RadioButton mRadbtnItem;
+
+            MyViewHolder(View view) {
+                super(view);
+               mRadbtnItem= (RadioButton) view.findViewById(R.id.radbtn_item);
+            }
+        }
     }
 }
+

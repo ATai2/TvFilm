@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -23,11 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.tuojin.tvfilm.R.id.main_fragment;
 
-public class SortActivity extends BaseActivity<SortListContract.View, SortListPresenterImpl> implements SortListContract.View, View.OnFocusChangeListener {
+public class SortActivity extends BaseActivity<SortListContract.View, SortListPresenterImpl> implements SortListContract.View, View.OnFocusChangeListener{
 
 
     OtherFragment mFilmNew, mFilmHot, mFilmBig, mFilmAd, mFilmDouban;
@@ -47,6 +49,8 @@ public class SortActivity extends BaseActivity<SortListContract.View, SortListPr
     RadioButton mTabIndicatorDouban;
     @BindView(R.id.tab_container)
     LinearLayout mTabContainer;
+    @BindView(R.id.iv_back)
+    ImageButton mIvBack;
     View view;
 
     public static final String FRAGMENT_TAG_C = "ft_tag_c";
@@ -56,13 +60,17 @@ public class SortActivity extends BaseActivity<SortListContract.View, SortListPr
     public static final String FRAGMENT_TAG_G = "ft_tag_g";
     //    private FragmentManager ft;
     public FragmentManager fragmentManager;
-    List<OtherFragment> mFragments = new ArrayList<>();
+    private List<OtherFragment> mFragments = new ArrayList<>();
     public static boolean isRefresh;   //判断RadioButton获取焦点时是否刷新
     private RadioButton mCurrentRadioButton;
     public static boolean rightFirst = false;
+
     @Override
     protected SortListPresenterImpl initPresenter() {
         return null;
+    }
+    public  SortActivity getInstance(){
+        return new SortActivity();
     }
 
     @Override
@@ -96,9 +104,12 @@ public class SortActivity extends BaseActivity<SortListContract.View, SortListPr
         mTabIndicatorBig.setOnFocusChangeListener(this);
         mTabIndicatorHot.setOnFocusChangeListener(this);
         mTabIndicatorNew.setOnFocusChangeListener(this);
-//        initFragments();
-
-
+        mIvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SortActivity.this.finish();
+            }
+        });
     }
 
     private void initFragments() {
@@ -176,24 +187,18 @@ public class SortActivity extends BaseActivity<SortListContract.View, SortListPr
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == event.KEYCODE_DPAD_UP) {
-            isRefresh=true;
+            isRefresh = true;
             getOnFocus();
         }
         if (keyCode == event.KEYCODE_DPAD_DOWN) {
-            isRefresh=true;
+            isRefresh = true;
             getOnFocus();
         }
-        //设置获得焦点的rb
-//        if (keyCode == event.KEYCODE_DPAD_LEFT) {
-//            if (mCurrentRadioButton!=null){
-//                mCurrentRadioButton.requestFocus();
-//            }
-//        }
 
         if (mMainFragment.hasFocus() && keyCode == event.KEYCODE_DPAD_LEFT) {
             //判断哪个获得焦点
-            isRefresh=false;
-
+            isRefresh = false;
+            setHoverRight(ONE);
         }
         //通过焦点的获得
         if (mTabIndicatorNew.hasFocus() && keyCode == event.KEYCODE_DPAD_RIGHT) {
@@ -271,6 +276,7 @@ public class SortActivity extends BaseActivity<SortListContract.View, SortListPr
 
     /**
      * 焦点设置
+     *
      * @param type
      */
     private void setHoverRight(int type) {
@@ -306,6 +312,7 @@ public class SortActivity extends BaseActivity<SortListContract.View, SortListPr
         Bundle bundle = new Bundle();
         switch (i) {
             case 0:
+
                 if (mFilmNew == null) {
                     mFilmNew = new OtherFragment();
                     mFragments.add(mFilmNew);
@@ -396,5 +403,12 @@ public class SortActivity extends BaseActivity<SortListContract.View, SortListPr
         if (hasFocus) {
             mCurrentRadioButton = (RadioButton) v;
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

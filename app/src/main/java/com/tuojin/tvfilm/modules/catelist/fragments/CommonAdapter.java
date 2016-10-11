@@ -70,7 +70,7 @@ public abstract class CommonAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
 //            holder.itemView.requestFocus();
 //        }
         if (position==0){
-            holder.itemView.requestFocus();
+//            holder.itemView.requestFocus();
         }
 
     }

@@ -19,16 +19,19 @@
             android:text="动作"
             />
 
-        <android.support.v7.widget.RecyclerView
+        <FrameLayout
             android:id="@+id/main_fragment"
             android:layout_width="match_parent"
             android:layout_height="530dp"
             android:layout_marginLeft="1dp"
             android:layout_marginRight="35dp"
-            android:layout_marginTop="114dp"
+            android:layout_marginTop="60dp"
             android:layout_toRightOf="@+id/include1"
             android:descendantFocusability="afterDescendants"
-            />
+            >
+
+        </FrameLayout>
+
     </LinearLayout>
 
     <include

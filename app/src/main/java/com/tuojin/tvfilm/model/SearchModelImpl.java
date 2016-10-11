@@ -10,9 +10,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
-import static android.R.attr.data;
-import static android.R.attr.searchMode;
-
 /**
 * Created by MVPHelper on 2016/09/21
 */
@@ -27,6 +24,7 @@ public class SearchModelImpl implements SearchContract.Model{
 
     @Override
     public void search(String key) {
+        mPresenter.mView.showLoading();
         try {
             mNetWorkWS.sendMsg("PAD1465889962927|getFilmList|terminalCode=SMET15128361&searchMode=&keyword=" +
                     URLEncoder.encode(key,"utf-8") +
@@ -34,8 +32,12 @@ public class SearchModelImpl implements SearchContract.Model{
                 @Override
                 public void excute(String data) {
                     List<FilmBean> beanList = new Gson().fromJson(data, RecommBean.class).getData().getData();
-                    if (beanList != null) {
+                    if (beanList != null&&beanList.size()!=0) {
                         mPresenter.refreshUI(beanList);
+                        mPresenter.mView.hideLoading();
+                    }else if (beanList.size()==0){
+                        mPresenter.mView.hideLoading();
+                        mPresenter.mView.showMessage("查无此片");
                     }
 
                 }

@@ -1,4 +1,4 @@
-package com.tuojin.tvfilm.modules.catelist;
+package com.tuojin.tvfilm.modules.catelist.type;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -7,16 +7,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseFragment;
 import com.tuojin.tvfilm.bean.FilmBean;
-import com.tuojin.tvfilm.contract.SortListContract;
+import com.tuojin.tvfilm.contract.FilmTypeContract;
 import com.tuojin.tvfilm.keybord.FocusGridLayoutManager;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
 import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
 import com.tuojin.tvfilm.modules.main.FilmDetailActivity;
-import com.tuojin.tvfilm.presenter.SortListPresenterImpl;
+import com.tuojin.tvfilm.presenter.FilmTypePresenterImpl;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ import butterknife.BindView;
  * 修改时间：
  * 修改备注：
  */
-public class OtherFragment extends BaseFragment<SortListContract.View, SortListPresenterImpl> implements SortListContract.View {
+public class OtherFragmentType extends BaseFragment<FilmTypeContract.View, FilmTypePresenterImpl> implements FilmTypeContract.View {
     @BindView(R.id.recyclerview)
     public RecyclerView mRecyclerview;
     private FocusGridLayoutManager mGridLayoutManager;
@@ -49,23 +50,24 @@ public class OtherFragment extends BaseFragment<SortListContract.View, SortListP
 
     @Override
     protected void initView() {
-        mSortType = getArguments().getInt("sortType", 0);
+        mSortType = getArguments().getInt("filmType", 0);
         mGridLayoutManager = new FocusGridLayoutManager(mActivity, 5);
         mGridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerview.setHasFixedSize(true);
         mRecyclerview.setLayoutManager(mGridLayoutManager);
+//            向Recycleview中更新数据
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.onResume(mSortType, 0);
-
+        mPresenter.onClick(mSortType);
     }
 
     @Override
-    protected SortListPresenterImpl initPresenter() {
-        return new SortListPresenterImpl();
+    protected FilmTypePresenterImpl initPresenter() {
+        return new FilmTypePresenterImpl();
     }
 
     Handler mHandler = new Handler() {
@@ -97,37 +99,10 @@ public class OtherFragment extends BaseFragment<SortListContract.View, SortListP
 
     };
 
-    @Override
-    public void setRecyclerItem(List<FilmBean> mList) {
-        mFilmBeen = mList;
-//        mHandler.sendEmptyMessage(0);
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mOtherAdapter = new CommonAdapter<FilmBean>(mActivity, R.layout.item_other, mFilmBeen, 1) {
-                    @Override
-                    public void convert(ViewHolder holder, FilmBean bean) {
-                        holder.setText(R.id.movie_title_other, bean.getMovie_name());
-                        holder.setImageResource(R.id.movie_image_other, bean.getPoster());
-                        holder.setScaleAnimation(R.id.movie_title_other);
-                    }
-                };
-                mOtherAdapter.setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(ViewGroup parent, View view, Object o, int position) {
-                        Intent intent = new Intent(mActivity, FilmDetailActivity.class);
-                        mValue = mFilmBeen.get(position);
-                        intent.putExtra("film", mValue);
-                        startActivity(intent);
-                    }
-                });
-                mRecyclerview.setAdapter(mOtherAdapter);
-            }
-        });
-    }
 
     @Override
-    public void refreshUI() {
-
+    public void initFilmFragment(List<FilmBean> data) {
+        mFilmBeen=data;
+        mHandler.sendEmptyMessage(0);
     }
 }

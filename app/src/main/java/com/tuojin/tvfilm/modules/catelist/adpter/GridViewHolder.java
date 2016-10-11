@@ -16,7 +16,7 @@ public class GridViewHolder extends OpenPresenter.ViewHolder {
 
     public GridViewHolder(View itemView) {
         super(itemView);
-		iv = (ImageView)itemView.findViewById(R.id.grid_view_item_test);
+        iv = (ImageView) itemView.findViewById(R.id.grid_view_item_test);
         tv = (TextView) itemView.findViewById(R.id.textView);
     }
 

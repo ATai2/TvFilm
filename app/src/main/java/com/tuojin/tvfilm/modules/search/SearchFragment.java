@@ -241,4 +241,11 @@ public class SearchFragment extends BaseFragment<SearchContract.View, SearchPres
         mList = beanList;
         mHandler.sendEmptyMessage(0);
     }
+
+    @Override
+    public void showMessage(String msg) {
+        super.showMessage(msg);
+
+        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
+    }
 }

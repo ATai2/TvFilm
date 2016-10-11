@@ -113,6 +113,7 @@
             android:orientation="vertical">
 
             <com.tuojin.tvfilm.widget.FixGridLayout
+                android:visibility="gone"
                 android:id="@+id/ll_wrap"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -131,6 +132,7 @@
             android:textSize="32sp"/>
 
         <android.support.v7.widget.RecyclerView
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"></android.support.v7.widget.RecyclerView>
