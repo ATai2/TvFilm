@@ -114,11 +114,21 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+
+
     public ViewHolder setImageBitmap(int viewId, Bitmap bitmap) {
         ImageView view = getView(viewId);
         view.setImageBitmap(bitmap);
         return this;
     }
+//    interface FocusChangeListener{
+//        void focusChange();
+//    }
+//    public ViewHolder setFocusChangeListener() {
+//        ImageView view = getView(viewId);
+//        view.setImageBitmap(bitmap);
+//        return this;
+//    }
 
     public ViewHolder setImageDrawable(int viewId, Drawable drawable) {
         ImageView view = getView(viewId);

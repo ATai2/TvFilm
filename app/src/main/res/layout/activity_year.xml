@@ -3,8 +3,5 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <RadioButton
-        android:id="@+id/radbtn_item"
-        style="@style/Widget.TabIndicator"
-        android:text="首页" />
+
 </LinearLayout>

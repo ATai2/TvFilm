@@ -1,7 +1,6 @@
 package com.tuojin.tvfilm.modules.main.filmdetail;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,7 +25,6 @@ import com.tuojin.tvfilm.contract.FilmDetailContract;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
 import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
-import com.tuojin.tvfilm.modules.main.FilmDetailActivity;
 import com.tuojin.tvfilm.presenter.FilmDetailPresenterImpl;
 import com.tuojin.tvfilm.utils.ImageLoaderUtils;
 
@@ -87,14 +85,8 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         mBtnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (isPlaying) {
-//                    Toast.makeText(mActivity, "影片暂停", Toast.LENGTH_SHORT).show();
-////            mPresenter.play();
-//                } else {
                 Toast.makeText(mActivity, "播放影片", Toast.LENGTH_SHORT).show();
                 mPresenter.play(mBean);
-//                }
-//                isPlaying=!isPlaying;
             }
         });
     }
@@ -131,10 +123,23 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
                 adapter.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(ViewGroup parent, View view, Object o, int position) {
-                        Intent intent = new Intent(mActivity, FilmDetailActivity.class);
                         FilmBean bean = mList.get(position);
-                        intent.putExtra("film", bean);
-                        mActivity.startActivity(intent);
+                        mPresenter.onResume(bean.getMid(), bean.getUuid());
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                try {
+                                    sleep(200L);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                mPresenter.initList();
+                            }
+                        }.start();
+//                        Intent intent = new Intent(mActivity, FilmDetailActivity.class);
+//                        FilmBean bean = mList.get(position);
+//                        intent.putExtra("film", bean);
+//                        mActivity.startActivity(intent);
                     }
                 });
                 mRvFilmDetail.setAdapter(adapter);

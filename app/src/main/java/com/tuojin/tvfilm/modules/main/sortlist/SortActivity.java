@@ -312,7 +312,6 @@ public class SortActivity extends BaseActivity<SortListContract.View, SortListPr
         Bundle bundle = new Bundle();
         switch (i) {
             case 0:
-
                 if (mFilmNew == null) {
                     mFilmNew = new OtherFragment();
                     mFragments.add(mFilmNew);
@@ -323,7 +322,6 @@ public class SortActivity extends BaseActivity<SortListContract.View, SortListPr
                     ft.show(mFilmNew);
                 }
                 break;
-
             case 1:
                 if (mFilmHot == null) {
                     mFilmHot = new OtherFragment();

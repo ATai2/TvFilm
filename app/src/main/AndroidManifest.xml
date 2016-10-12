@@ -35,6 +35,8 @@
         <activity android:name=".modules.catelist.DirectorListActivity"/>
         <!--地区-->
         <activity android:name=".modules.catelist.area.AreaActivity"/>
+        <!--年份-->
+        <activity android:name=".modules.catelist.time.YearActivity"/>
         <!--排行榜-->
         <activity android:name=".modules.main.sortlist.SortActivity">
         </activity>

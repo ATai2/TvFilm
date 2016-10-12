@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@+id/include1"
+        android:layout_toRightOf="@+id/tab_container"
         android:orientation="vertical">
         <TextView
             android:id="@+id/index_type"
@@ -17,25 +17,58 @@
             android:textColor="@color/white"
             android:focusable="false"
             android:textSize="25dp"
-            android:text="地区"
+            android:text="年份："
             />
 
-        <android.support.v7.widget.RecyclerView
+        <FrameLayout
             android:id="@+id/main_fragment"
             android:layout_width="match_parent"
             android:layout_height="530dp"
             android:layout_marginLeft="1dp"
             android:layout_marginRight="35dp"
-            android:layout_marginTop="114dp"
+            android:nextFocusUp="@+id/iv_back"
             android:layout_toRightOf="@+id/include1"
             android:descendantFocusability="afterDescendants"
             />
     </LinearLayout>
 
-    <include
-        android:id="@+id/include1"
-        layout="@layout/layout_main_tab_area"
-        />
+
+    <LinearLayout
+        android:id="@+id/tab_container"
+        android:layout_width="182dp"
+        android:focusable="false"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_left"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/iv_back"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:nextFocusDown="@+id/rv_menu"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="64dp"
+            android:background="@drawable/iv_back_selector"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="1dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/wheat"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_menu"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"></android.support.v7.widget.RecyclerView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/wheat"/>
+    </LinearLayout>
 
 </RelativeLayout>
 
