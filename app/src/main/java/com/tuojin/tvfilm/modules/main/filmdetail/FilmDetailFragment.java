@@ -32,6 +32,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,6 +65,10 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     TextView mTvDbscoreDetail;
     @BindView(R.id.tv_dbscore_scor_detail)
     TextView mTvDbscoreScorDetail;
+    @BindView(R.id.iv_back)
+    ImageButton mIvBack;
+    @BindView(R.id.title)
+    TextView mTitle;
     private FilmDetailBean.DataBean.FilmDetailDataBean mBean;
     private Boolean isPlaying;
 
@@ -77,6 +82,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         Bundle arguments = getArguments();
         mFilm = arguments.getParcelable("film");
 
+        mTitle.setText("电影详情");
         LinearLayoutManager layout = new LinearLayoutManager(mActivity);
         layout.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRvFilmDetail.setLayoutManager(layout);
@@ -136,10 +142,6 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
                                 mPresenter.initList();
                             }
                         }.start();
-//                        Intent intent = new Intent(mActivity, FilmDetailActivity.class);
-//                        FilmBean bean = mList.get(position);
-//                        intent.putExtra("film", bean);
-//                        mActivity.startActivity(intent);
                     }
                 });
                 mRvFilmDetail.setAdapter(adapter);
@@ -190,6 +192,10 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     }
 
     boolean begin;
+
+    @OnClick(R.id.iv_back)
+    public void onClick() {
+    }
 
     //这里需要考虑影片播放的情况
 //    @OnClick({R.id.btn_play})

@@ -10,9 +10,11 @@ import com.tuojin.tvfilm.base.BaseFragment;
 import com.tuojin.tvfilm.base.BaseView;
 import com.tuojin.tvfilm.bean.CategoryInfo;
 import com.tuojin.tvfilm.contract.CategoryContract;
-import com.tuojin.tvfilm.modules.catelist.area.AreaActivity;
-import com.tuojin.tvfilm.modules.catelist.DirectorListActivity;
 import com.tuojin.tvfilm.modules.catelist.TypeListActivity;
+import com.tuojin.tvfilm.modules.catelist.actor.ActorActivity;
+import com.tuojin.tvfilm.modules.catelist.area.AreaActivity;
+import com.tuojin.tvfilm.modules.catelist.director.DirectorActivity;
+import com.tuojin.tvfilm.modules.catelist.live.LiveActivity;
 import com.tuojin.tvfilm.modules.catelist.time.YearActivity;
 import com.tuojin.tvfilm.presenter.CategoryPresenterImpl;
 
@@ -71,10 +73,16 @@ public class CategoryFragment extends BaseFragment<CategoryContract.View, Catego
                         intent.setClass(mActivity, AreaActivity.class);
                         break;
                     case 4:
-                        intent.setClass(mActivity, DirectorListActivity.class);
+                        intent.setClass(mActivity, DirectorActivity.class);
                         break;
                     case 1:
                         intent.setClass(mActivity, YearActivity.class);
+                        break;
+                    case 2:
+                        intent.setClass(mActivity, LiveActivity.class);
+                        break;
+                    case 5:
+                        intent.setClass(mActivity, ActorActivity.class);
                 }
 
                 startActivity(intent);

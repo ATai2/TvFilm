@@ -18,27 +18,32 @@
             </intent-filter>
         </activity>
         <!-- 电影详情 -->
-        <activity android:name=".modules.main.FilmDetailActivity"
+        <activity
+            android:name=".modules.main.FilmDetailActivity"
             android:launchMode="singleTop"/>
         <!-- 搜索界面 -->
-        <!--<activity android:name=".modules.search.SearchActivity"/>-->
+        <!-- <activity android:name=".modules.search.SearchActivity"/> -->
         <!-- 主页面 -->
-        <!--<activity android:name=".modules.main.MainActivity"/>-->
+        <!-- <activity android:name=".modules.main.MainActivity"/> -->
         <!-- 分类列表 -->
         <activity android:name=".modules.catelist.CateListActivity"/>
-
         <activity android:name=".modules.catelist.framecatelist.CateFilmListActivty"/>
         <activity android:name=".modules.catelist.framecatelist.ListViewActivity">
         </activity>
         <activity android:name=".modules.catelist.TypeListActivity"/>
-        <!--导演列表-->
-        <activity android:name=".modules.catelist.DirectorListActivity"/>
-        <!--地区-->
+        <!-- 导演列表 -->
+        <activity android:name=".modules.catelist.director.DirectorActivity"/>
+        <!-- 地区 -->
         <activity android:name=".modules.catelist.area.AreaActivity"/>
-        <!--年份-->
+        <!-- 演员 -->
+        <activity android:name=".modules.catelist.actor.ActorActivity"/>
+        <activity android:name=".modules.catelist.live.LiveActivity"/>
+        <!-- 年份 -->
         <activity android:name=".modules.catelist.time.YearActivity"/>
-        <!--排行榜-->
+        <!-- 排行榜 -->
         <activity android:name=".modules.main.sortlist.SortActivity">
+        </activity>
+        <activity android:name=".modules.catelist.FilmListActivity">
         </activity>
     </application>
 

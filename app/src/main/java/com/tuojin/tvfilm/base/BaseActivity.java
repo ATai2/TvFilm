@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
  * 修改备注：
  */
 public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCompatActivity implements BaseView {
-
+    String type;
     protected T mPresenter;
     protected BaseActivity mActivity;
     public Dialog dialog;

@@ -1,17 +1,14 @@
 package com.tuojin.tvfilm.modules.catelist.time;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -19,10 +16,14 @@ import android.widget.TextView;
 
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseActivity;
-import com.tuojin.tvfilm.bean.AreaBean;
+import com.tuojin.tvfilm.bean.FilmBean;
 import com.tuojin.tvfilm.bean.YearBean;
 import com.tuojin.tvfilm.contract.YearContract;
+import com.tuojin.tvfilm.keybord.FocusGridLayoutManager;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
+import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
+import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
+import com.tuojin.tvfilm.modules.main.FilmDetailActivity;
 import com.tuojin.tvfilm.presenter.YearPresenterImpl;
 
 import java.util.List;
@@ -30,6 +31,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.R.attr.id;
 
 /**
  * 文 件 名: YearActivity
@@ -45,18 +48,21 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
     @BindView(R.id.index_type)
     TextView mIndexType;
     @BindView(R.id.main_fragment)
-    FrameLayout mMainFragment;
+    RecyclerView mMainFragment;
     @BindView(R.id.iv_back)
     ImageButton mIvBack;
     @BindView(R.id.rv_menu)
     RecyclerView mRvMenu;
     @BindView(R.id.tab_container)
     LinearLayout mTabContainer;
+    @BindView(R.id.title)
+    TextView mTitle;
     private List<YearBean> mMenuList;
     private CommonAdapter<YearBean> mMenuAdapter;
-    private CommonAdapter<AreaBean> mAdapter;
-    SparseArray<FilmListFragment> fragments = new SparseArray<>();
-    private FragmentManager mFragmentManager;
+    private CommonAdapter<FilmBean> mOtherAdapter;
+
+    TextView btn = null;
+    private LinearLayoutManager mLayout;
 
     @Override
     protected YearPresenterImpl initPresenter() {
@@ -71,10 +77,14 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
     @Override
     protected void initView() {
         mPresenter.attach(this);
-        mFragmentManager = getSupportFragmentManager();
-        LinearLayoutManager layout = new LinearLayoutManager(this);
-        layout.setOrientation(LinearLayoutManager.VERTICAL);
-        mRvMenu.setLayoutManager(layout);
+        mLayout = new LinearLayoutManager(this);
+        mLayout.setOrientation(LinearLayoutManager.VERTICAL);
+        mRvMenu.setLayoutManager(mLayout);
+
+        FocusGridLayoutManager focusGridLayoutManager = new FocusGridLayoutManager(YearActivity.this, 5);
+        focusGridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mMainFragment.setHasFixedSize(true);
+        mMainFragment.setLayoutManager(focusGridLayoutManager);
         leftMenu();
     }
 
@@ -84,7 +94,7 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
 
     @Override
     public int getLayoutID() {
-        return R.layout.activity_area;
+        return R.layout.activity_year;
     }
 
     @Override
@@ -109,29 +119,19 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
         this.finish();
     }
 
+    /**
+     * 网络访问，得到年份列表
+     *
+     * @param list
+     */
     @Override
     public void initMenu(List<YearBean> list) {
         mMenuList = list;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                mMenuAdapter = new CommonAdapter<YearBean>(YearActivity.this, R.layout.item_radbtn, mMenuList, 0) {
-//                    @Override
-//                    public void convert(ViewHolder holder, YearBean s) {
-//                        holder.setRadioButtonText(R.id.radbtn_item, s.getMovie_year());
-//
-//                    }
-//                };
-//                mMenuAdapter.setOnItemClickListener(new OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(ViewGroup parent, View view, Object o, int position) {
-//
-//                        int id = view.getId();
-//                        currentRadioId = id;
-//                        mPresenter.list(mMenuList.get(position).getId(), id);
-//                    }
-//                });
-                mRvMenu.setAdapter(new YearAdapter());
+                YearAdapter adapter = new YearAdapter();
+                mRvMenu.setAdapter(adapter);
             }
         });
     }
@@ -140,52 +140,49 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
      * 点击某项，显示列表。
      *
      * @param list
-     * @param id
      */
     @Override
-    public void initList(String list, int id) {
-        Bundle bundle = new Bundle();
-//        向fragment中传递参数，同时设置焦点向左的方向
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        hideFragment(transaction);
-        if (fragments.get(id) == null) {
-            FilmListFragment frag = new FilmListFragment();
-            frag.setArguments(bundle);
-//            bundle.
-            bundle.putString("json", list);
-            fragments.put(id, frag);
-            transaction.add(R.id.main_fragment, frag, id + "");
-        } else {
-            transaction.show(fragments.get(id));
-        }
-        transaction.commit();
+    public void initList(final List<FilmBean> list) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (btn != null) {
+                    mTitle.setText("年份：" + btn.getText() + "\t共有" + list.size() + "部");
+                    mOtherAdapter = new CommonAdapter<FilmBean>(mActivity, R.layout.item_other, list, 1) {
+                        @Override
+                        public void convert(ViewHolder holder, FilmBean bean) {
+                            holder.setText(R.id.movie_title_other, bean.getMovie_name());
+                            holder.setImageResource(R.id.movie_image_other, bean.getPoster());
+                            holder.setScaleAnimation(R.id.movie_title_other);
+                        }
+                    };
+                    mOtherAdapter.setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(ViewGroup parent, View view, Object o, int position) {
+                            Intent intent = new Intent(mActivity, FilmDetailActivity.class);
+                            FilmBean bean = list.get(position);
+                            intent.putExtra("film", bean);
+                            startActivity(intent);
+                        }
+                    });
+                    mMainFragment.setAdapter(mOtherAdapter);
+                }
+            }
+        });
     }
 
-    private void hideFragment(FragmentTransaction transaction) {
-        for (int i = 0; i < fragments.size(); i++) {
-            int i1 = fragments.keyAt(i);
-            transaction.hide(fragments.get(i1));
-//            transaction.commit();
-        }
-    }
-
-    int currentRadioId = 0;
-    RadioButton btn=null;
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (mMainFragment.hasFocus() && keyCode == event.KEYCODE_DPAD_LEFT) {
-            //判断哪个获得焦点
-            //setHoverRight(ONE, currentRadioId);
-            btn.requestFocus();
-        }
-        if (mIvBack.hasFocus() && keyCode == event.KEYCODE_DPAD_DOWN) {
-            LinearLayoutManager layoutManager = (LinearLayoutManager) mRvMenu.getLayoutManager();
-            int firstVisibleItemPosition = layoutManager.findFirstCompletelyVisibleItemPosition();
-            mRvMenu.getChildAt(firstVisibleItemPosition).requestFocus();
-//            mRvMenu.requestFocus();
-        }
 
+        View focusedChild = mMainFragment.getFocusedChild();
+        int childLayoutPosition = mMainFragment.getChildLayoutPosition(focusedChild);
+        if (mMainFragment.hasFocus() && keyCode == event.KEYCODE_DPAD_LEFT && (childLayoutPosition % 5 == 0 || childLayoutPosition % 5 == 5)) {
+            //判断哪个获得焦点
+            if (btn != null)
+                btn.requestFocus();
+        }
         return super.onKeyDown(keyCode, event);
     }
 
@@ -205,9 +202,8 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
      * 焦点设置
      *
      * @param type
-     * @param id
      */
-    private void setHoverRight(int type, int id) {
+    private void setHoverRight(int type) {
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         for (Fragment fragment : fragments) {
             if (fragment != null) {
@@ -232,8 +228,8 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
     class YearAdapter extends RecyclerView.Adapter<YearViewHolder> {
         @Override
         public YearViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view= LayoutInflater.from(YearActivity.this).inflate(R.layout.item_radbtn,parent,false);
-            YearViewHolder holder=new YearViewHolder(view);
+            View view = LayoutInflater.from(YearActivity.this).inflate(R.layout.item_radbtn, parent, false);
+            YearViewHolder holder = new YearViewHolder(view);
             return holder;
         }
 
@@ -241,13 +237,18 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
         public void onBindViewHolder(YearViewHolder holder, int position) {
             final YearBean yearBean = mMenuList.get(position);
             holder.mRadbtnItem.setText(yearBean.getMovie_year());
+            if (position == 0) {
+                holder.mRadbtnItem.requestFocus();
+                btn = holder.mRadbtnItem;
+                mPresenter.list(47);
+            }
             holder.mRadbtnItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int id = v.getId();
-                    currentRadioId = id;
-                    btn= (RadioButton) v;
-                    mPresenter.list(yearBean.getId(), id);
+                    btn = (TextView) v;
+                    mPresenter.list(yearBean.getId());
+                    int firstVisibleItemPosition = mLayout.findFirstVisibleItemPosition();
+                    int i = 0;
                 }
             });
         }
@@ -269,11 +270,10 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
 
     public class YearViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.radbtn_item)
-        RadioButton mRadbtnItem;
+        TextView mRadbtnItem;
 
         YearViewHolder(View view) {
             super(view);
-
             ButterKnife.bind(this, view);
         }
     }

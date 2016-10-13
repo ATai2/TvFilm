@@ -16,19 +16,25 @@ import java.util.List;
  * 修改备注：
  */
 public class DirectorListContract {
-public interface View extends BaseView{
-    void initDirectors(List<DirectorBean> list);
-}
+    public interface View extends BaseView{
+        void initList(List<DirectorBean> list);
 
-public interface Presenter{
-    void getDirectorList();
+        void initListByDirector(String data, String movie_director);
+    }
 
-    void initDirectors(List<DirectorBean> list);
-}
+    public interface Presenter{
+        void list(String a);
+        void initList(List<DirectorBean> list);
 
-public interface Model{
-    void getDirectorList();
-}
+        void listByDirector(int id, String movie_director);
 
+        void initListByDirector(String data, String movie_director);
+    }
+
+    public interface Model{
+        void list(String a);
+
+        void listByDirector(int id, String movie_director);
+    }
 
 }

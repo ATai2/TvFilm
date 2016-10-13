@@ -1,6 +1,7 @@
 package com.tuojin.tvfilm.contract;
 
 import com.tuojin.tvfilm.base.BaseView;
+import com.tuojin.tvfilm.bean.FilmBean;
 import com.tuojin.tvfilm.bean.YearBean;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class YearContract {
 public interface View extends BaseView{
     void initMenu(List<YearBean> list);
 
-    void initList(String list, int id);
+    void initList(List<FilmBean> list);
 }
 
 public interface Presenter{
@@ -27,15 +28,15 @@ public interface Presenter{
 
     void initMenu(List<YearBean> list);
 
-    void list(int i, int id);
+    void list(int i);
 
-    void initList(String list, int id);
+    void initList(List<FilmBean> list);
 }
 
 public interface Model{
     void menu();
 
-    void list(int i, int id);
+    void list(int i);
 }
 
 

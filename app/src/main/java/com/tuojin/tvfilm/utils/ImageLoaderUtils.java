@@ -264,7 +264,7 @@ public class ImageLoaderUtils implements Handler.Callback {
             if (((BaseActivity) mContext).isFinishing())
                 return;
         }
-        uri=uri.replace("\\\\","/");
+        uri=uri.replace("\\","/");
         String pic = InterfaceURL.BASEIP + uri;
         Glide.with(mContext).load(pic)
                 .asBitmap()
