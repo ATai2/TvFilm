@@ -186,22 +186,22 @@ public class SortActivity extends BaseActivity<SortListContract.View, SortListPr
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == event.KEYCODE_DPAD_UP) {
+        if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
             isRefresh = true;
             getOnFocus();
         }
-        if (keyCode == event.KEYCODE_DPAD_DOWN) {
+        if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
             isRefresh = true;
             getOnFocus();
         }
 
-        if (mMainFragment.hasFocus() && keyCode == event.KEYCODE_DPAD_LEFT) {
+        if (mMainFragment.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
             //判断哪个获得焦点
             isRefresh = false;
             setHoverRight(ONE);
         }
         //通过焦点的获得
-        if (mTabIndicatorNew.hasFocus() && keyCode == event.KEYCODE_DPAD_RIGHT) {
+        if (mTabIndicatorNew.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
 
         }
 

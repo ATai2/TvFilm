@@ -176,7 +176,7 @@ public class TypeListActivity extends BaseActivity<FilmTypeContract.View, FilmTy
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if (mMainFragment.hasFocus() && keyCode == event.KEYCODE_DPAD_LEFT) {
+        if (mMainFragment.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
             //判断哪个获得焦点
             isRefresh = false;
             setHoverRight(ONE);

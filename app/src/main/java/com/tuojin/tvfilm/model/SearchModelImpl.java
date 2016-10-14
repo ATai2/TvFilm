@@ -5,6 +5,7 @@ import com.tuojin.tvfilm.bean.RecommBean;
 import com.tuojin.tvfilm.contract.SearchContract;
 import com.tuojin.tvfilm.net.TvFilmNetWorkWS;
 import com.tuojin.tvfilm.presenter.SearchPresenterImpl;
+import com.tuojin.tvfilm.utils.Constant;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -26,9 +27,13 @@ public class SearchModelImpl implements SearchContract.Model{
     public void search(String key) {
         mPresenter.mView.showLoading();
         try {
-            mNetWorkWS.sendMsg("PAD1465889962927|getFilmList|terminalCode=SMET15128361&searchMode=&keyword=" +
-                    URLEncoder.encode(key,"utf-8") +
-                    "&movieTypeStr=&placeId=&yearId=&actorId=&directorId=&startIndex=0&endIndex=100", new TvFilmNetWorkWS.Success() {
+            String cmd = Constant.PADMAC +
+                    "|getFilmList|terminalCode=" +
+                    Constant.TERMINAL_CODE +
+                    "&searchMode=&keyword=" +
+                    URLEncoder.encode(key, "utf-8") +
+                    "&movieTypeStr=&placeId=&yearId=&actorId=&directorId=&startIndex=0&endIndex=100";
+            mNetWorkWS.sendMsg(cmd, new TvFilmNetWorkWS.Success() {
                 @Override
                 public void excute(String data) {
                     List<FilmBean> beanList = new Gson().fromJson(data, RecommBean.class).getData().getData();

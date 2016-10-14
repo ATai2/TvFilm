@@ -70,7 +70,6 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
 
     @Override
     protected void initData() {
-//        mIntArray = getResources().getIntArray(R.array.category_pic);
     }
 
     @Override
@@ -136,7 +135,7 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
 
             }
         });
-        mRbHotRecom.setBackground(getResources().getDrawable(R.drawable.btn_selector_recommend));
+        mVpContainer.setCurrentItem(0);
         mRbHotRecom.requestFocus();
     }
 
@@ -148,7 +147,7 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
     //tv的方向按键响应
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (mVpContainer.hasFocus() && keyCode == event.KEYCODE_DPAD_UP) {
+        if (mVpContainer.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_UP) {
             switch (type) {
                 case 0:
                     mVpContainer.findFocus().setNextFocusUpId(R.id.rab_hotrecomm);

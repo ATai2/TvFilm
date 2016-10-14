@@ -6,6 +6,7 @@ import com.tuojin.tvfilm.bean.RecommBean;
 import com.tuojin.tvfilm.contract.HotRecommContract;
 import com.tuojin.tvfilm.net.TvFilmNetWorkWS;
 import com.tuojin.tvfilm.presenter.HotRecommPresenterImpl;
+import com.tuojin.tvfilm.utils.Constant;
 
 import java.util.List;
 
@@ -25,7 +26,10 @@ public class HotRecommModelImpl implements HotRecommContract.Model {
     public void getRecommList(int page) {
         //网络请求
         TvFilmNetWorkWS netWorkWS = new TvFilmNetWorkWS();
-        netWorkWS.sendMsg("PAD1465889962927|getFilmListOrderByHotest|orderByFeild=hotest&orderByType=desc&terminalCode=SMET15128361&startIndex=0&endIndex=10"
+        netWorkWS.sendMsg(Constant.PADMAC +
+                        "|getFilmListOrderByHotest|orderByFeild=hotest&orderByType=desc&terminalCode=" +
+                Constant.TERMINAL_CODE +
+                "&startIndex=0&endIndex=10"
                 , new TvFilmNetWorkWS.Success() {
                     @Override
                     public void excute(String data) {

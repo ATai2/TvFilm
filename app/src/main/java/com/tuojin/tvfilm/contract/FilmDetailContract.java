@@ -35,6 +35,8 @@ public interface Presenter{
     void initList();
 
     void initListUI(List<FilmBean> mDatas);
+
+    void stop(FilmDetailBean.DataBean.FilmDetailDataBean bean);
 }
 
 public interface Model{

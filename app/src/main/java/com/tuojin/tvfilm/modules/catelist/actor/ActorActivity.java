@@ -115,7 +115,7 @@ public class ActorActivity extends BaseActivity<ActorContract.View, ActorPresent
 
         View focusedChild = mMainFragment.getFocusedChild();
         int childLayoutPosition = mMainFragment.getChildLayoutPosition(focusedChild);
-        if (mMainFragment.hasFocus() && keyCode == event.KEYCODE_DPAD_LEFT && (childLayoutPosition % 5 == 0 || childLayoutPosition % 5 == 5)) {
+        if (mMainFragment.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_LEFT && (childLayoutPosition % 5 == 0 || childLayoutPosition % 5 == 5)) {
             //判断哪个获得焦点
             if (btn != null)
                 btn.requestFocus();
@@ -135,7 +135,7 @@ public class ActorActivity extends BaseActivity<ActorContract.View, ActorPresent
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                CommonAdapter<ActorBean> mAdapter = new CommonAdapter<ActorBean>(ActorActivity.this, R.layout.item_other, mList, 0) {
+                CommonAdapter<ActorBean> mAdapter = new CommonAdapter<ActorBean>(ActorActivity.this, R.layout.item_other_fitsize, mList, 0) {
                     @Override
                     public void convert(ViewHolder holder, ActorBean areaBean) {
                         holder.setText(R.id.movie_title_other, areaBean.getMovie_actor());

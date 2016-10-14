@@ -76,6 +76,8 @@ public class DirectorActivity extends BaseActivity<DirectorListContract.View, Di
     @Override
     protected void initView() {
         mPresenter.attach(this);
+        mTvMenutitle.setText("导演选择");
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRvMenu.setLayoutManager(layoutManager);
@@ -115,7 +117,7 @@ public class DirectorActivity extends BaseActivity<DirectorListContract.View, Di
 
         View focusedChild = mMainFragment.getFocusedChild();
         int childLayoutPosition = mMainFragment.getChildLayoutPosition(focusedChild);
-        if (mMainFragment.hasFocus() && keyCode == event.KEYCODE_DPAD_LEFT && (childLayoutPosition % 5 == 0 || childLayoutPosition % 5 == 5)) {
+        if (mMainFragment.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_LEFT && (childLayoutPosition % 5 == 0 || childLayoutPosition % 5 == 5)) {
             //判断哪个获得焦点
             if (btn != null)
                 btn.requestFocus();
@@ -141,7 +143,7 @@ public class DirectorActivity extends BaseActivity<DirectorListContract.View, Di
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                CommonAdapter<DirectorBean> mAdapter = new CommonAdapter<DirectorBean>(DirectorActivity.this, R.layout.item_other, mList, 0) {
+                CommonAdapter<DirectorBean> mAdapter = new CommonAdapter<DirectorBean>(DirectorActivity.this, R.layout.item_other_fitsize, mList, 0) {
                     @Override
                     public void convert(ViewHolder holder, DirectorBean areaBean) {
                         holder.setText(R.id.movie_title_other, areaBean.getMovie_director());

@@ -216,7 +216,7 @@ public class CateFilmListActivty extends BaseActivity<CateListFilmContract.View,
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == event.KEYCODE_DPAD_LEFT) {
+        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
             Toast.makeText(this, "lkdslfj", Toast.LENGTH_SHORT).show();
             int i = 0;
 
@@ -226,7 +226,7 @@ public class CateFilmListActivty extends BaseActivity<CateListFilmContract.View,
 
         }
 //判断确定键按下，同时是RadioButton中获得焦点。
-        if (keyCode == event.KEYCODE_DPAD_CENTER) {
+        if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
             Toast.makeText(this, "center", Toast.LENGTH_SHORT).show();
 
             int i = 0;

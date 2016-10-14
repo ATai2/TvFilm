@@ -28,9 +28,6 @@ public class CategoryFragment extends BaseFragment<CategoryContract.View, Catego
     @BindView(R.id.rv_category)
     RecyclerView mRvCategory;
     private CategoryAdapter mCategoryAdapter;
-    public CategoryFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     protected int getLayoutId() {

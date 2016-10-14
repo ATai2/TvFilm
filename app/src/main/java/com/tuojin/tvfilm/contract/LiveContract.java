@@ -1,6 +1,9 @@
 package com.tuojin.tvfilm.contract;
 
 import com.tuojin.tvfilm.base.BaseView;
+import com.tuojin.tvfilm.bean.LiveBean;
+
+import java.util.List;
 
 /**
  * 文 件 名: LiveContract
@@ -14,12 +17,18 @@ import com.tuojin.tvfilm.base.BaseView;
  */
 public class LiveContract {
 public interface View extends BaseView{
+    void initMenu(List<LiveBean> mDatas);
 }
 
 public interface Presenter{
+    void menu();
+
+    void initMenu(List<LiveBean> mDatas);
 }
 
 public interface Model{
+    void menu();
+
 }
 
 

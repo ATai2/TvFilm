@@ -178,7 +178,7 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
 
         View focusedChild = mMainFragment.getFocusedChild();
         int childLayoutPosition = mMainFragment.getChildLayoutPosition(focusedChild);
-        if (mMainFragment.hasFocus() && keyCode == event.KEYCODE_DPAD_LEFT && (childLayoutPosition % 5 == 0 || childLayoutPosition % 5 == 5)) {
+        if (mMainFragment.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_LEFT && (childLayoutPosition % 5 == 0 || childLayoutPosition % 5 == 5)) {
             //判断哪个获得焦点
             if (btn != null)
                 btn.requestFocus();

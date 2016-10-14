@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.tuojin.tvfilm.R;
@@ -85,6 +86,7 @@ public class ImageLoaderUtils implements Handler.Callback {
         }
         Glide.with(mContext).load(InterfaceURL.BASEIP + uri)
                 .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.ic_launcher)
                 .centerCrop()
                 .error(R.drawable.ic_launcher)
@@ -161,21 +163,22 @@ public class ImageLoaderUtils implements Handler.Callback {
             }
         });
     }
-   //设置属性动画
-   public static void setAttributeAnimation(final Context mContext, View view){
-       view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-           @Override
-           public void onFocusChange(View view, boolean hasFocus) {
-               if (hasFocus) {
-                   view.bringToFront();
-                   startAttributedAnimation(view, 1.0f, 1.15f);
-               }
-               if (!hasFocus) {
-                   startAttributedAnimation(view, 1.15f, 1.0f);
-               }
-           }
-       });
-   }
+
+    //设置属性动画
+    public static void setAttributeAnimation(final Context mContext, View view) {
+        view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    view.bringToFront();
+                    startAttributedAnimation(view, 1.0f, 1.15f);
+                }
+                if (!hasFocus) {
+                    startAttributedAnimation(view, 1.15f, 1.0f);
+                }
+            }
+        });
+    }
 
     //添加电影详情界面图片倒影效果
     public static Bitmap createReflectedImage(Bitmap originalImage) {
@@ -219,13 +222,15 @@ public class ImageLoaderUtils implements Handler.Callback {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
+
     public static int getScreenWidth(Activity context) {
         DisplayMetrics metric = new DisplayMetrics();
         context.getWindowManager().getDefaultDisplay().getMetrics(metric);
         int width = metric.widthPixels;     // 屏幕宽度（像素）
-        px2dip(context,width);
-        return   px2dip(context,width);
+        px2dip(context, width);
+        return px2dip(context, width);
     }
+
     private static void startAttributedAnimation(View view, float v, float v2) {
         ObjectAnimator moveIn = ObjectAnimator.ofFloat(view, "scaleY", v, v2);
         ObjectAnimator rotate = ObjectAnimator.ofFloat(view, "scaleX", v, v2);
@@ -247,7 +252,30 @@ public class ImageLoaderUtils implements Handler.Callback {
                 return;
         }
         Glide.with(mContext).load(InterfaceURL.PIC + uri)
-                .asBitmap()
+                .asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
+
+                .placeholder(R.drawable.ic_launcher)
+                .centerCrop()
+                .error(R.drawable.ic_launcher)
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        iv.setImageBitmap(resource);
+                    }
+                });
+    }
+
+    /**
+     * 显示图片 - 小
+     * 60 * 60
+     */
+    public static void showPictureForJCVideo(Context mContext, String uri, final ImageView iv) {
+        if (mContext instanceof BaseActivity) {
+            if (((BaseActivity) mContext).isFinishing())
+                return;
+        }
+        Glide.with(mContext).load(uri)
+                .asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.ic_launcher)
                 .centerCrop()
                 .error(R.drawable.ic_launcher)
@@ -264,10 +292,11 @@ public class ImageLoaderUtils implements Handler.Callback {
             if (((BaseActivity) mContext).isFinishing())
                 return;
         }
-        uri=uri.replace("\\","/");
+        uri = uri.replace("\\", "/");
         String pic = InterfaceURL.BASEIP + uri;
         Glide.with(mContext).load(pic)
-                .asBitmap()
+                .asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
+
                 .placeholder(R.drawable.ic_launcher)
                 .centerCrop()
                 .error(R.drawable.ic_launcher)
@@ -320,7 +349,6 @@ public class ImageLoaderUtils implements Handler.Callback {
 //            }
 //        });
     }
-
 
 
     /**
@@ -472,32 +500,5 @@ public class ImageLoaderUtils implements Handler.Callback {
             }
         });
     }
-
-    //添加电影详情界面图片倒影效果
-//    public static Bitmap createReflectedImage(Bitmap originalImage) {
-//        int width = originalImage.getWidth();
-//        int height = originalImage.getHeight();
-//        Matrix matrix = new Matrix();
-//        // 实现图片翻转90度
-//        matrix.preScale(1, -1);
-//        // 创建倒影图片（是原始图片的一半大小）
-//        Bitmap reflectionImage = Bitmap.createBitmap(originalImage, 0, height / 2, width, height / 2, matrix, false);
-//        // 创建总图片（原图片 + 倒影图片）
-//        Bitmap finalReflection = Bitmap.createBitmap(width, (height + height / 2), Bitmap.Config.ARGB_8888);
-//        // 创建画布
-//        Canvas canvas = new Canvas(finalReflection);
-//        canvas.drawBitmap(originalImage, 0, 0, null);
-//        //把倒影图片画到画布上
-//        canvas.drawBitmap(reflectionImage, 0, height + 1, null);
-//        Paint shaderPaint = new Paint();
-//        //创建线性渐变LinearGradient对象
-//        LinearGradient shader = new LinearGradient(0, originalImage.getHeight(), 0, finalReflection.getHeight() + 1, 0x70ffffff,
-//                0x00ffffff, Shader.TileMode.MIRROR);
-//        shaderPaint.setShader(shader);
-//        shaderPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-//        //画布画出反转图片大小区域，然后把渐变效果加到其中，就出现了图片的倒影效果。
-//        canvas.drawRect(0, height + 1, width, finalReflection.getHeight(), shaderPaint);
-//        return finalReflection;
-//    }
 }
 

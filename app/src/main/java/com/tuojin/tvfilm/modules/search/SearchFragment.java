@@ -1,5 +1,6 @@
 package com.tuojin.tvfilm.modules.search;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,7 +28,9 @@ import com.tuojin.tvfilm.bean.SearchTag;
 import com.tuojin.tvfilm.contract.SearchContract;
 import com.tuojin.tvfilm.keybord.FocusGridLayoutManager;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
+import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
+import com.tuojin.tvfilm.modules.main.FilmDetailActivity;
 import com.tuojin.tvfilm.presenter.SearchPresenterImpl;
 import com.tuojin.tvfilm.widget.FixGridLayout;
 
@@ -99,15 +102,7 @@ public class SearchFragment extends BaseFragment<SearchContract.View, SearchPres
         mGridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerview.setHasFixedSize(true);
         mRecyclerview.setLayoutManager(mGridLayoutManager);
-        mAdapter = new CommonAdapter<FilmBean>(mActivity, R.layout.item_other, mList, 0) {
-            @Override
-            public void convert(ViewHolder holder, FilmBean bean) {
-                holder.setText(R.id.movie_title_other, bean.getMovie_name());
-                holder.setImageResource(R.id.movie_image_other, bean.getPoster());
-                holder.setScaleAnimation(R.id.movie_title_other);
-            }
-        };
-        mRecyclerview.setAdapter(mAdapter);
+
         mEditSearch.requestFocus();
 
 
@@ -230,7 +225,24 @@ public class SearchFragment extends BaseFragment<SearchContract.View, SearchPres
                     Toast.makeText(mActivity, "查无结果！", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
-                    mAdapter.notifyDataSetChanged();
+                    mAdapter = new CommonAdapter<FilmBean>(mActivity, R.layout.item_other, mList, 0) {
+                        @Override
+                        public void convert(ViewHolder holder, FilmBean bean) {
+                            holder.setText(R.id.movie_title_other, bean.getMovie_name());
+                            holder.setImageResource(R.id.movie_image_other, bean.getPoster());
+                            holder.setScaleAnimation(R.id.movie_title_other);
+                        }
+                    };
+                    mAdapter.setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(ViewGroup parent, View view, Object o, int position) {
+                            Intent intent = new Intent(mActivity, FilmDetailActivity.class);
+                            FilmBean bean = mList.get(position);
+                            intent.putExtra("film", bean);
+                            startActivity(intent);
+                        }
+                    });
+                    mRecyclerview.setAdapter(mAdapter);
                 }
             }
         }
@@ -240,6 +252,10 @@ public class SearchFragment extends BaseFragment<SearchContract.View, SearchPres
     public void refreshUI(List<FilmBean> beanList) {
         mList = beanList;
         mHandler.sendEmptyMessage(0);
+
+
+
+
     }
 
     @Override

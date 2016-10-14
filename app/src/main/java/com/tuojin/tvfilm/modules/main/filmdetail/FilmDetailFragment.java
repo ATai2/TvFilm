@@ -70,7 +70,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     @BindView(R.id.title)
     TextView mTitle;
     private FilmDetailBean.DataBean.FilmDetailDataBean mBean;
-    private Boolean isPlaying;
+    private Boolean isPlaying=false;
 
     @Override
     protected int getLayoutId() {
@@ -91,8 +91,16 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         mBtnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mActivity, "播放影片", Toast.LENGTH_SHORT).show();
-                mPresenter.play(mBean);
+                if (!isPlaying){
+                    Toast.makeText(mActivity, "播放影片", Toast.LENGTH_SHORT).show();
+                    mPresenter.play(mBean);
+                    mBtnPlay.setText("停止");
+                }else {
+                    Toast.makeText(mActivity, "停止播放影片", Toast.LENGTH_SHORT).show();
+                    mPresenter.stop(mBean);
+                    mBtnPlay.setText("播放");
+                }
+                isPlaying=!isPlaying;
             }
         });
     }
@@ -154,6 +162,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     public void refresh(FilmDetailBean.DataBean.FilmDetailDataBean bean) {
         mBean = bean;
         mHandler.sendEmptyMessage(0);
+//        mPresenter.
     }
 
     List<FilmBean> mList;
@@ -195,22 +204,8 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
 
     @OnClick(R.id.iv_back)
     public void onClick() {
+        mActivity.finish();
     }
 
-    //这里需要考虑影片播放的情况
-//    @OnClick({R.id.btn_play})
-//    public void onClick(View view) {
-//        switch (view.getId()) {
-//            case R.id.btn_play:
-//                if (isPlaying) {
-//                    Toast.makeText(mActivity, "影片暂停", Toast.LENGTH_SHORT).show();
-////            mPresenter.play();
-//                } else {
-//                    Toast.makeText(mActivity, "播放影片", Toast.LENGTH_SHORT).show();
-//                    mPresenter.play(mFilm);
-//                }
-//                isPlaying = !isPlaying;
-//                break;
-//        }
-//    }
+
 }

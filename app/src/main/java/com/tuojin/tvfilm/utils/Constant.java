@@ -19,4 +19,7 @@ public interface Constant {
     int ACTOR=106;
 //    CateFilmListActivty更新电影列表
     int CFLA_INITLIST=201;
+    String PADMAC="PAD1465889962927";
+    String IP_TERMINAL="192.168.1.96";
+    String TERMINAL_CODE="SMET14017428";
 }

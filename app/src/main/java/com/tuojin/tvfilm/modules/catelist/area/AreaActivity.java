@@ -75,6 +75,7 @@ public class AreaActivity extends BaseActivity<AreaContract.View, AreaPresenterI
     @Override
     protected void initView() {
         mPresenter.attach(this);
+        mTvMenutitle.setText("地区选择");
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRvMenu.setLayoutManager(layoutManager);
@@ -103,7 +104,7 @@ public class AreaActivity extends BaseActivity<AreaContract.View, AreaPresenterI
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         View focusedChild = mMainFragment.getFocusedChild();
         int childLayoutPosition = mMainFragment.getChildLayoutPosition(focusedChild);
-        if (mMainFragment.hasFocus() && keyCode == event.KEYCODE_DPAD_LEFT && (childLayoutPosition % 5 == 0 || childLayoutPosition % 5 == 5)) {
+        if (mMainFragment.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_LEFT && (childLayoutPosition % 5 == 0 || childLayoutPosition % 5 == 5)) {
             //判断哪个获得焦点
             if (btn != null)
                 btn.requestFocus();
@@ -122,7 +123,7 @@ public class AreaActivity extends BaseActivity<AreaContract.View, AreaPresenterI
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                CommonAdapter<AreaBean> mAdapter = new CommonAdapter<AreaBean>(AreaActivity.this, R.layout.item_other, mList, 0) {
+                CommonAdapter<AreaBean> mAdapter = new CommonAdapter<AreaBean>(AreaActivity.this, R.layout.item_other_fitsize, mList, 0) {
                     @Override
                     public void convert(ViewHolder holder, AreaBean areaBean) {
                         holder.setText(R.id.movie_title_other, areaBean.getMovie_country());

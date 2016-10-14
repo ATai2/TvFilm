@@ -6,6 +6,7 @@ import com.tuojin.tvfilm.bean.RecommBean;
 import com.tuojin.tvfilm.contract.SortListContract;
 import com.tuojin.tvfilm.net.TvFilmNetWorkWS;
 import com.tuojin.tvfilm.presenter.SortListPresenterImpl;
+import com.tuojin.tvfilm.utils.Constant;
 
 import java.util.List;
 
@@ -29,7 +30,10 @@ public class SortListModelImpl implements SortListContract.Model{
      */
     @Override
     public void getHotFilmList(int page) {
-        mNetWorkWS.sendMsg("PAD1465889962927|getFilmListOrderByHotest|orderByFeild=hotest&orderByType=desc&terminalCode=SMET15128361&startIndex=" +
+        mNetWorkWS.sendMsg(Constant.PADMAC +
+                "|getFilmListOrderByHotest|orderByFeild=hotest&orderByType=desc&terminalCode=" +
+                Constant.TERMINAL_CODE +
+                "&startIndex=" +
                 20 * page +
                 "&endIndex=" +
                 20 * (page + 1), new TvFilmNetWorkWS.Success() {
@@ -55,7 +59,10 @@ public class SortListModelImpl implements SortListContract.Model{
      */
     @Override
     public void getRecentFilmList(int page) {
-        mNetWorkWS.sendMsg("PAD1465889962927|getFilmListOrderByNewest|orderByFeild=newest&orderByType=desc&terminalCode=SMET15128361&startIndex=" +
+        mNetWorkWS.sendMsg(Constant.PADMAC +
+                "|getFilmListOrderByNewest|orderByFeild=newest&orderByType=desc&terminalCode=" +
+                Constant.TERMINAL_CODE +
+                "&startIndex=" +
                 20 * page +
                 "&endIndex=" +
                 20 * (page + 1), new TvFilmNetWorkWS.Success() {
@@ -80,7 +87,10 @@ public class SortListModelImpl implements SortListContract.Model{
      */
     @Override
     public void getDouBanFilmList(int page) {
-        mNetWorkWS.sendMsg("PAD1465889962927|getFilmListOrderByScore|orderByFeild=score&orderByType=desc&terminalCode=SMET15128361&startIndex=" +
+        mNetWorkWS.sendMsg(Constant.PADMAC +
+                "|getFilmListOrderByScore|orderByFeild=score&orderByType=desc&terminalCode=" +
+                Constant.TERMINAL_CODE +
+                "&startIndex=" +
                 20 * page +
                 "&endIndex=" +
                 20 * (page + 1), new TvFilmNetWorkWS.Success() {
@@ -105,7 +115,10 @@ public class SortListModelImpl implements SortListContract.Model{
      * @param page
      */
     public void getBigFilmList(int page) {
-        mNetWorkWS.sendMsg("PAD1465889962927|getFilmListOrderByNewest|orderByFeild=newest&orderByType=desc&terminalCode=SMET15128361&startIndex=" +
+        mNetWorkWS.sendMsg(Constant.PADMAC +
+                "|getFilmListOrderByNewest|orderByFeild=newest&orderByType=desc&terminalCode=" +
+                Constant.TERMINAL_CODE +
+                "&startIndex=" +
                 4 * page +
                 "&endIndex=" +
                 4 * (page + 1), new TvFilmNetWorkWS.Success() {
@@ -129,7 +142,10 @@ public class SortListModelImpl implements SortListContract.Model{
      * @param page
      */
     public void getAdFilmList(int page) {
-        mNetWorkWS.sendMsg("PAD1465889962927|getFilmListOrderByNewest|orderByFeild=newest&orderByType=desc&terminalCode=SMET15128361&startIndex=" +
+        mNetWorkWS.sendMsg(Constant.PADMAC +
+                "|getFilmListOrderByNewest|orderByFeild=newest&orderByType=desc&terminalCode=" +
+                Constant.TERMINAL_CODE+
+                "&startIndex=" +
                 4 * page +
                 "&endIndex=" +
                 4 * (page + 1), new TvFilmNetWorkWS.Success() {
