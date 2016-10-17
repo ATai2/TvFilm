@@ -63,13 +63,24 @@
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:background="@color/wheat"/>
+        <ImageView
+            android:id="@+id/iv_up"
+            android:background="@drawable/ic_keyboard_arrow_up_white_36dp"
+            android:layout_width="match_parent"
+            android:scaleType="centerInside"
+            android:layout_height="36dp"/>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_menu"
             android:layout_width="match_parent"
             android:layout_marginTop="20dp"
             android:layout_height="0dp"
             android:layout_weight="1"></android.support.v7.widget.RecyclerView>
-
+        <ImageView
+            android:id="@+id/iv_down"
+            android:background="@drawable/ic_keyboard_arrow_down_white_36dp"
+            android:layout_width="match_parent"
+            android:scaleType="centerInside"
+            android:layout_height="36dp"/>
     </LinearLayout>
 
 </RelativeLayout>

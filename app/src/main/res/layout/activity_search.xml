@@ -48,7 +48,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="1dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="220dp"
             android:gravity="center_horizontal"
             android:text="热搜排行榜"
             android:textColor="@color/grassgreen"

@@ -135,8 +135,9 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
 
             }
         });
+        setBackground(mRbHotRecom, mRbCatgory, mRabSortlist, mRabAlbum, mRabSearch);
         mVpContainer.setCurrentItem(0);
-        mRbHotRecom.requestFocus();
+
     }
 
     @Override

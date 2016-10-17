@@ -61,6 +61,9 @@ public class RecommAdapter extends RecyclerView.Adapter<RecommAdapter.RecommView
         ImageLoaderUtils.showRecommIcom(mContext, poster, holder.mIvRecomm);
         String movie_name = filmBean.getMovie_name();
         holder.mTvRecomm.setText(movie_name);
+        if (position == 0) {
+            holder.itemView.requestFocus();
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
