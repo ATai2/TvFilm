@@ -55,7 +55,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public CategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         final CategoryViewHolder mCategoryViewHolder;
-//        view = LayoutInflater.from(mContext).inflate(R.layout.item_category_long, parent, false);
 
         if (viewType == LONG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_category_long, parent, false);
@@ -72,8 +71,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(CategoryViewHolder holder, final int position) {
-        //title
-        holder.mTVCategoryLong.setText(mList.get(position).getTitle());
         holder.mIVCategoryLong.setImageResource(mIntArray[position]);
         ImageLoaderUtils.setAnimation(mContext, holder.itemView);
 
@@ -83,8 +80,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                 mListener.onItemClick(position);
             }
         });
-        //pic
-//        holder.mIVCategoryLong.setImageBitmap();
     }
 
     @Override
@@ -101,7 +96,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             return SMALL;
         }
     }
-
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder {
         ImageView mIVCategoryLong;

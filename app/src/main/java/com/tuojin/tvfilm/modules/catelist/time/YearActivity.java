@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.tuojin.tvfilm.R;
@@ -55,7 +54,7 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
     RecyclerView mRvMenu;
     @BindView(R.id.tab_container)
     LinearLayout mTabContainer;
-    @BindView(R.id.title)
+    @BindView(R.id.title_topbar)
     TextView mTitle;
     private List<YearBean> mMenuList;
     private CommonAdapter<YearBean> mMenuAdapter;
@@ -247,8 +246,6 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
                 public void onClick(View v) {
                     btn = (TextView) v;
                     mPresenter.list(yearBean.getId());
-                    int firstVisibleItemPosition = mLayout.findFirstVisibleItemPosition();
-                    int i = 0;
                 }
             });
         }
@@ -256,15 +253,6 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
         @Override
         public int getItemCount() {
             return mMenuList.size();
-        }
-
-        class ViewHolder {
-            @BindView(R.id.radbtn_item)
-            RadioButton mRadbtnItem;
-
-            ViewHolder(View view) {
-                ButterKnife.bind(this, view);
-            }
         }
     }
 

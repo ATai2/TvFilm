@@ -46,10 +46,10 @@ public abstract class BaseFragment<V,T extends BasePresenter<V>> extends Fragmen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mPresenter=initPresenter();
         mView=inflater.inflate(getLayoutId(),container,false);
         ButterKnife.bind(this, mView);
         initView();
-        mPresenter=initPresenter();
         return mView;
     }
 

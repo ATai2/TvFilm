@@ -30,14 +30,14 @@ import butterknife.ButterKnife;
 public class RecommAdapter extends RecyclerView.Adapter<RecommAdapter.RecommViewHolder> {
     Context mContext;
     List<FilmBean> mList;
-    OnItemClickListener mListener=null;
+    OnItemClickListener mListener = null;
 
     public void setListener(OnItemClickListener listener) {
         mListener = listener;
     }
 
     //    List<>
-    interface  OnItemClickListener{
+    interface OnItemClickListener {
         void onItemClick(FilmBean bean);
     }
 
@@ -57,13 +57,13 @@ public class RecommAdapter extends RecyclerView.Adapter<RecommAdapter.RecommView
     @Override
     public void onBindViewHolder(RecommViewHolder holder, int position) {
         final FilmBean filmBean = mList.get(position);
-        String poster = "/MID"+filmBean.getPoster();
+        String poster = "/MID" + filmBean.getPoster();
         ImageLoaderUtils.showRecommIcom(mContext, poster, holder.mIvRecomm);
         String movie_name = filmBean.getMovie_name();
-        holder.mTvRecomm.setText(movie_name);
         if (position == 0) {
-            holder.itemView.requestFocus();
+            holder.mIvRecomm.requestFocus();
         }
+        holder.mTvRecomm.setText(movie_name);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,6 +87,7 @@ public class RecommAdapter extends RecyclerView.Adapter<RecommAdapter.RecommView
         RecommViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            itemView.setBackgroundResource(R.drawable.btn_selector);
             ImageLoaderUtils.setAnimation(mContext, itemView);
         }
     }

@@ -10,12 +10,12 @@ import com.tuojin.tvfilm.base.BaseFragment;
 import com.tuojin.tvfilm.base.BaseView;
 import com.tuojin.tvfilm.bean.CategoryInfo;
 import com.tuojin.tvfilm.contract.CategoryContract;
-import com.tuojin.tvfilm.modules.catelist.TypeListActivity;
 import com.tuojin.tvfilm.modules.catelist.actor.ActorActivity;
 import com.tuojin.tvfilm.modules.catelist.area.AreaActivity;
 import com.tuojin.tvfilm.modules.catelist.director.DirectorActivity;
 import com.tuojin.tvfilm.modules.catelist.live.LiveActivity;
 import com.tuojin.tvfilm.modules.catelist.time.YearActivity;
+import com.tuojin.tvfilm.modules.catelist.type.TypeActivity;
 import com.tuojin.tvfilm.presenter.CategoryPresenterImpl;
 
 import java.util.List;
@@ -64,7 +64,8 @@ public class CategoryFragment extends BaseFragment<CategoryContract.View, Catego
                 Intent intent = new Intent();
                 switch (bean) {
                     case 0:
-                        intent.setClass(mActivity, TypeListActivity.class);
+//                        intent.setClass(mActivity, TypeListActivity.class);
+                        intent.setClass(mActivity, TypeActivity.class);
                         break;
                     case 3:
                         intent.setClass(mActivity, AreaActivity.class);

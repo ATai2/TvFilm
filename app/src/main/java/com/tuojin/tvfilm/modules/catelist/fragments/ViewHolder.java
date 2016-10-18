@@ -108,6 +108,12 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    public ViewHolder setPropertyAnimation(int viewId) {
+        TextView textView = getView(viewId);
+        ImageLoaderUtils.setAttributeAnimation(mContext, itemView);
+        return this;
+    }
+
     public ViewHolder setNoTextAnimation() {
         // ImageView imageView = getView(viewId);
         ImageLoaderUtils.setNoTextAnimation(mContext, itemView);

@@ -39,10 +39,9 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
  */
 public class LiveActivity extends BaseActivity<LiveContract.View, LivePresenterImpl> implements LiveContract.View {
 
-
     @BindView(R.id.iv_back)
     ImageButton mIvBack;
-    @BindView(R.id.title)
+    @BindView(R.id.title_topbar)
     TextView mTitle;
     @BindView(R.id.jc_video)
     JCVideoPlayerStandard mJcVideo;

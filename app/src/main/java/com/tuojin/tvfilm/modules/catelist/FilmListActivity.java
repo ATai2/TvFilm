@@ -30,7 +30,7 @@ public class FilmListActivity extends AppCompatActivity {
 
     @BindView(R.id.iv_back)
     ImageButton mIvBack;
-    @BindView(R.id.title)
+    @BindView(R.id.title_topbar)
     TextView mTitle;
     @BindView(R.id.rv_container_filmlist)
     RecyclerView mRvContainerFilmlist;

@@ -67,7 +67,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     TextView mTvDbscoreScorDetail;
     @BindView(R.id.iv_back)
     ImageButton mIvBack;
-    @BindView(R.id.title)
+    @BindView(R.id.title_topbar)
     TextView mTitle;
     private FilmDetailBean.DataBean.FilmDetailDataBean mBean;
     private Boolean isPlaying=false;

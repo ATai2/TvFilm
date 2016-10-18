@@ -66,11 +66,8 @@ public abstract class CommonAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
         holder.updatePosition(position);
         convert(holder, mDatas.get(position));
 //        此处需要怎么处理？
-//        if (mType == ConstantUtil.TWO && position == 0) {
-//            holder.itemView.requestFocus();
-//        }
-        if (position==0){
-//            holder.itemView.requestFocus();
+        if (mType ==2 && position == 0) {
+            holder.itemView.requestFocus();
         }
 
     }

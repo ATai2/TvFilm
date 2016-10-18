@@ -3,16 +3,19 @@ package com.tuojin.tvfilm.modules.main.hotrecomm;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
+import android.view.ViewGroup;
 
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseFragment;
 import com.tuojin.tvfilm.bean.FilmBean;
 import com.tuojin.tvfilm.contract.HotRecommContract;
+import com.tuojin.tvfilm.keybord.FocusGridLayoutManager;
+import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
+import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
+import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
 import com.tuojin.tvfilm.modules.main.FilmDetailActivity;
 import com.tuojin.tvfilm.presenter.HotRecommPresenterImpl;
 
@@ -36,27 +39,23 @@ public class RecommFragment extends BaseFragment<HotRecommContract.View, HotReco
     RecyclerView mRvRecomm;
     private RecommAdapter mAdapter;
     private List<FilmBean> mList;
+    private CommonAdapter<FilmBean> mOtherAdapter;
+    private FilmBean mValue;
 
     @Override
     protected int getLayoutId() {
-//        return R.layout.test_main;
         return R.layout.fragment_recomm;
     }
 
     @Override
     protected void initView() {
-        StaggeredGridLayoutManager layout = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL);
+        FocusGridLayoutManager focusGridLayoutManager = new FocusGridLayoutManager(mActivity, 2);
+        focusGridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mRvRecomm.setFocusable(true);
         mRvRecomm.stopScroll();
         mRvRecomm.setHasFixedSize(true);
-        layout.setOrientation(StaggeredGridLayoutManager.HORIZONTAL);
-        mRvRecomm.setHasFixedSize(true);
-        mRvRecomm.setLayoutManager(layout);
-        mRvRecomm.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
-            @Override
-            public void onGlobalFocusChanged(View view, View view1) {
-
-            }
-        });
+        mRvRecomm.setLayoutManager(focusGridLayoutManager);
+        mPresenter.onResume();
     }
 
     @Override
@@ -65,13 +64,13 @@ public class RecommFragment extends BaseFragment<HotRecommContract.View, HotReco
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mRvRecomm.getChildCount() == 0) {
-            mPresenter.onResume();
-        }
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        if (mRvRecomm.getChildCount() == 0) {
+//
+//        }
+//    }
 
     Handler mHandler = new Handler() {
         @Override
@@ -80,22 +79,41 @@ public class RecommFragment extends BaseFragment<HotRecommContract.View, HotReco
             if (msg.what == 0) {
                 changerView();
             }
-
         }
     };
 
     public void changerView() {
-        mAdapter = new RecommAdapter(mActivity, mList);
-        mRvRecomm.setAdapter(mAdapter);
-        mAdapter.setListener(new RecommAdapter.OnItemClickListener() {
+        mOtherAdapter = new CommonAdapter<FilmBean>(mActivity, R.layout.item_other_recomm, mList, 2) {
             @Override
-            public void onItemClick(FilmBean bean) {
-                Log.d(TAG, "onclick" + bean.toString());
+            public void convert(ViewHolder holder, FilmBean bean) {
+                holder.setText(R.id.movie_title_other, bean.getMovie_name());
+                holder.setText(R.id.movie_title_other_score, bean.getScore());
+                holder.setImageResource(R.id.movie_image_other, bean.getPoster());
+                holder.setPropertyAnimation(R.id.movie_title_other);
+            }
+        };
+//        mOtherAdapter.
+        mOtherAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(ViewGroup parent, View view, Object o, int position) {
                 Intent intent = new Intent(mActivity, FilmDetailActivity.class);
-                intent.putExtra("film", bean);
-                mActivity.startActivity(intent);
+                mValue = mList.get(position);
+                intent.putExtra("film", mValue);
+                startActivity(intent);
             }
         });
+//        mAdapter = new RecommAdapter(mActivity, mList);
+        mRvRecomm.setAdapter(mOtherAdapter);
+//        mAdapter.setListener(new RecommAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(FilmBean bean) {
+//                Log.d(TAG, "onclick" + bean.toString());
+//                Intent intent = new Intent(mActivity, FilmDetailActivity.class);
+//                intent.putExtra("film", bean);
+//                mActivity.startActivity(intent);
+//            }
+//        });
+//        mHandler.sendEmptyMessageDelayed(1,200);
     }
 
     @Override

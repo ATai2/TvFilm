@@ -14,6 +14,5 @@
             android:scaleType="fitXY"/>
         <TextView
             android:id="@+id/mTVCategory"
-            android:text="laj"
             style="@style/categoryitem"/>
 </FrameLayout>

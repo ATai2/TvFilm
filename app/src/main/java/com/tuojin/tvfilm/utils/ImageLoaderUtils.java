@@ -35,50 +35,7 @@ import com.tuojin.tvfilm.base.BaseActivity;
  */
 public class ImageLoaderUtils implements Handler.Callback {
 
-    /**
-     * 显示图片 - 游戏 应用
-     * 60 * 60
-     */
-//    public static void showPictureWithApplication(Context mContext, CategoryInfo info, ImageView iv) {
-//        if (mContext instanceof BaseActivity) {
-//            if (((BaseActivity) mContext).isFinishing())
-//                return;
-//        }
-//        Glide.with(mContext)
-//                .load(InterfaceURL.IMAGE_URL_ROOT + info.getCategory_id()+"/"+info.getImage())
-//                        //.centerCrop()
-//                .placeholder(R.drawable.other_image)
-//                .error(R.drawable.other_image)
-//                .crossFade()
-//                .into(iv);
-//    }
-//
-//
-//
-//    /**
-//     * 显示AppINfoDetail应用截图 倒影
-//     * 60 * 60
-//     */
-    public static void showDimsW80H80(Context mContext, String uri, final ImageView iv) {
-
-        if (mContext instanceof BaseActivity) {
-            if (((BaseActivity) mContext).isFinishing())
-                return;
-        }
-        Glide.with(mContext).load(InterfaceURL.PIC + uri)
-                .asBitmap()
-                .placeholder(R.drawable.ic_launcher)
-                .error(R.drawable.ic_launcher)
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        iv.setImageBitmap(createReflectedImage(resource));
-                    }
-                });
-
-    }
-
-    public static void showRecommIcom(Context mContext, String uri, final ImageView iv) {
+       public static void showRecommIcom(Context mContext, String uri, final ImageView iv) {
 
         if (mContext instanceof BaseActivity) {
             if (((BaseActivity) mContext).isFinishing())
@@ -87,7 +44,6 @@ public class ImageLoaderUtils implements Handler.Callback {
         Glide.with(mContext).load(InterfaceURL.BASEIP + uri)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.ic_launcher)
                 .centerCrop()
                 .error(R.drawable.ic_launcher)
                 .into(new SimpleTarget<Bitmap>() {
@@ -170,7 +126,7 @@ public class ImageLoaderUtils implements Handler.Callback {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (hasFocus) {
-                    view.bringToFront();
+//                    view.bringToFront();
                     startAttributedAnimation(view, 1.0f, 1.15f);
                 }
                 if (!hasFocus) {
@@ -296,7 +252,6 @@ public class ImageLoaderUtils implements Handler.Callback {
         String pic = InterfaceURL.BASEIP + uri;
         Glide.with(mContext).load(pic)
                 .asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
-
                 .placeholder(R.drawable.ic_launcher)
                 .centerCrop()
                 .error(R.drawable.ic_launcher)
@@ -405,7 +360,8 @@ public class ImageLoaderUtils implements Handler.Callback {
                 if (hasFocus) {
                     view.startAnimation(AnimationUtils.loadAnimation(mContext,
                             R.anim.scale_out));
-                    textView.setTextColor(Color.parseColor("#043b8c"));
+//                    textView.setTextColor(Color.parseColor("#043b8c"));
+                    textView.setTextColor(Color.parseColor("#FFD700"));
                 }
                 if (!hasFocus) {
                     view.startAnimation(AnimationUtils.loadAnimation(mContext,

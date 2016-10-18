@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseFragment;
 import com.tuojin.tvfilm.bean.FilmBean;
+import com.tuojin.tvfilm.bean.FilmTypeBean;
 import com.tuojin.tvfilm.contract.FilmTypeContract;
 import com.tuojin.tvfilm.keybord.FocusGridLayoutManager;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
@@ -41,7 +42,7 @@ public class OtherFragmentType extends BaseFragment<FilmTypeContract.View, FilmT
     private static CommonAdapter mOtherAdapter;
     private int mSortType;
     private FilmBean mValue;
-    private boolean aBoolean = true;
+//    private boolean aBoolean = true;
 
     @Override
     protected int getLayoutId() {
@@ -104,5 +105,10 @@ public class OtherFragmentType extends BaseFragment<FilmTypeContract.View, FilmT
     public void initFilmFragment(List<FilmBean> data) {
         mFilmBeen=data;
         mHandler.sendEmptyMessage(0);
+    }
+
+    @Override
+    public void initMenu(List<FilmTypeBean> list) {
+
     }
 }

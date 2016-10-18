@@ -46,7 +46,7 @@ public class DirectorActivity extends BaseActivity<DirectorListContract.View, Di
     List<DirectorBean> mList = new ArrayList<>();
     @BindView(R.id.iv_back)
     ImageButton mIvBack;
-    @BindView(R.id.title)
+    @BindView(R.id.title_topbar)
     TextView mTitle;
     @BindView(R.id.index_type)
     TextView mIndexType;

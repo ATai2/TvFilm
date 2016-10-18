@@ -30,7 +30,9 @@
         <activity android:name=".modules.catelist.framecatelist.CateFilmListActivty"/>
         <activity android:name=".modules.catelist.framecatelist.ListViewActivity">
         </activity>
+        <!--电影类型-->
         <activity android:name=".modules.catelist.TypeListActivity"/>
+        <activity android:name=".modules.catelist.type.TypeActivity"/>
         <!-- 导演列表 -->
         <activity android:name=".modules.catelist.director.DirectorActivity"/>
         <!-- 地区 -->

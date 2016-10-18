@@ -74,17 +74,9 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
 
     @Override
     protected void initView() {
-        mRbHotRecom.requestFocus();
-
         mVpContainer.setOffscreenPageLimit(5);
-        mVpContainer.setCurrentItem(0);
-        //设置焦点改变监听
-        mRbHotRecom.setOnFocusChangeListener(this);
-        mRbCatgory.setOnFocusChangeListener(this);
-        mRabSortlist.setOnFocusChangeListener(this);
-        mRabAlbum.setOnFocusChangeListener(this);
-        mRabSearch.setOnFocusChangeListener(this);
-
+        // mVpContainer.setCurrentItem(0);
+        mRbHotRecom.requestFocus();
         mFragmentList = new ArrayList<>();
         mHotRecommFrag = new RecommFragment();
         mCategoryFrag = new CategoryFragment();
@@ -135,8 +127,14 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
 
             }
         });
-        setBackground(mRbHotRecom, mRbCatgory, mRabSortlist, mRabAlbum, mRabSearch);
-        mVpContainer.setCurrentItem(0);
+//        mVpContainer.setCurrentItem(1);
+        //设置焦点改变监听
+        mRbHotRecom.setOnFocusChangeListener(this);
+        mRbCatgory.setOnFocusChangeListener(this);
+        mRabSortlist.setOnFocusChangeListener(this);
+        mRabAlbum.setOnFocusChangeListener(this);
+        mRabSearch.setOnFocusChangeListener(this);
+
 
     }
 
@@ -148,6 +146,9 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
     //tv的方向按键响应
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (mRbHotRecom.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+//            mVpContainer
+//        }
         if (mVpContainer.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_UP) {
             switch (type) {
                 case 0:
@@ -210,6 +211,7 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
         switch (view.getId()) {
             case R.id.rab_hotrecomm:
                 LogUtils.d("11", "hot");
+                setBackground(mRbHotRecom, mRbCatgory, mRabSortlist, mRabAlbum, mRabSearch);
 //                mRbHotRecom.setTextColor(Color.WHITE);
                 mVpContainer.setCurrentItem(0);
                 break;

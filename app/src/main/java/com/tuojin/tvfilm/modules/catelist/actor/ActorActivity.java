@@ -46,7 +46,7 @@ public class ActorActivity extends BaseActivity<ActorContract.View, ActorPresent
     List<ActorBean> mList = new ArrayList<>();
     @BindView(R.id.iv_back)
     ImageButton mIvBack;
-    @BindView(R.id.title)
+    @BindView(R.id.title_topbar)
     TextView mTitle;
     @BindView(R.id.index_type)
     TextView mIndexType;

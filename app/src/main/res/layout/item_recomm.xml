@@ -6,6 +6,7 @@
                 android:layout_marginTop="20dp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
+                android:background="@drawable/btn_selector"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:gravity="center">
@@ -14,7 +15,6 @@
         android:id="@+id/iv_recomm"
         android:layout_width="match_parent"
         android:background="@drawable/default_selector"
-
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         />
