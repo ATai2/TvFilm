@@ -1,12 +1,9 @@
 package com.tuojin.tvfilm.presenter;
 import com.tuojin.tvfilm.base.BasePresenter;
-import com.tuojin.tvfilm.bean.FilmBean;
 import com.tuojin.tvfilm.bean.FilmDetailBean;
 import com.tuojin.tvfilm.contract.FilmDetailContract;
 import com.tuojin.tvfilm.model.FilmDetailModelImpl;
 import com.tuojin.tvfilm.utils.LogUtils;
-
-import java.util.List;
 
 /**
 * Created by MVPHelper on 2016/09/22
@@ -20,12 +17,7 @@ public class FilmDetailPresenterImpl extends BasePresenter<FilmDetailContract.Vi
     public void onResume(String mid,String uuid) {
         LogUtils.d("11","onResume"+mid+uuid);
         mDetailModel.onResume( mid, uuid);
-        mDetailModel.onResumeInitRecycleView();
-    }
-
-    @Override
-    public void refresh(FilmDetailBean.DataBean.FilmDetailDataBean bean) {
-        mView.refresh(bean);
+       // mDetailModel.onResumeInitRecycleView();
     }
 
     @Override
@@ -38,13 +30,35 @@ public class FilmDetailPresenterImpl extends BasePresenter<FilmDetailContract.Vi
         mDetailModel.initList();
     }
 
-    @Override
-    public void initListUI(List<FilmBean> mDatas) {
-        mView.initListUI(mDatas);
-    }
+
 
     @Override
     public void stop(FilmDetailBean.DataBean.FilmDetailDataBean bean) {
         mDetailModel.stop(bean);
+    }
+
+    @Override
+    public void getQrCode(FilmDetailBean.DataBean.FilmDetailDataBean bean) {
+        mDetailModel.getQrCode(bean);
+    }
+
+
+    public void qrCode(String qrCode) {
+        mView.qrCode(qrCode);
+    }
+
+    @Override
+    public void pause() {
+        mDetailModel.pause();
+    }
+
+    @Override
+    public void rePlay() {
+        mDetailModel.rePlay();
+    }
+
+
+    public void playStatus() {
+        mDetailModel.playStatus();
     }
 }

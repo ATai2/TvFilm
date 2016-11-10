@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseActivity;
@@ -26,6 +27,7 @@ public class FilmDetailActivity extends BaseActivity<FilmDetailContract.View, Fi
 
     FilmDetailFragment mDetailFragment;
     private FilmBean mFilm;
+    private boolean mBig;
 
     @Override
     protected FilmDetailPresenterImpl initPresenter() {
@@ -35,9 +37,8 @@ public class FilmDetailActivity extends BaseActivity<FilmDetailContract.View, Fi
     @Override
     protected void initData() {
         Intent intent = getIntent();
-//        intent.getBundleExtra()
         mFilm = intent.getParcelableExtra("film");
-
+        mBig = intent.getBooleanExtra("big", false);
         showFilmDetailFragment();
     }
 
@@ -60,6 +61,7 @@ public class FilmDetailActivity extends BaseActivity<FilmDetailContract.View, Fi
             if (mFilm != null) {
                 Bundle bundle=new Bundle();
                 bundle.putParcelable("film",mFilm);
+                bundle.putBoolean("big",mBig);
                 mDetailFragment.setArguments(bundle);
                 fragmentTransaction.add(R.id.ll_filmdetail_frag, mDetailFragment, "ll_filmdetail_frag");
             }
@@ -74,6 +76,13 @@ public class FilmDetailActivity extends BaseActivity<FilmDetailContract.View, Fi
 
     @Override
     public void hideLoading() {
+
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        mDetailFragment.onKeyUp(keyCode, event);
+        return super.onKeyUp(keyCode, event);
 
     }
 

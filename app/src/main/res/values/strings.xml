@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">TvFilm</string>
-    <string name="shimmer">万千影片，尽在我手</string>
+    <string name="app_name">百事通电影</string>
+    <string name="shimmer">百事通电影</string>
     <string name="tab_hotrecomm">热门推荐</string>
     <string name="tab_catogory">电影分类</string>
     <string name="tab_sortlist">排行榜</string>
@@ -23,4 +23,5 @@
 
     <string name="nav_tab_normal_ttf">@string/fzlt_zhun_hei</string>
     <string name="nav_tab_focus_ttf">@string/fzlt_cu_hei</string>
+    <string name="pay_ok">付费确认</string>
 </resources>

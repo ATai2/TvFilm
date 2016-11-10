@@ -27,7 +27,7 @@ public class CategoryFragment extends BaseFragment<CategoryContract.View, Catego
     public static final String TAG = "CategoryFragment";
     @BindView(R.id.rv_category)
     RecyclerView mRvCategory;
-    private CategoryAdapter mCategoryAdapter;
+    private CategoryAdapter2 mCategoryAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -36,7 +36,7 @@ public class CategoryFragment extends BaseFragment<CategoryContract.View, Catego
 
     @Override
     protected void initView() {
-        StaggeredGridLayoutManager layout = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL);
+        StaggeredGridLayoutManager layout = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
         mRvCategory.setLayoutManager(layout);
     }
 
@@ -56,9 +56,9 @@ public class CategoryFragment extends BaseFragment<CategoryContract.View, Catego
 
     @Override
     public void setRecycleCategoryList(List<CategoryInfo> datas) {
-        mCategoryAdapter = new CategoryAdapter(mActivity, datas);
+        mCategoryAdapter = new CategoryAdapter2(mActivity, datas);
         mRvCategory.setAdapter(mCategoryAdapter);
-        mCategoryAdapter.setListener(new CategoryAdapter.OnItemClickListener() {
+        mCategoryAdapter.setListener(new CategoryAdapter2.OnItemClickListener() {
             @Override
             public void onItemClick(int bean) {
                 Intent intent = new Intent();
@@ -67,7 +67,7 @@ public class CategoryFragment extends BaseFragment<CategoryContract.View, Catego
 //                        intent.setClass(mActivity, TypeListActivity.class);
                         intent.setClass(mActivity, TypeActivity.class);
                         break;
-                    case 3:
+                    case 2:
                         intent.setClass(mActivity, AreaActivity.class);
                         break;
                     case 4:
@@ -76,7 +76,7 @@ public class CategoryFragment extends BaseFragment<CategoryContract.View, Catego
                     case 1:
                         intent.setClass(mActivity, YearActivity.class);
                         break;
-                    case 2:
+                    case 3:
                         intent.setClass(mActivity, LiveActivity.class);
                         break;
                     case 5:
@@ -84,10 +84,6 @@ public class CategoryFragment extends BaseFragment<CategoryContract.View, Catego
                 }
 
                 startActivity(intent);
-
-//                Intent intent=new Intent(mActivity, CateFilmListActivty.class);
-//                intent.putExtra("position",bean);
-//                startActivity(intent);
             }
         });
     }

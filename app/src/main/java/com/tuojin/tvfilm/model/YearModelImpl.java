@@ -1,10 +1,6 @@
 package com.tuojin.tvfilm.model;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
-import com.tuojin.tvfilm.bean.FilmBean;
-import com.tuojin.tvfilm.bean.RecommBean;
 import com.tuojin.tvfilm.bean.YearBean;
 import com.tuojin.tvfilm.bean.YearListBean;
 import com.tuojin.tvfilm.contract.YearContract;
@@ -20,7 +16,7 @@ import java.util.List;
 
 public class YearModelImpl implements YearContract.Model {
     YearPresenterImpl mYearPresenter;
-    TvFilmNetWorkWS mNetWorkWS = new TvFilmNetWorkWS();
+    TvFilmNetWorkWS mNetWorkWS =new TvFilmNetWorkWS();
 
     public YearModelImpl(YearPresenterImpl yearPresenter) {
         mYearPresenter = yearPresenter;
@@ -40,18 +36,6 @@ public class YearModelImpl implements YearContract.Model {
                 Constant.TERMINAL_CODE +
                 "&searchMode=&keyword=&movieTypeStr=&placeId=&yearId=" +
                 i +
-                "&actorId=&directorId=&startIndex=0&endIndex=100", new TvFilmNetWorkWS.Success() {
-            @Override
-            public void excute(String data) {
-                Log.d("list", data);
-                List<FilmBean> list = new Gson().fromJson(data, RecommBean.class).getData().getData();
-                mYearPresenter.initList(list);
-            }
-        }, new TvFilmNetWorkWS.Failure() {
-            @Override
-            public void excute(String data) {
-
-            }
-        });
+                "&actorId=&directorId=&startIndex=0&endIndex=100",5);
     }
 }

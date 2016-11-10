@@ -1,25 +1,39 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/appdetail_fragment"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
+                android:id="@+id/rl_detail_al"
               android:background="@mipmap/bg"
               android:orientation="vertical"
               android:padding="20dp">
-<include layout="@layout/topbar"
-         android:id="@+id/topbar"/>
+
+    <include
+        android:id="@+id/topbar"
+        layout="@layout/topbar"/>
 
     <RelativeLayout
+        android:id="@+id/rl_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/relative">
+        android:layout_below="@+id/topbar">
 
         <ImageView
             android:id="@+id/iv_filmpic_detail"
-            android:layout_marginTop="30dp"
-            android:layout_width="250dp"
+            android:layout_width="200dp"
             android:layout_height="300dp"
+            android:layout_marginRight="16dp"
+            android:scaleType="fitCenter"
             android:layout_marginLeft="50dp"
+            android:layout_marginTop="30dp"
             />
+        <ImageView
+            android:id="@+id/iv_flag"
+            android:visibility="gone"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/big"
+            android:layout_width="80dp"
+            android:layout_height="80dp"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,21 +60,21 @@
                     android:id="@+id/tv_dbscore_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="豆瓣评分"
-                    android:textColor="@color/white"
                     android:layout_alignBaseline="@id/tv_filmname_detail"
                     android:layout_marginLeft="100dp"
-                    android:layout_toRightOf="@id/tv_filmname_detail"/>
+                    android:layout_toRightOf="@id/tv_filmname_detail"
+                    android:text="豆瓣评分"
+                    android:textColor="@color/white"/>
+
                 <TextView
                     android:id="@+id/tv_dbscore_scor_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="豆瓣评分"
-                    android:textSize="24sp"
-                    android:textColor="@color/gold"
                     android:layout_alignBaseline="@id/tv_filmname_detail"
-
-                    android:layout_toRightOf="@id/tv_dbscore_detail"/>
+                    android:layout_toRightOf="@id/tv_dbscore_detail"
+                    android:text="豆瓣评分"
+                    android:textColor="@color/gold"
+                    android:textSize="24sp"/>
             </RelativeLayout>
 
 
@@ -68,87 +82,97 @@
                 android:id="@+id/tv_filmtype_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/palegreen"
                 android:layout_alignLeft="@id/tv_filmname_detail"
                 android:layout_below="@id/tv_filmname_detail"
-                android:text="电影类型"/>
+                android:text="电影类型"
+                android:textSize="20sp"
+                android:textColor="@color/white_50"/>
 
             <TextView
                 android:id="@+id/tv_director_detail"
-                android:textColor="@color/palegreen"
                 android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:lines="1"
+                android:ellipsize="end"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_filmtype_detail"/>
+                android:textColor="@color/white_50"/>
 
             <TextView
                 android:id="@+id/tv_actors_detail"
-                android:textColor="@color/palegreen"
+                android:textSize="20sp"
+                android:lines="1"
+                android:ellipsize="end"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textColor="@color/white_50"/>
 
             <TextView
                 android:id="@+id/tv_desc_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:textColor="@color/azure"/>
-            <!--</ScrollView>-->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:lines="4"
+                android:ellipsize="end"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+
+                android:textColor="@color/white_50"/>
 
                 <Button
                     android:id="@+id/btn_play"
+                    android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/btn_selector"
+                    android:background="@drawable/default_selector_corner"
                     android:focusable="true"
                     android:nextFocusRight="@+id/btn_stop"
                     android:text="播放"
-                    android:textColor="@color/aquamarine"
+                    android:textColor="@color/white"
                     android:textSize="32sp"/>
-
-                <ImageButton
-                    android:id="@+id/btn_stop"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/seletor_stop_button"
-                    android:focusable="true"
-                    android:nextFocusLeft="@id/btn_play"
-                    android:visibility="gone"/>
-            </LinearLayout>
-
         </LinearLayout>
-
-
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/tv_guess"
+        android:layout_above="@+id/ll_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="猜你喜欢"
+        android:textColor="@color/wheat"
+        android:textSize="24sp"/>
     <LinearLayout
+        android:id="@+id/ll_bottom"
+
         android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
         android:layout_height="200dp"
-        android:layout_marginTop="50dp"
         android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:ems="1"
-            android:gravity="center"
-            android:text="猜你喜欢"
-            android:textColor="@color/wheat"
-            android:textSize="30sp"/>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/aquamarine"/>
-
+        <ImageView
+            android:id="@+id/iv_left"
+            android:src="@drawable/arrow_left"
+            android:layout_width="20dp"
+            android:layout_marginRight="10dp"
+            android:visibility="invisible"
+            android:layout_height="match_parent"/>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_film_detail"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_height="200dp"/>
+            android:layout_width="0dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:descendantFocusability="afterDescendants"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_weight="1"
+            android:layout_height="200dp"
+            />
+        <ImageView
+            android:id="@+id/iv_right"
+            android:src="@drawable/arrow_right"
+            android:layout_width="20dp"
+            android:layout_marginLeft="10dp"
+            android:visibility="invisible"
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

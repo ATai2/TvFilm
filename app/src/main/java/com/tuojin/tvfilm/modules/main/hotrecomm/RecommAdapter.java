@@ -77,7 +77,6 @@ public class RecommAdapter extends RecyclerView.Adapter<RecommAdapter.RecommView
         return mList.size();
     }
 
-
     class RecommViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_recomm)
         ImageView mIvRecomm;
@@ -87,8 +86,7 @@ public class RecommAdapter extends RecyclerView.Adapter<RecommAdapter.RecommView
         RecommViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            itemView.setBackgroundResource(R.drawable.btn_selector);
-            ImageLoaderUtils.setAnimation(mContext, itemView);
+          //  ImageLoaderUtils.setAnimation(mContext, itemView);
         }
     }
 }

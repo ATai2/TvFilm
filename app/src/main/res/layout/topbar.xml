@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
+             android:layout_marginTop="15dp"
               android:gravity="center_vertical"
               android:layout_height="wrap_content">
 
@@ -15,8 +16,8 @@
         android:id="@+id/title_topbar"
         android:gravity="center_horizontal"
         android:layout_gravity="center"
-        android:textSize="32dp"
-        android:textColor="@color/wheat"
+        android:textSize="28dp"
+        android:textColor="@color/white_50"
         android:text="1111"
         android:focusable="false"
         android:layout_width="wrap_content"

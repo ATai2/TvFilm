@@ -39,6 +39,6 @@ public class SortListPresenterImpl extends BasePresenter<SortListContract.View> 
 
     @Override
     public void refreshUI(List<FilmBean> beanList) {
-        mView.setRecyclerItem(beanList);
+
     }
 }

@@ -1,6 +1,7 @@
 package com.tuojin.tvfilm.presenter;
 import com.tuojin.tvfilm.base.BasePresenter;
 import com.tuojin.tvfilm.bean.LiveBean;
+import com.tuojin.tvfilm.bean.LiveContentBean;
 import com.tuojin.tvfilm.contract.LiveContract;
 import com.tuojin.tvfilm.model.LiveModelImpl;
 
@@ -20,5 +21,15 @@ public class LivePresenterImpl extends BasePresenter<LiveContract.View> implemen
     @Override
     public void initMenu(List<LiveBean> mDatas) {
         mView.initMenu(mDatas);
+    }
+
+    @Override
+    public void list(String text) {
+        mModel.list(text);
+    }
+
+    @Override
+    public void initList(List<LiveContentBean> mDatas) {
+        mView.initList(mDatas);
     }
 }

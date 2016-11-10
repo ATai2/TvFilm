@@ -40,6 +40,17 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         mPosition = position;
         mViews = new SparseArray<>();
         mConvertView.setTag(this);
+
+//        mConvertView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    v.setBackgroundResource(R.drawable.border_two);
+//                } else {
+//                    v.setBackground(null);
+//                }
+//            }
+//        });
     }
 
 
@@ -89,6 +100,13 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         ImageLoaderUtils.showPictureWithApplication(mContext, resId, view);
         return this;
     }
+
+    public ViewHolder setImageResourceNOEnlarge(int viewId, String resId) {
+        ImageView view = getView(viewId);
+//        ImageLoaderUtils.showPictureWithApplication(mContext, resId, view);
+        return this;
+    }
+
     public ViewHolder setImageResourceNoMID(int viewId, String resId) {
         ImageView view = getView(viewId);
         ImageLoaderUtils.showPictureWithApplicationWithNoMID(mContext, resId, view);
@@ -121,7 +139,6 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-
     public ViewHolder setImageBitmap(int viewId, Bitmap bitmap) {
         ImageView view = getView(viewId);
         view.setImageBitmap(bitmap);
@@ -130,7 +147,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 //    interface FocusChangeListener{
 //        void focusChange();
 //    }
-//    public ViewHolder setFocusChangeListener() {
+//    public ViewHolder setFocusChangeListener(int viewId) {
 //        ImageView view = getView(viewId);
 //        view.setImageBitmap(bitmap);
 //        return this;
@@ -279,5 +296,28 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     public int getLayoutId() {
         return mLayoutId;
+    }
+
+    public void setOnTextFocusChangeListner(int group, final int iId, final int ivId, View.OnFocusChangeListener onFocusChangeListener) {
+        View view = getView(group);
+
+        view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            View t = getView(iId);
+            View p = getView(ivId);
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+//                    v.startAnimation(AnimationUtils.loadAnimation(mContext,
+//                            R.anim.scale_out));
+                    t.setVisibility(View.VISIBLE);
+//                    p.setBackgroundResource(R.drawable.btn_selector);
+                } else {
+//                    v.startAnimation(AnimationUtils.loadAnimation(mContext,
+//                            R.anim.scale_in));
+                    t.setVisibility(View.INVISIBLE);
+//                    p.setBackground(null);
+                }
+            }
+        });
     }
 }

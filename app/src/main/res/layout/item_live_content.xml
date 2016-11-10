@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+<TextView
+    android:id="@+id/tv_live_content"
+    android:text="直播内容"
+    style="@style/dialogText1"/>
+    <TextView
+        android:id="@+id/tv_live_desc"
+        android:text="直播描述"
+        style="@style/dialogText1"/>
+    <TextView
+        android:id="@+id/tv_live_start"
+        android:text="开始时间"
+        style="@style/dialogText1"/>
+    <TextView
+        android:id="@+id/tv_live_end"
+        android:text="结束时间"
+        style="@style/dialogText1"/>
+    <TextView
+        android:id="@+id/tv_live_duration"
+        android:text="时长"
+        style="@style/dialogText1"/>
+    <TextView
+        android:id="@+id/tv_live_action"
+        android:text="操作"
+        style="@style/dialogText1"/>
+</LinearLayout>

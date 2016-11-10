@@ -5,13 +5,22 @@
     android:layout_height="match_parent"
     android:background="@mipmap/launch"
     tools:context="com.tuojin.tvfilm.modules.launch.LaunchActivity">
+   <ProgressBar
+       android:id="@+id/pb_launch"
+       android:layout_gravity="center"
+       android:layout_width="80dp"
+       android:layout_height="80dp"/>
+   <TextView
+       android:id="@+id/tv_initial"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"/>
     <com.romainpiel.shimmer.ShimmerTextView
         android:id="@+id/shimmer_tv"
         android:layout_gravity="center_horizontal|bottom"
         android:text="@string/shimmer"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="56dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#444"
-        android:textSize="80sp"/>
+        android:textColor="#777"
+        android:textSize="82sp"/>
 </FrameLayout>

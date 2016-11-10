@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="500dp"
+             android:layout_width="250dp"
              android:layout_margin="5dp"
-             android:layout_height="250dp"
+             android:layout_height="400dp"
+             android:background="@drawable/default_selector"
              style="@style/focusitem">
 
         <ImageView
@@ -10,8 +11,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:focusable="false"
-            android:scaleType="centerInside"/>
+            android:scaleType="fitXY"/>
         <TextView
             android:id="@+id/mTVCategory"
+            android:layout_gravity="bottom"
+            android:gravity="center"
             style="@style/categoryitem"/>
 </FrameLayout>

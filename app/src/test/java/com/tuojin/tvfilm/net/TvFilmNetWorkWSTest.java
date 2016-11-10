@@ -17,7 +17,7 @@ public class TvFilmNetWorkWSTest {
 
     @Test
     public void testSendMsg() throws Exception {
-        TvFilmNetWorkWS ws = new TvFilmNetWorkWS();
+//        TvFilmNetWorkWS ws = new TvFilmNetWorkWS();
 //       ws.sendMsg("PAD1465889962927|login|username=admin&pwd=123456");
         int i=1;
     }

@@ -45,7 +45,7 @@ public class ImageLoaderUtils implements Handler.Callback {
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
-                .error(R.drawable.ic_launcher)
+                .error(R.mipmap.ic_progress_2_3)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -55,48 +55,6 @@ public class ImageLoaderUtils implements Handler.Callback {
 
     }
 
-
-    /**
-     * 显示AppItem应用应用图标 倒影
-     * 60 * 60
-     */
-//    public static void showApplicationIcon(Context mContext, AppInfo appinfo, final ImageView iv) {
-//
-//        if (mContext instanceof BaseActivity) {
-//            if (((BaseActivity) mContext).isFinishing())
-//                return;
-//        }
-//        Glide.with(mContext).load(InterfaceURL.APPLICATIONICON_ROOT_URL + appinfo.getId()+"/"+appinfo.getIcon())
-//                .asBitmap()
-//                .placeholder(R.drawable.ic_launcher)
-//                .error(R.drawable.ic_launcher)
-//                .into(new SimpleTarget<Bitmap>() {
-//                    @Override
-//                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-//                        iv.setImageBitmap(createReflectedImage(resource));
-//                    }
-//                });
-//
-//    }
-
-    /**
-     * 显示图片 - 好莱坞首页横图 293x135
-     * 60 * 60
-     */
-//public static void IconPicture(Context mContext, AppInfo appinfo, final ImageView iv) {
-//
-//        if (mContext instanceof BaseActivity) {
-//            if (((BaseActivity) mContext).isFinishing())
-//                return;
-//        }
-//            Glide.with(mContext)
-//                .load()
-//                .placeholder(R.drawable.other_image)
-//                .error(R.drawable.other_image)
-//                .crossFade()
-//                .into(iv);
-//
-//    }
     @Override
     public boolean handleMessage(Message msg) {
         return false;
@@ -109,10 +67,12 @@ public class ImageLoaderUtils implements Handler.Callback {
             public void onFocusChange(View view, boolean hasFocus) {
                 if (hasFocus) {
                     view.bringToFront();
+//                    view.setBackground(mContext.getResources().getDrawable(R.drawable.default_selector));
                     view.startAnimation(AnimationUtils.loadAnimation(mContext,
                             R.anim.scale_out));
                 }
                 if (!hasFocus) {
+//                    view.setBackground(null);
                     view.startAnimation(AnimationUtils.loadAnimation(mContext,
                             R.anim.scale_in));
                 }
@@ -210,9 +170,9 @@ public class ImageLoaderUtils implements Handler.Callback {
         Glide.with(mContext).load(InterfaceURL.PIC + uri)
                 .asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
 
-                .placeholder(R.drawable.ic_launcher)
+                .placeholder(R.mipmap.ic_progress_2_3)
                 .centerCrop()
-                .error(R.drawable.ic_launcher)
+                .error(R.mipmap.ic_progress_2_3)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -232,9 +192,9 @@ public class ImageLoaderUtils implements Handler.Callback {
         }
         Glide.with(mContext).load(uri)
                 .asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.ic_launcher)
+                .placeholder(R.mipmap.ic_progress_2_3)
                 .centerCrop()
-                .error(R.drawable.ic_launcher)
+                .error(R.mipmap.ic_progress_2_3)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -252,9 +212,9 @@ public class ImageLoaderUtils implements Handler.Callback {
         String pic = InterfaceURL.BASEIP + uri;
         Glide.with(mContext).load(pic)
                 .asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.ic_launcher)
+                .placeholder(R.mipmap.ic_progress_2_3)
                 .centerCrop()
-                .error(R.drawable.ic_launcher)
+                .error(R.mipmap.ic_progress_2_3)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -264,65 +224,40 @@ public class ImageLoaderUtils implements Handler.Callback {
     }
 
     /**
-     * 显示图片 - 电影详情页大图 220x330
+     * 显示图片 - 好莱坞首页横图 293x135
      * 60 * 60
      */
-    public static void showDimsW220H330(Context mContext, String uri, final ImageView iv) {
+    public static void showPicture(Context mContext, String uri, ImageView iv) {
         //if (DBG) Log.v(TAG, "showPicture() uri : " + uri);
         if (mContext instanceof BaseActivity) {
             if (((BaseActivity) mContext).isFinishing())
                 return;
         }
-//        Glide.with(mContext)
-//                .load(InterfaceURL.IP + uri)
-//                //.centerCrop()
-//                .placeholder(R.drawable.movie_detail_image)
-//                .error(R.drawable.movie_detail_image)
-//                .crossFade()
-//                .into(new SimpleTarget<GlideDrawable>() {
-//                    @Override
-//                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-//
-//                    }
-//                });
-
-//        Glide.with(mContext).load(InterfaceURL.IP + uri)
-//                .asBitmap()
-//                .placeholder(R.drawable.movie_detail_image)
-//                .error(R.drawable.movie_detail_image)
-//                .into(new SimpleTarget<Bitmap>() {
-//                    @Override
-//                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-//                        iv.setImageBitmap(createReflectedImage(resource));
-//                    }
-//                });
-
-//        Glide.with(mContext).load(InterfaceURL.IP + uri).asBitmap().into(new SimpleTarget<Bitmap>() {
-//            @Override
-//            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-//                iv.setImageBitmap(createReflectedImage(resource));
-//            }
-//        });
+        Glide.with(mContext)
+                .load( uri)
+                .centerCrop()
+                .placeholder(R.mipmap.ic_progress_2_3)
+                .error(R.mipmap.ic_progress_2_3)
+                .crossFade()
+                .into(iv);
     }
-
-
     /**
      * 显示图片 - 好莱坞首页横图 293x135
      * 60 * 60
      */
-    public static void showPictureW293H135(Context mContext, String uri, ImageView iv) {
+    public static void showPictureLocal(Context mContext, String uri, ImageView iv) {
         //if (DBG) Log.v(TAG, "showPicture() uri : " + uri);
         if (mContext instanceof BaseActivity) {
             if (((BaseActivity) mContext).isFinishing())
                 return;
         }
-//        Glide.with(mContext)
-//                .load(InterfaceURL.IP + uri)
-//                //.centerCrop()
-//                .placeholder(R.drawable.index_image)
-//                .error(R.drawable.index_image)
-//                .crossFade()
-//                .into(iv);
+        Glide.with(mContext)
+                .load( uri)
+                .centerCrop()
+                .placeholder(R.mipmap.ic_progress_2_3)
+                .error(R.mipmap.ic_progress_2_3)
+                .crossFade()
+                .into(iv);
     }
 
     /**

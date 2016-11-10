@@ -12,17 +12,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseActivity;
 import com.tuojin.tvfilm.bean.FilmBean;
 import com.tuojin.tvfilm.bean.FilmTypeBean;
+import com.tuojin.tvfilm.bean.RecommBean;
 import com.tuojin.tvfilm.contract.FilmTypeContract;
+import com.tuojin.tvfilm.event.FilmTypeEvent;
 import com.tuojin.tvfilm.keybord.FocusGridLayoutManager;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
 import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
 import com.tuojin.tvfilm.modules.main.FilmDetailActivity;
 import com.tuojin.tvfilm.presenter.FilmTypePresenterImpl;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -85,7 +91,6 @@ public class TypeActivity extends BaseActivity<FilmTypeContract.View, FilmTypePr
         mLayout = new LinearLayoutManager(this);
         mLayout.setOrientation(LinearLayoutManager.VERTICAL);
         mRvMenu.setLayoutManager(mLayout);
-
         mGridLayoutManager = new FocusGridLayoutManager(mActivity, 5);
         mGridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mMainFragment.setHasFixedSize(true);
@@ -154,6 +159,27 @@ public class TypeActivity extends BaseActivity<FilmTypeContract.View, FilmTypePr
     }
 
     @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+
+        if (((LinearLayoutManager) mRvMenu.getLayoutManager()).findFirstVisibleItemPosition() == 0
+                ) {
+            mIvUp.setVisibility(View.INVISIBLE);
+        } else {
+            mIvUp.setVisibility(View.VISIBLE);
+
+        }
+
+        if (((LinearLayoutManager) mRvMenu.getLayoutManager()).findLastVisibleItemPosition() == mMenuList.size() - 1
+                ) {
+            mIvDown.setVisibility(View.INVISIBLE);
+        } else {
+            mIvDown.setVisibility(View.VISIBLE);
+        }
+
+        return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         View focusedChild = mMainFragment.getFocusedChild();
@@ -192,10 +218,42 @@ public class TypeActivity extends BaseActivity<FilmTypeContract.View, FilmTypePr
             });
         }
 
+
         @Override
         public int getItemCount() {
             return mMenuList.size();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onMessageEvent(FilmTypeEvent event) {
+        String msg = event.msg;
+        List<FilmBean> mDatas = new Gson().fromJson(msg, RecommBean.class).getData().getData();
+        mFilmBeen = mDatas;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mTitleTopbar.setText(btn.getText() + "共有" + mFilmBeen.size() + "部影片");
+                mOtherAdapter = new CommonAdapter<FilmBean>(mActivity, R.layout.item_other, mFilmBeen, 1) {
+                    @Override
+                    public void convert(ViewHolder holder, FilmBean bean) {
+                        holder.setText(R.id.movie_title_other, bean.getMovie_name());
+                        holder.setImageResource(R.id.movie_image_other, bean.getPoster());
+                        holder.setScaleAnimation(R.id.movie_title_other);
+                    }
+                };
+                mOtherAdapter.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(ViewGroup parent, View view, Object o, int position) {
+                        Intent intent = new Intent(mActivity, FilmDetailActivity.class);
+                        mValue = mFilmBeen.get(position);
+                        intent.putExtra("film", mValue);
+                        startActivity(intent);
+                    }
+                });
+                mMainFragment.setAdapter(mOtherAdapter);
+            }
+        });
     }
 
     public class YearViewHolder extends RecyclerView.ViewHolder {

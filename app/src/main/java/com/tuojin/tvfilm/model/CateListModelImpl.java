@@ -1,14 +1,9 @@
 package com.tuojin.tvfilm.model;
 
-import com.google.gson.Gson;
-import com.tuojin.tvfilm.bean.DirectListBean;
-import com.tuojin.tvfilm.bean.DirectorBean;
 import com.tuojin.tvfilm.contract.CateListContract;
 import com.tuojin.tvfilm.net.TvFilmNetWorkWS;
 import com.tuojin.tvfilm.presenter.CateListPresenterImpl;
 import com.tuojin.tvfilm.utils.Constant;
-
-import java.util.List;
 
 /**
  * Created by MVPHelper on 2016/09/22
@@ -35,23 +30,11 @@ public class CateListModelImpl implements CateListContract.Model, Constant {
      */
     @Override
     public void initRadioButton(int type) {
-        TvFilmNetWorkWS filmNetWorkWS = new TvFilmNetWorkWS();
+        TvFilmNetWorkWS filmNetWorkWS =new TvFilmNetWorkWS();
         switch (type) {
             case 0:
                 filmNetWorkWS.sendMsg(Constant.PADMAC +
-                        "|getDoctorList|startIndex=0&endIndex=20", new TvFilmNetWorkWS.Success() {
-                    @Override
-                    public void excute(String data) {
-                        DirectListBean directListBean = new Gson().fromJson(data, DirectListBean.class);
-                        List<DirectorBean> directorBeanList = directListBean.getData().getData();
-                        mPresenter.initViewRadioButton(directorBeanList);
-                    }
-                }, new TvFilmNetWorkWS.Failure() {
-                    @Override
-                    public void excute(String data) {
-
-                    }
-                });
+                        "|getDoctorList|startIndex=0&endIndex=20");
                 break;
 
         }

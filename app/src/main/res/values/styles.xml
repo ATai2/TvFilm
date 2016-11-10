@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -48,7 +47,7 @@
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:background">@drawable/radio_selectot</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginTop">12dp</item>
         <item name="android:button">@null</item>
     </style>
     <!-- appname样式 -->
@@ -93,10 +92,22 @@
     </style>
 
     <style name="categoryitem">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:textSize">60sp</item>
+        <item name="android:background">@color/black40</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">true</item>
+    </style>
+
+    <style name="categoryitemsmall">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:textSize">30sp</item>
         <item name="android:ellipsize">marquee</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">true</item>
@@ -120,6 +131,42 @@
         <item name="android:layout_height">250dp</item>
         <item name="android:focusable">true</item>
         <item name="android:layout_margin">5dp</item>
+    </style>
+
+    <style name="dialogText1">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="dialogText2" >
+        <item name="android:textColor">@color/wheat</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="pay_btn">
+       <item name="android:layout_margin">10dp</item>
+        <item name="android:textColor">@color/whitesmoke</item>
+        <item name="android:textSize">30dp</item>
+        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">wrap_content</item>
+
+        <item name="android:background">@drawable/default_selector_blue</item>
+    </style>
+
+    <style name="live_text">
+        <item name="android:layout_marginLeft">12dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:textSize">28sp</item>
     </style>
 
 </resources>

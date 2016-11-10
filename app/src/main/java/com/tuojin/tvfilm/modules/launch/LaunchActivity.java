@@ -41,7 +41,7 @@ public class LaunchActivity extends AppCompatActivity {
             public void run() {
                 try {
                     synchronized (this){
-                        wait(3000);
+                        wait(2000);
                         startActivity(new Intent(LaunchActivity.this, MainActivity.class));
                         LaunchActivity.this.finish();
                     }

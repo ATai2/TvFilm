@@ -1,53 +1,33 @@
 package com.tuojin.tvfilm.net;
 
-import com.google.gson.Gson;
-import com.koushikdutta.async.http.AsyncHttpClient;
-import com.koushikdutta.async.http.WebSocket;
-import com.tuojin.tvfilm.utils.LogUtils;
+import com.tuojin.tvfilm.event.CmdEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * 文 件 名: TvFilmNetWorkWS
  * 创 建 人: Administrator
  * 创建日期: 2016/9/20 15:21
  * 文件描述：应用开启即启动socket，应用关闭，关闭。
+ * 将网络请求从，Androidasynic换成okhttp。开启服务
+ * 在网络处理时，注意msgType即可判断次方法为什么方法，之后可以进行操作，json转换，替换。发送消息等
  * 邮   箱:
  * 博   客:
  * 修改时间：
  * 修改备注：
  */
 public class TvFilmNetWorkWS {
+    private String TAG = "ws";
 
-    public void sendMsg(final String cmd, final Success success, final Failure failure) {
-        AsyncHttpClient.getDefaultInstance().websocket("ws://192.168.1.243:8081/bestv-cinema-player/message?mac=PAD1465889962927"
-                , null, new AsyncHttpClient.WebSocketConnectCallback() {
-                    @Override
-                    public void onCompleted(Exception ex, WebSocket webSocket) {
-                        if (ex != null) {
-                            ex.printStackTrace();
-                            return;
-                        }
-                        webSocket.send(cmd);
-                        webSocket.setStringCallback(new WebSocket.StringCallback() {
-                            public void onStringAvailable(String s) {
-                                LogUtils.d("ws", s);
-                                BaseApiResponse response = new Gson().fromJson(s, BaseApiResponse.class);
-                                int status = response.getStatus();
-                                if (status == 3) {
-                                    success.excute(s);
-                                } else {
-                                    failure.excute(s);
-                                }
-                            }
-                        });
-                    }
-                });
+    public TvFilmNetWorkWS() {
     }
 
-    public interface Success {
-        void excute(String data);
+    public void sendMsg(String cmd, int i) {
+        EventBus.getDefault().post(new CmdEvent(cmd, i));
     }
 
-    public interface Failure {
-        void excute(String data);
+    public void sendMsg(String cmd) {
+        sendMsg(cmd, 0);
     }
 }
+

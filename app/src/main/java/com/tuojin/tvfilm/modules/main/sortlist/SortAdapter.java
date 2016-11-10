@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.utils.ImageLoaderUtils;
@@ -24,6 +25,7 @@ public class SortAdapter extends RecyclerView.Adapter<SortAdapter.SortViewHolder
     public static final int LONG = 0;//长类型
     public static final int SMALL = 1;//短类型
     private final int[] mIntArray;
+    private final String[] mString;
 
     Context mContext;
     //  List<String> mList;
@@ -46,7 +48,14 @@ public class SortAdapter extends RecyclerView.Adapter<SortAdapter.SortViewHolder
                 R.mipmap.sort_big,
                 R.mipmap.sort_ad,
                 R.mipmap.sort_douban,};
-
+        mString =new String[]{
+                "类型",
+                "年份",
+                "地区",
+                "直播",
+                "导演",
+                "演员"
+        };
     }
 
     @Override
@@ -56,12 +65,12 @@ public class SortAdapter extends RecyclerView.Adapter<SortAdapter.SortViewHolder
 //        view = LayoutInflater.from(mContext).inflate(R.layout.item_category_long, parent, false);
 
         if (viewType == LONG) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_sort_long, parent, false);
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_category_long, parent, false);
             mCategoryViewHolder = new SortViewHolder(view);
             return mCategoryViewHolder;
         }
         if (viewType == SMALL) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_sort_small, parent, false);
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_category_small, parent, false);
             mCategoryViewHolder = new SortViewHolder(view);
             return mCategoryViewHolder;
         }
@@ -75,6 +84,7 @@ public class SortAdapter extends RecyclerView.Adapter<SortAdapter.SortViewHolder
         //  holder.mTVCategoryLong.setText(mList.get(position).getTitle());
         holder.mIVCategoryLong.setImageResource(mIntArray[position]);
         ImageLoaderUtils.setAnimation(mContext, holder.itemView);
+        holder.mTVCategoryLong.setText(mString[position]);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,13 +114,13 @@ public class SortAdapter extends RecyclerView.Adapter<SortAdapter.SortViewHolder
 
     public class SortViewHolder extends RecyclerView.ViewHolder {
         ImageView mIVCategoryLong;
-//        TextView mTVCategoryLong;
+        TextView mTVCategoryLong;
 
         SortViewHolder(View view) {
             super(view);
             mIVCategoryLong = (ImageView) view.findViewById(R.id.mIVCategory);
-//            mTVCategoryLong = (TextView) view.findViewById(R.id.mTVCategory);
-            ImageLoaderUtils.setAnimation(mContext, itemView);
+            mTVCategoryLong = (TextView) view.findViewById(R.id.mTVCategory);
+//            ImageLoaderUtils.setAnimation(mContext, itemView);
         }
     }
 }

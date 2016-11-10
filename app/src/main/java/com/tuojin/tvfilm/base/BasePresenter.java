@@ -1,5 +1,7 @@
 package com.tuojin.tvfilm.base;
 
+import android.content.Context;
+
 /**
  * 文 件 名: BasePresenter
  * 创 建 人: Administrator
@@ -12,6 +14,16 @@ package com.tuojin.tvfilm.base;
  */
 public class BasePresenter<T> {
     public T mView;
+    public Context mContext;
+
+    public Context getContext() {
+        return mContext;
+    }
+
+    public void setContext(Context context) {
+        mContext = context;
+    }
+
     public void attach(T mView) {
         this.mView = mView;
     }

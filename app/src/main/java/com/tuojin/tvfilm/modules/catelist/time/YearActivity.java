@@ -1,7 +1,6 @@
 package com.tuojin.tvfilm.modules.catelist.time;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,20 +9,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseActivity;
 import com.tuojin.tvfilm.bean.FilmBean;
+import com.tuojin.tvfilm.bean.RecommBean;
 import com.tuojin.tvfilm.bean.YearBean;
 import com.tuojin.tvfilm.contract.YearContract;
+import com.tuojin.tvfilm.event.YearListEvent;
 import com.tuojin.tvfilm.keybord.FocusGridLayoutManager;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
 import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
 import com.tuojin.tvfilm.modules.main.FilmDetailActivity;
 import com.tuojin.tvfilm.presenter.YearPresenterImpl;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -56,6 +62,12 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
     LinearLayout mTabContainer;
     @BindView(R.id.title_topbar)
     TextView mTitle;
+    @BindView(R.id.tv_menutitle)
+    TextView mTvMenutitle;
+    @BindView(R.id.iv_up)
+    ImageView mIvUp;
+    @BindView(R.id.iv_down)
+    ImageView mIvDown;
     private List<YearBean> mMenuList;
     private CommonAdapter<YearBean> mMenuAdapter;
     private CommonAdapter<FilmBean> mOtherAdapter;
@@ -106,17 +118,12 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
     @OnClick(R.id.iv_back)
     public void onClick() {
         this.finish();
     }
+
+
 
     /**
      * 网络访问，得到年份列表
@@ -131,6 +138,41 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
             public void run() {
                 YearAdapter adapter = new YearAdapter();
                 mRvMenu.setAdapter(adapter);
+            }
+        });
+        if (((LinearLayoutManager) mRvMenu.getLayoutManager()).findFirstVisibleItemPosition() ==0){
+            mIvUp.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onMessageEvent(YearListEvent event) {
+        String msg = event.msg;
+        final List<FilmBean> list = new Gson().fromJson(msg, RecommBean.class).getData().getData();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (btn != null) {
+                    mTitle.setText("年份：" + btn.getText() + "\t共有" + list.size() + "部");
+                    mOtherAdapter = new CommonAdapter<FilmBean>(mActivity, R.layout.item_other, list, 1) {
+                        @Override
+                        public void convert(ViewHolder holder, FilmBean bean) {
+                            holder.setText(R.id.movie_title_other, bean.getMovie_name());
+                            holder.setImageResource(R.id.movie_image_other, bean.getPoster());
+                            holder.setScaleAnimation(R.id.movie_title_other);
+                        }
+                    };
+                    mOtherAdapter.setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(ViewGroup parent, View view, Object o, int position) {
+                            Intent intent = new Intent(mActivity, FilmDetailActivity.class);
+                            FilmBean bean = list.get(position);
+                            intent.putExtra("film", bean);
+                            startActivity(intent);
+                        }
+                    });
+                    mMainFragment.setAdapter(mOtherAdapter);
+                }
             }
         });
     }
@@ -173,6 +215,27 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
 
 
     @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+
+        if (((LinearLayoutManager) mRvMenu.getLayoutManager()).findFirstVisibleItemPosition() == 0
+                ) {
+            mIvUp.setVisibility(View.INVISIBLE);
+        }else{
+            mIvUp.setVisibility(View.VISIBLE);
+
+        }
+
+        if (((LinearLayoutManager) mRvMenu.getLayoutManager()).findLastVisibleItemPosition() == mMenuList.size()-1
+                ) {
+            mIvDown.setVisibility(View.INVISIBLE);
+        }else{
+            mIvDown.setVisibility(View.VISIBLE);
+        }
+
+        return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         View focusedChild = mMainFragment.getFocusedChild();
@@ -182,6 +245,8 @@ public class YearActivity extends BaseActivity<YearContract.View, YearPresenterI
             if (btn != null)
                 btn.requestFocus();
         }
+
+
         return super.onKeyDown(keyCode, event);
     }
 

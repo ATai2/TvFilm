@@ -1,7 +1,6 @@
 package com.tuojin.tvfilm.modules.catelist.director;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -9,13 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseActivity;
+import com.tuojin.tvfilm.bean.DirectListBean;
 import com.tuojin.tvfilm.bean.DirectorBean;
 import com.tuojin.tvfilm.contract.DirectorListContract;
+import com.tuojin.tvfilm.event.DirectorEvent;
+import com.tuojin.tvfilm.event.DirectorListEvent;
 import com.tuojin.tvfilm.keybord.FocusGridLayoutManager;
 import com.tuojin.tvfilm.modules.catelist.FilmListActivity;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
@@ -23,12 +27,17 @@ import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
 import com.tuojin.tvfilm.presenter.DirectorListPresenterImpl;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
 /**
  * 文 件 名: DirectorActivity
@@ -59,7 +68,11 @@ public class DirectorActivity extends BaseActivity<DirectorListContract.View, Di
     @BindView(R.id.tab_container)
     LinearLayout mTabContainer;
     TextView btn = null;
-
+    @BindView(R.id.iv_up)
+    ImageView mIvUp;
+    @BindView(R.id.iv_down)
+    ImageView mIvDown;
+    String name;
     @Override
     protected DirectorListPresenterImpl initPresenter() {
         return new DirectorListPresenterImpl();
@@ -125,36 +138,67 @@ public class DirectorActivity extends BaseActivity<DirectorListContract.View, Di
         return super.onKeyDown(keyCode, event);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
     @OnClick(R.id.iv_back)
     public void onClick() {
         this.finish();
     }
 
-    @Override
-    public void initList(List<DirectorBean> list) {
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onMessageEvent(DirectorEvent event) {
+        String msg = event.msg;
+        List<DirectorBean> list = new Gson().fromJson(msg, DirectListBean.class).getData().getData();
         mList = list;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                CommonAdapter<DirectorBean> mAdapter = new CommonAdapter<DirectorBean>(DirectorActivity.this, R.layout.item_other_fitsize, mList, 0) {
+                CommonAdapter<DirectorBean> mAdapter = new CommonAdapter<DirectorBean>(DirectorActivity.this, R.layout.item_text, mList, 0) {
                     @Override
                     public void convert(ViewHolder holder, DirectorBean areaBean) {
                         holder.setText(R.id.movie_title_other, areaBean.getMovie_director());
-                        holder.setImageResourceNoMID(R.id.movie_image_other, areaBean.getImg());
+//                        holder.setImageResourceNoMID(R.id.movie_image_other, areaBean.getImg());
                         holder.setScaleAnimation(R.id.movie_title_other);
                     }
                 };
                 mAdapter.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(ViewGroup parent, View view, Object o, int position) {
-                        mPresenter.listByDirector(mList.get(position).getId(),mList.get(position).getMovie_director());
+                        mPresenter.listByDirector(mList.get(position).getId(), mList.get(position).getMovie_director());
+                        name=mList.get(position).getMovie_director();
+                    }
+                });
+                mMainFragment.setAdapter(mAdapter);
+            }
+        });
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onMessageEvent(DirectorListEvent event) {
+        String msg = event.msg;
+        Intent intent = new Intent(this, FilmListActivity.class);
+        intent.putExtra("data", msg);
+        intent.putExtra("type", name);
+        intent.setFlags( FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+    }
+    @Override
+    public void initList(List<DirectorBean> list) {
+        mList = list;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                CommonAdapter<DirectorBean> mAdapter = new CommonAdapter<DirectorBean>(DirectorActivity.this, R.layout.item_text, mList, 0) {
+                    @Override
+                    public void convert(ViewHolder holder, DirectorBean areaBean) {
+                        holder.setText(R.id.movie_title_other, areaBean.getMovie_director());
+//                        holder.setImageResourceNoMID(R.id.movie_image_other, areaBean.getImg());
+                        holder.setScaleAnimation(R.id.movie_title_other);
+                    }
+                };
+                mAdapter.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(ViewGroup parent, View view, Object o, int position) {
+                        mPresenter.listByDirector(mList.get(position).getId(), mList.get(position).getMovie_director());
 
                     }
                 });
@@ -165,23 +209,43 @@ public class DirectorActivity extends BaseActivity<DirectorListContract.View, Di
 
     @Override
     public void initListByDirector(String data, String movie_director) {
-        Intent intent=new Intent(this, FilmListActivity.class);
-        intent.putExtra("data",data);
-        intent.putExtra("type",movie_director);
+        Intent intent = new Intent(this, FilmListActivity.class);
+        intent.putExtra("data", data);
+        intent.putExtra("type", movie_director);
         startActivity(intent);
     }
 
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+
+        if (((LinearLayoutManager) mRvMenu.getLayoutManager()).findFirstVisibleItemPosition() == 0
+                ) {
+            mIvUp.setVisibility(View.INVISIBLE);
+        } else {
+            mIvUp.setVisibility(View.VISIBLE);
+
+        }
+
+        if (((LinearLayoutManager) mRvMenu.getLayoutManager()).findLastVisibleItemPosition() == mMenuList.size() - 1
+                ) {
+            mIvDown.setVisibility(View.INVISIBLE);
+        } else {
+            mIvDown.setVisibility(View.VISIBLE);
+        }
+
+        return super.onKeyUp(keyCode, event);
+    }
 
     class AtoZAdapter extends RecyclerView.Adapter<AtoZAdapter.ViewHolder> {
         @Override
-        public AtoZAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(DirectorActivity.this).inflate(R.layout.item_radbtn, parent, false);
-            DirectorActivity.AtoZAdapter.ViewHolder holder = new DirectorActivity.AtoZAdapter.ViewHolder(view);
+            ViewHolder holder = new ViewHolder(view);
             return holder;
         }
 
         @Override
-        public void onBindViewHolder(AtoZAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
 
             holder.mRadbtnItem.setText(mMenuList.get(position));
             if (position == 0) {
