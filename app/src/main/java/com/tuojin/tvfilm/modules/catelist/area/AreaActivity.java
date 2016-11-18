@@ -27,6 +27,7 @@ import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
 import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
 import com.tuojin.tvfilm.presenter.AreaPresenterImpl;
+import com.tuojin.tvfilm.widget.CustomRecycleViewVertical;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -64,7 +65,7 @@ public class AreaActivity extends BaseActivity<AreaContract.View, AreaPresenterI
     @BindView(R.id.tv_menutitle)
     TextView mTvMenutitle;
     @BindView(R.id.rv_menu)
-    RecyclerView mRvMenu;
+    CustomRecycleViewVertical mRvMenu;
     @BindView(R.id.tab_container)
     LinearLayout mTabContainer;
     TextView btn = null;

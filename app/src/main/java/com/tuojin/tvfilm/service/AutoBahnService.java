@@ -17,6 +17,7 @@ import com.tuojin.tvfilm.event.DetailEvent;
 import com.tuojin.tvfilm.event.DetailListEvent;
 import com.tuojin.tvfilm.event.DirectorEvent;
 import com.tuojin.tvfilm.event.DirectorListEvent;
+import com.tuojin.tvfilm.event.ErrorEvent;
 import com.tuojin.tvfilm.event.FilmAdEvent;
 import com.tuojin.tvfilm.event.FilmBigEvent;
 import com.tuojin.tvfilm.event.FilmDoubanEvent;
@@ -25,15 +26,22 @@ import com.tuojin.tvfilm.event.FilmNewEvent;
 import com.tuojin.tvfilm.event.FilmPauseEvent;
 import com.tuojin.tvfilm.event.FilmPlayEvent;
 import com.tuojin.tvfilm.event.FilmRePlayEvent;
+import com.tuojin.tvfilm.event.FilmStatusEvent;
 import com.tuojin.tvfilm.event.FilmStopEvent;
 import com.tuojin.tvfilm.event.FilmTypeEvent;
 import com.tuojin.tvfilm.event.HotRecommEvent;
 import com.tuojin.tvfilm.event.KeyWordEvent;
+import com.tuojin.tvfilm.event.LiveContentEvent;
+import com.tuojin.tvfilm.event.LiveListEvent;
 import com.tuojin.tvfilm.event.PayEvent;
 import com.tuojin.tvfilm.event.PayReviewEvent;
+import com.tuojin.tvfilm.event.PreviewConfirmEvent;
 import com.tuojin.tvfilm.event.QrCodeEvent;
+import com.tuojin.tvfilm.event.SearchHotEvent;
+import com.tuojin.tvfilm.event.SearchNoListEvent;
 import com.tuojin.tvfilm.event.TerminalBindEvent;
 import com.tuojin.tvfilm.event.TerminalListEvent;
+import com.tuojin.tvfilm.event.YearEvent;
 import com.tuojin.tvfilm.event.YearListEvent;
 import com.tuojin.tvfilm.net.BaseApiResponse;
 import com.tuojin.tvfilm.utils.Constant;
@@ -48,7 +56,7 @@ import de.tavendo.autobahn.WebSocketConnection;
 import de.tavendo.autobahn.WebSocketException;
 import de.tavendo.autobahn.WebSocketHandler;
 
-public class AutoBahnService extends Service {
+public class AutoBahnService extends Service  {
     private String TAG = "abs";
     String flag;
     boolean isOpen;
@@ -115,136 +123,167 @@ public class AutoBahnService extends Service {
 
                     if (status == 3) {
                         switch (response.getMsgType()) {
-                            case "payPreviewOver":
+                            case Constant.PAY_PREVIEWOVER:
                                 //获得大片预览停止确认
                                 EventBus.getDefault().post(new PayReviewEvent("大片预览结束"));
                                 break;
-                            case "startPlay":
+                            case Constant.STARTPLAY:
                                 //影片开始播放
                                 EventBus.getDefault().post(new FilmPlayEvent("影片开始播放"));
                                 break;
-                            case "paySuccess":
+                            case Constant.PAYSUCCESS:
                                 EventBus.getDefault().post(new PayEvent("支付成功，请继续观看"));
                                 break;
-                            case "stopPlay":
+                            case Constant.STOPPLAY:
                                 //影片停止播放
                                 EventBus.getDefault().post(new FilmStopEvent("影片停止播放"));
-                            break;
+                                break;
+                            case Constant.BIGPAUSE:
+                                //影片预览暂停确认
+                                EventBus.getDefault().post(new PreviewConfirmEvent(s));
+                                break;
+//                            case Constant.BIGPAUSECONTINUE:
+//                                //影片停止播放
+//                                EventBus.getDefault().post(new FilmStopEvent("影片停止播放"));
+//                                break;
+//                            case Constant.BIGSTOP:
+//                                //影片停止播放
+//                                EventBus.getDefault().post(new FilmStopEvent("影片停止播放"));
+//                                break;
+                            case Constant.BIGPREVEWSTOPCONFIRM:
+                                //影片停止播放
+                                EventBus.getDefault().post(new FilmStopEvent("影片停止播放"));
+                                break;
 
-                        }
-                        if (response.getMsgType().equals("pausePlay")) {
-                            //影片暂停播放
-                            EventBus.getDefault().post(new FilmPauseEvent("影片暂停播放"));
-                        }
-                        if (response.getMsgType().equals("continuePlay")) {
-                            //影片继续播放
-                            EventBus.getDefault().post(new FilmRePlayEvent("影片继续播放"));
-                        }
-                        if (response.getMsgType().equals("playStatus")) {
-                            //影片播放状态
-                            EventBus.getDefault().post(new FilmPauseEvent("影片播放状态"));
-                        }
-                        if (response.getMsgType().equals("goToPosition")) {
-                            //影片跳转播放
-                            EventBus.getDefault().post(new FilmPauseEvent("影片跳转播放"));
-                        }
-                        if (response.getMsgType().equals("getTerminal")) {
-                            //获取影厅列表
-                            EventBus.getDefault().post(new TerminalListEvent(s));
-                        }
-                        //-----------------------------------------------------------
-                        if (response.getMsgType().equals("getFilmListOrderByHotest")) {
-                            //热门推荐
-                            if (mInt == 101) {
-                                EventBus.getDefault().post(new HotRecommEvent(s));
-                            }//详情中列表
-                            if (mInt == 102) {
-                                EventBus.getDefault().post(new DetailListEvent(s));
-                            }   // 分类最新
-                            if (mInt == 103) {
-                                EventBus.getDefault().post(new FilmHotEvent(s));
-                            }
-                            if (mInt == 104) {
-                                EventBus.getDefault().post(new FilmHotEvent(s));
-                            }
-                        }
-                        if (response.getMsgType().equals("getFilmListOrderByNewest")) {
-                            //最热
-                            EventBus.getDefault().post(new FilmNewEvent(s));
-                        }
-                        if (response.getMsgType().equals("getFilmListOrderByPaymovie")) {
-                            //大片
-                            EventBus.getDefault().post(new FilmBigEvent(s));
-                        }
-                        if (response.getMsgType().equals("getFilmListOrderByHotest")) {
-                            if (mInt == 201) {
-                                EventBus.getDefault().post(new FilmAdEvent(s));
-                            }
-                            //广告
-                        }
-                        if (response.getMsgType().equals("getFilmListOrderByScore")) {
-                            //豆瓣
-                            EventBus.getDefault().post(new FilmDoubanEvent(s));
-                        }
-                        if (response.getMsgType().equals("getDoctorList")) {
-                            //导演
-                            EventBus.getDefault().post(new DirectorEvent(s));
-                        }
-                        if (response.getMsgType().equals("getActorList")) {
-                            //演员
-                            EventBus.getDefault().post(new ActorEvent(s));
-                        }
-                        if (response.getMsgType().equals("getPlaceList")) {
-                            //地区列表
-                            EventBus.getDefault().post(new AreaEvent(s));
-                        }
-                        if (response.getMsgType().equals("getFilmTypeList")) {
-                            //影片跳转播放
-                            EventBus.getDefault().post(new FilmTypeEvent(s));
-                        }
-                        if (response.getMsgType().equals("getYearList")) {
-                            //影片跳转播放
-                            EventBus.getDefault().post(new FilmPauseEvent(s));
-                        }
-                        if (response.getMsgType().equals("getFilmListOrderByScore")) {
-                            //影片跳转播放
-                            EventBus.getDefault().post(new FilmPauseEvent(s));
-                        }
-                        if (response.getMsgType().equals("getFilmDetail")) {
-                            //影片明晰
-                            EventBus.getDefault().post(new DetailEvent(s));
-                        }
-                        if (response.getMsgType().equals("payAli")) {
-                            //二维码
-                            EventBus.getDefault().post(new QrCodeEvent(s));
-                        }
-//            根据关键字
-                        if (response.getMsgType().equals("getFilmList")) {
-                            //影片类型
-                            if (mInt == 1) {
+                            case Constant.PAUSEPLAY:
+                                EventBus.getDefault().post(new FilmPauseEvent("影片暂停播放"));
+                                break;
+                            case Constant.CONTINUEPLAY:
+                                //影片继续播放
+                                EventBus.getDefault().post(new FilmRePlayEvent("影片继续播放"));
+                                break;
+                            case Constant.PLAYSTATUS:
+                                //影片继续播放
+                                EventBus.getDefault().post(new FilmStatusEvent(s));
+                                break;
+                            case Constant.GOTOPOSITION:
+                                //影片跳转播放
+                                EventBus.getDefault().post(new FilmPauseEvent("影片跳转播放"));
+                                break;
+                            case Constant.GETTERMINAL:
+                                //获取影厅列表
+                                EventBus.getDefault().post(new TerminalListEvent(s));
+                                break;
+                            case Constant.GETFILMLISTORDERBYHOTEST:
+                                //热门推荐
+                                if (mInt == 101) {
+                                    EventBus.getDefault().post(new HotRecommEvent(s));
+                                }//详情中列表
+                                if (mInt == 102) {
+                                    EventBus.getDefault().post(new DetailListEvent(s));
+                                }   // 分类最新
+                                if (mInt == 103) {
+                                    EventBus.getDefault().post(new FilmHotEvent(s));
+                                }
+                                if (mInt == 104) {
+                                    EventBus.getDefault().post(new SearchHotEvent(s));
+                                }
+                                if (mInt == 201) {
+//                                    广告
+                                    EventBus.getDefault().post(new FilmAdEvent(s));
+                                }
+                                break;
+                            case Constant.GET_FILMLIST_ORDER_BYNEWEST:
+                                //最热
+                                EventBus.getDefault().post(new FilmNewEvent(s));
+                                break;
+                            case Constant.GET_FILMLIST_ORDER_BYPAYMOVIE:
+                                //大片
+                                EventBus.getDefault().post(new FilmBigEvent(s));
+                                break;
+                            case Constant.GET_FILMLIST_ORDER_BYDOUBAN:
+                                //豆瓣
+                                EventBus.getDefault().post(new FilmDoubanEvent(s));
+                                break;
+                            case Constant.GET_FILMLIST_ORDER_BYDIRECTOR:
+                                //导演
+                                EventBus.getDefault().post(new DirectorEvent(s));
+                                break;
+                            case Constant.GET_FILMLIST_ORDER_BYACTOR:
+                                //演员
+                                EventBus.getDefault().post(new ActorEvent(s));
+                                break;
+                            case Constant.PLACELIST:
+                                //地区列表
+                                EventBus.getDefault().post(new AreaEvent(s));
+                                break;
+                            case Constant.LIVELIST:
+                                //直播列表
+                                EventBus.getDefault().post(new LiveListEvent(s));
+                                break;
+                            case Constant.LIVECONTENTLIST:
+                                //直播列表
+                                EventBus.getDefault().post(new LiveContentEvent(s));
+                                break;
+                            case Constant.TYPELIST:
+                                //影片跳转播放
                                 EventBus.getDefault().post(new FilmTypeEvent(s));
-                            }
-//                地区
-                            if (mInt == 2) {
-                                EventBus.getDefault().post(new AreaFilmListEvent(s));
-                            }
-//                导演
-                            if (mInt == 3) {
-                                EventBus.getDefault().post(new DirectorListEvent(s));
-                            }
-                            //                演员
-                            if (mInt == 4) {
-                                EventBus.getDefault().post(new ActorListEvent(s));
-                            }
-                            //                年份
-                            if (mInt == 5) {
-                                EventBus.getDefault().post(new YearListEvent(s));
-                            }  //               关键字
-                            if (mInt == 6) {
+                                break;
+                            case Constant.YEARLIST:
+                                //地区列表
+                                EventBus.getDefault().post(new YearEvent(s));
+                                break;
+                            case Constant.FIRSTKEY:
+                                //地区列表
                                 EventBus.getDefault().post(new KeyWordEvent(s));
-                            }
+                                break;
+//                            case Constant.SCORELIST:
+//                                //地区列表
+//                                EventBus.getDefault().post(new AreaEvent(s));
+//                                break;
+                            case Constant.FILMLIST:
+                                //影片类型
+                                if (mInt == 1) {
+                                    EventBus.getDefault().post(new FilmTypeEvent(s));
+                                }
+//                地区
+                                if (mInt == 2) {
+                                    EventBus.getDefault().post(new AreaFilmListEvent(s));
+                                }
+//                导演
+                                if (mInt == 3) {
+                                    EventBus.getDefault().post(new DirectorListEvent(s));
+                                }
+                                //                演员
+                                if (mInt == 4) {
+                                    EventBus.getDefault().post(new ActorListEvent(s));
+                                }
+                                //                年份
+                                if (mInt == 5) {
+                                    EventBus.getDefault().post(new YearListEvent(s));
+                                }  //               关键字
+                                if (mInt == 6) {
+                                    EventBus.getDefault().post(new KeyWordEvent(s));
+                                }
+                                break;
+                            case Constant.ALIPAY:
+                                //二维码
+                                EventBus.getDefault().post(new QrCodeEvent(s));
+                                break;
+                            case Constant.DETAIL:
+                                //影片明晰
+                                EventBus.getDefault().post(new DetailEvent(s));
+                                break;
                         }
                     } else {
+                        switch (response.getMsgType()) {
+                            case Constant.FIRSTKEY:
+                                EventBus.getDefault().post(new SearchNoListEvent(s));
+                                break;
+                            default:
+                                EventBus.getDefault().post(new ErrorEvent(s));
+                                break;
+                        }
                     }
                     //EventBus.getDefault().post(event);
                 }
@@ -265,7 +304,7 @@ public class AutoBahnService extends Service {
     public void onMessageEvent(CmdEvent event) {
         String cmd = event.msg;
         mInt = event.mInt;
-        Log.d(TAG, "onMessage" + cmd + "   isConnected:" + mConnection == null ? "null" : (mConnection.isConnected() + ""));
+        Log.d(TAG, "onMessage" + cmd);
         if (mConnection != null) {
             mConnection.sendTextMessage(cmd);
         } else {

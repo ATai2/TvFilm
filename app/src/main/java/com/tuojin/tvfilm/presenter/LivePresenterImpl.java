@@ -28,8 +28,11 @@ public class LivePresenterImpl extends BasePresenter<LiveContract.View> implemen
         mModel.list(text);
     }
 
-    @Override
-    public void initList(List<LiveContentBean> mDatas) {
-        mView.initList(mDatas);
+    public void playLive(LiveContentBean bean) {
+        mModel.playLive(bean);
+    }
+
+    public void stopLive() {
+        mModel.stopLive();
     }
 }

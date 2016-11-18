@@ -26,6 +26,7 @@ import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
 import com.tuojin.tvfilm.modules.main.FilmDetailActivity;
 import com.tuojin.tvfilm.presenter.FilmTypePresenterImpl;
+import com.tuojin.tvfilm.widget.CustomRecycleViewVertical;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -60,7 +61,7 @@ public class TypeActivity extends BaseActivity<FilmTypeContract.View, FilmTypePr
     @BindView(R.id.iv_up)
     ImageView mIvUp;
     @BindView(R.id.rv_menu)
-    RecyclerView mRvMenu;
+    CustomRecycleViewVertical mRvMenu;
     @BindView(R.id.iv_down)
     ImageView mIvDown;
     @BindView(R.id.tab_container)
@@ -201,7 +202,7 @@ public class TypeActivity extends BaseActivity<FilmTypeContract.View, FilmTypePr
         }
 
         @Override
-        public void onBindViewHolder(TypeActivity.YearViewHolder holder, int position) {
+        public void onBindViewHolder(TypeActivity.YearViewHolder holder, final int position) {
             final FilmTypeBean yearBean = mMenuList.get(position);
             holder.mRadbtnItem.setText(yearBean.getMovieType());
             if (position == 0) {
@@ -209,6 +210,14 @@ public class TypeActivity extends BaseActivity<FilmTypeContract.View, FilmTypePr
                 btn = holder.mRadbtnItem;
                 mPresenter.onClick(yearBean.getId());
             }
+            holder.itemView.setFocusable(true);
+//            holder.itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//                @Override
+//                public void onFocusChange(View v, boolean hasFocus) {
+//                    Log.d("scroll", "onFocusChange: "+position);
+//                    mRvMenu.smoothToCenter(position);
+//                }
+//            });
             holder.mRadbtnItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

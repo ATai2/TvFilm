@@ -48,13 +48,12 @@ public class SortAdapter extends RecyclerView.Adapter<SortAdapter.SortViewHolder
                 R.mipmap.sort_big,
                 R.mipmap.sort_ad,
                 R.mipmap.sort_douban,};
-        mString =new String[]{
-                "类型",
-                "年份",
-                "地区",
-                "直播",
-                "导演",
-                "演员"
+        mString = new String[]{
+                "最新",
+                "最热",
+                "大片",
+                "广告",
+                "豆瓣"
         };
     }
 
@@ -86,6 +85,26 @@ public class SortAdapter extends RecyclerView.Adapter<SortAdapter.SortViewHolder
         ImageLoaderUtils.setAnimation(mContext, holder.itemView);
         holder.mTVCategoryLong.setText(mString[position]);
 
+        switch (position) {
+            case 0:
+                holder.mIvIcon.setImageResource(R.drawable.a_film);
+                break;
+            case 1:
+                holder.mIvIcon.setImageResource(R.drawable.a_film);
+                break;
+            case 2:
+                holder.mIvIcon.setImageResource(R.drawable.a_film);
+                break;
+
+
+            case 3:
+                holder.mIvIcon.setImageResource(R.drawable.a_ad);
+                break;
+            case 4:
+                holder.mIvIcon.setImageResource(R.drawable.a_douban);
+                break;
+        }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,12 +132,14 @@ public class SortAdapter extends RecyclerView.Adapter<SortAdapter.SortViewHolder
 
 
     public class SortViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView mIvIcon;
         ImageView mIVCategoryLong;
         TextView mTVCategoryLong;
 
         SortViewHolder(View view) {
             super(view);
             mIVCategoryLong = (ImageView) view.findViewById(R.id.mIVCategory);
+            mIvIcon = (ImageView) view.findViewById(R.id.iv_icon);
             mTVCategoryLong = (TextView) view.findViewById(R.id.mTVCategory);
 //            ImageLoaderUtils.setAnimation(mContext, itemView);
         }

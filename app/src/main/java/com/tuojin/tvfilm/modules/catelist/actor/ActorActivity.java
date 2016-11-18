@@ -27,6 +27,7 @@ import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
 import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
 import com.tuojin.tvfilm.presenter.ActorPresenterImpl;
+import com.tuojin.tvfilm.widget.CustomRecycleViewVertical;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -66,7 +67,7 @@ public class ActorActivity extends BaseActivity<ActorContract.View, ActorPresent
     @BindView(R.id.tv_menutitle)
     TextView mTvMenutitle;
     @BindView(R.id.rv_menu)
-    RecyclerView mRvMenu;
+    CustomRecycleViewVertical mRvMenu;
     @BindView(R.id.tab_container)
     LinearLayout mTabContainer;
     TextView btn = null;
@@ -91,7 +92,6 @@ public class ActorActivity extends BaseActivity<ActorContract.View, ActorPresent
     @Override
     protected void initView() {
         mPresenter.attach(this);
-
         mTitle.setText("演员  共   位");
         mTvMenutitle.setText("演员列表");
 
@@ -254,7 +254,7 @@ public class ActorActivity extends BaseActivity<ActorContract.View, ActorPresent
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, final int position) {
 
             holder.mRadbtnItem.setText(mMenuList.get(position));
             if (position == 0) {
@@ -269,6 +269,13 @@ public class ActorActivity extends BaseActivity<ActorContract.View, ActorPresent
                     mPresenter.list(btn.getText().toString());
                 }
             });
+            holder.itemView.setFocusable(true);
+//            holder.itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//                @Override
+//                public void onFocusChange(View v, boolean hasFocus) {
+//                    mRvMenu.smoothToCenter(position);
+//                }
+//            });
         }
 
         @Override

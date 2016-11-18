@@ -28,6 +28,7 @@ public class CategoryAdapter2 extends RecyclerView.Adapter<CategoryAdapter2.Cate
     public static final int LONG = 0;//长类型
     public static final int SMALL = 1;//短类型
     private final int[] mIntArray;
+    private final String[] mString;
 
     Context mContext;
     List<CategoryInfo> mList;
@@ -46,9 +47,16 @@ public class CategoryAdapter2 extends RecyclerView.Adapter<CategoryAdapter2.Cate
         mContext = context;
         mList = list;
         mIntArray = new int[]{R.drawable.c_type, R.drawable.c_time
-        ,  R.drawable.c_area,R.drawable.c_live
-        , R.drawable.c_director, R.drawable.c_actor};
-
+                , R.drawable.c_area, R.drawable.c_live
+                , R.drawable.c_director, R.drawable.c_actor};
+        mString = new String[]{
+                "类型",
+                "年份",
+                "地区",
+                "直播",
+                "导演",
+                "演员"
+        };
     }
 
     @Override
@@ -73,7 +81,23 @@ public class CategoryAdapter2 extends RecyclerView.Adapter<CategoryAdapter2.Cate
     public void onBindViewHolder(CategoryViewHolder holder, final int position) {
         holder.mIVCategoryLong.setImageResource(mIntArray[position]);
         ImageLoaderUtils.setAnimation(mContext, holder.itemView);
+        holder.mTVCategoryLong.setText(mString[position]);
+        switch (position) {
+            case 1:
+                holder.mIvIcon.setBackgroundResource(R.drawable.a_time);
+                break;
+            case 2:
+                holder.mIvIcon.setBackgroundResource(R.drawable.a_area);
+                break;
+            case 4:
+                holder.mIvIcon.setBackgroundResource(R.drawable.a_diretctor);
+                break;
+            case 5:
+                holder.mIvIcon.setBackgroundResource(R.drawable.a_actor);
+                break;
 
+
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,13 +122,16 @@ public class CategoryAdapter2 extends RecyclerView.Adapter<CategoryAdapter2.Cate
     }
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder {
+        ImageView mIvIcon;
         ImageView mIVCategoryLong;
         TextView mTVCategoryLong;
 
         CategoryViewHolder(View view) {
             super(view);
             mIVCategoryLong = (ImageView) view.findViewById(R.id.mIVCategory);
+            mIvIcon = (ImageView) view.findViewById(R.id.iv_icon);
             mTVCategoryLong = (TextView) view.findViewById(R.id.mTVCategory);
+
 //            ImageLoaderUtils.setAnimation(mContext, itemView);
         }
     }

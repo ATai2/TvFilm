@@ -26,6 +26,7 @@ import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
 import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
 import com.tuojin.tvfilm.presenter.DirectorListPresenterImpl;
+import com.tuojin.tvfilm.widget.CustomRecycleViewVertical;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -64,7 +65,7 @@ public class DirectorActivity extends BaseActivity<DirectorListContract.View, Di
     @BindView(R.id.tv_menutitle)
     TextView mTvMenutitle;
     @BindView(R.id.rv_menu)
-    RecyclerView mRvMenu;
+    CustomRecycleViewVertical mRvMenu;
     @BindView(R.id.tab_container)
     LinearLayout mTabContainer;
     TextView btn = null;
@@ -245,7 +246,7 @@ public class DirectorActivity extends BaseActivity<DirectorListContract.View, Di
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, final int position) {
 
             holder.mRadbtnItem.setText(mMenuList.get(position));
             if (position == 0) {
@@ -253,6 +254,12 @@ public class DirectorActivity extends BaseActivity<DirectorListContract.View, Di
                 btn = holder.mRadbtnItem;
                 mPresenter.list("A");
             }
+//            holder.itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//                @Override
+//                public void onFocusChange(View v, boolean hasFocus) {
+//                    mRvMenu.smoothToCenter(position);
+//                }
+//            });
             holder.mRadbtnItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

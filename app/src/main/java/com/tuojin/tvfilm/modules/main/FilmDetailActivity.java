@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 
+import com.blankj.utilcode.utils.SPUtils;
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseActivity;
 import com.tuojin.tvfilm.bean.FilmBean;
@@ -31,7 +32,8 @@ public class FilmDetailActivity extends BaseActivity<FilmDetailContract.View, Fi
 
     @Override
     protected FilmDetailPresenterImpl initPresenter() {
-        return new FilmDetailPresenterImpl();
+        String ip=new SPUtils(mActivity,"terminal").getString("ip");
+        return new FilmDetailPresenterImpl(ip);
     }
 
     @Override

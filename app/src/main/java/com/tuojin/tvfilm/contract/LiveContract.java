@@ -2,7 +2,6 @@ package com.tuojin.tvfilm.contract;
 
 import com.tuojin.tvfilm.base.BaseView;
 import com.tuojin.tvfilm.bean.LiveBean;
-import com.tuojin.tvfilm.bean.LiveContentBean;
 
 import java.util.List;
 
@@ -19,8 +18,6 @@ import java.util.List;
 public class LiveContract {
 public interface View extends BaseView{
     void initMenu(List<LiveBean> mDatas);
-
-    void initList(List<LiveContentBean> mDatas);
 }
 
 public interface Presenter{
@@ -29,8 +26,6 @@ public interface Presenter{
     void initMenu(List<LiveBean> mDatas);
 
     void list(String text);
-
-    void initList(List<LiveContentBean> mDatas);
 }
 
 public interface Model{

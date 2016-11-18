@@ -2,6 +2,7 @@ package com.tuojin.tvfilm.modules.catelist.live;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -26,12 +27,22 @@ public class FullScreenLiveActivity extends AppCompatActivity {
         setContentView(R.layout.activity_full_screen_live);
         ButterKnife.bind(this);
         String url = getIntent().getStringExtra("url");
+        Log.d("abs", url);
+
+        url = "http://192.168.1.243/Westworld.S01E01.2016.HD1080P.X264.AAC.English.CHS-ENG.Mp4Ba.mp4";
+//
+//        url = "http://192.168.1.243/Shanghai%20Tower%20(650%20meters).mp4";
+
+//        url = "http://192.168.1.243/KievStar.mp4";
+
+
         String pic = getIntent().getStringExtra("pic");
-        mJcVideo.setUp(url, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL,"正在直播");
+        mJcVideo.setUp(url, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "正在直播");
         mJcVideo.progressBar.setVisibility(View.INVISIBLE);
         mJcVideo.bottomProgressBar.setVisibility(View.GONE);
         mJcVideo.loadingProgressBar.setVisibility(View.INVISIBLE);
         mJcVideo.onClick(mJcVideo.startButton);
+      //  mJcVideo.set
     }
 
     @Override
@@ -45,8 +56,6 @@ public class FullScreenLiveActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        mJcVideo.performClick();
-//        mJcVideo.onClick(mJcVideo.startButton);
     }
 
 

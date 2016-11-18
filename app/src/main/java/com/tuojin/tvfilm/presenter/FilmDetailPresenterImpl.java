@@ -1,4 +1,5 @@
 package com.tuojin.tvfilm.presenter;
+
 import com.tuojin.tvfilm.base.BasePresenter;
 import com.tuojin.tvfilm.bean.FilmDetailBean;
 import com.tuojin.tvfilm.contract.FilmDetailContract;
@@ -6,18 +7,23 @@ import com.tuojin.tvfilm.model.FilmDetailModelImpl;
 import com.tuojin.tvfilm.utils.LogUtils;
 
 /**
-* Created by MVPHelper on 2016/09/22
-*/
+ * Created by MVPHelper on 2016/09/22
+ */
 
-public class FilmDetailPresenterImpl extends BasePresenter<FilmDetailContract.View> implements FilmDetailContract.Presenter{
+public class FilmDetailPresenterImpl extends BasePresenter<FilmDetailContract.View> implements FilmDetailContract.Presenter {
 
-    private FilmDetailModelImpl mDetailModel= new FilmDetailModelImpl(this);
+    private FilmDetailModelImpl mDetailModel;
+    private String ip;
+
+    public FilmDetailPresenterImpl(String ip) {
+        this.ip = ip;
+        mDetailModel = new FilmDetailModelImpl(this, ip);
+    }
 
     @Override
-    public void onResume(String mid,String uuid) {
-        LogUtils.d("11","onResume"+mid+uuid);
-        mDetailModel.onResume( mid, uuid);
-       // mDetailModel.onResumeInitRecycleView();
+    public void onResume(String mid, String uuid) {
+        LogUtils.d("11", "onResume" + mid + uuid);
+        mDetailModel.onResume(mid, uuid);
     }
 
     @Override
@@ -29,8 +35,6 @@ public class FilmDetailPresenterImpl extends BasePresenter<FilmDetailContract.Vi
     public void initList() {
         mDetailModel.initList();
     }
-
-
 
     @Override
     public void stop(FilmDetailBean.DataBean.FilmDetailDataBean bean) {
@@ -60,5 +64,21 @@ public class FilmDetailPresenterImpl extends BasePresenter<FilmDetailContract.Vi
 
     public void playStatus() {
         mDetailModel.playStatus();
+    }
+
+    public void checkFilm() {
+        mDetailModel.checkFilm();
+    }
+
+    public void previewrePlay() {
+        mDetailModel.previewReplay();
+    }
+
+    public void previewstop(FilmDetailBean.DataBean.FilmDetailDataBean bean) {
+        mDetailModel.previewStop(bean);
+    }
+
+    public void continuPlay() {
+        mDetailModel.continuePlay();
     }
 }

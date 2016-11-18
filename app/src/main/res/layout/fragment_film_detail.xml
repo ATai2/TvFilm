@@ -1,10 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
                 android:id="@+id/rl_detail_al"
-              android:background="@mipmap/bg"
-              android:orientation="vertical"
-              android:padding="20dp">
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@mipmap/bg"
+                android:orientation="vertical"
+                android:padding="20dp">
 
     <include
         android:id="@+id/topbar"
@@ -20,19 +20,20 @@
             android:id="@+id/iv_filmpic_detail"
             android:layout_width="200dp"
             android:layout_height="300dp"
-            android:layout_marginRight="16dp"
-            android:scaleType="fitCenter"
             android:layout_marginLeft="50dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="30dp"
+            android:scaleType="fitCenter"
             />
+
         <ImageView
             android:id="@+id/iv_flag"
-            android:visibility="gone"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="32dp"
             android:src="@drawable/big"
-            android:layout_width="80dp"
-            android:layout_height="80dp"/>
+            android:visibility="gone"/>
 
 
         <LinearLayout
@@ -85,94 +86,131 @@
                 android:layout_alignLeft="@id/tv_filmname_detail"
                 android:layout_below="@id/tv_filmname_detail"
                 android:text="电影类型"
-                android:textSize="20sp"
-                android:textColor="@color/white_50"/>
+                android:textColor="@color/white_50"
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/tv_director_detail"
                 android:layout_width="wrap_content"
-                android:textSize="20sp"
-                android:lines="1"
-                android:ellipsize="end"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white_50"/>
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/white_50"
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/tv_actors_detail"
-                android:textSize="20sp"
-                android:lines="1"
-                android:ellipsize="end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white_50"/>
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/white_50"
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/tv_desc_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="4"
-                android:ellipsize="end"
                 android:layout_marginTop="10dp"
-                android:textSize="20sp"
+                android:ellipsize="end"
+                android:lines="4"
+                android:textColor="@color/white_50"
 
-                android:textColor="@color/white_50"/>
+                android:textSize="20sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <Button
                     android:id="@+id/btn_play"
-                    android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/default_selector_corner"
                     android:focusable="true"
                     android:nextFocusRight="@+id/btn_stop"
                     android:text="播放"
                     android:textColor="@color/white"
                     android:textSize="32sp"/>
+
+                <Button
+                    android:id="@+id/btn_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/default_selector_corner"
+                    android:focusable="true"
+                    android:layout_marginLeft="24dp"
+
+                    android:nextFocusRight="@+id/btn_collect"
+                    android:text="停止"
+                    android:textColor="@color/white"
+                    android:textSize="32sp"/>
+
+                <Button
+                    android:id="@+id/btn_collect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="24dp"
+                    android:background="@drawable/default_selector_corner"
+                    android:focusable="true"
+                    android:nextFocusRight="@+id/btn_stop"
+                    android:text="收藏"
+                    android:textColor="@color/white"
+                    android:textSize="32sp"/>
+            </LinearLayout>
+
         </LinearLayout>
     </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_guess"
-        android:layout_above="@+id/ll_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_bottom"
         android:gravity="center"
         android:text="猜你喜欢"
         android:textColor="@color/wheat"
         android:textSize="24sp"/>
+
     <LinearLayout
         android:id="@+id/ll_bottom"
 
         android:layout_width="match_parent"
-        android:layout_gravity="bottom"
-        android:layout_alignParentBottom="true"
         android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
         android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/iv_left"
-            android:src="@drawable/arrow_left"
             android:layout_width="20dp"
+            android:layout_height="match_parent"
             android:layout_marginRight="10dp"
-            android:visibility="invisible"
-            android:layout_height="match_parent"/>
-        <android.support.v7.widget.RecyclerView
+            android:src="@drawable/arrow_left"
+            android:visibility="invisible"/>
+
+        <com.tuojin.tvfilm.widget.CustomRecycleView
             android:id="@+id/rv_film_detail"
             android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_weight="1"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:descendantFocusability="afterDescendants"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:layout_weight="1"
-            android:layout_height="200dp"
             />
+
         <ImageView
             android:id="@+id/iv_right"
-            android:src="@drawable/arrow_right"
             android:layout_width="20dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:visibility="invisible"
-            android:layout_height="match_parent"/>
+            android:src="@drawable/arrow_right"
+            android:visibility="invisible"/>
     </LinearLayout>
 
 </RelativeLayout>

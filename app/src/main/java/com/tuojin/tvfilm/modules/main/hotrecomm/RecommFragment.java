@@ -68,6 +68,9 @@ public class RecommFragment extends BaseFragment<HotRecommContract.View, HotReco
                 Constant.TERMINAL_CODE +
                 "&startIndex=0&endIndex=10";
         netWorkWS.sendMsg(cmd, 101);
+
+//        AssetFileDescriptor localAssetFileDescriptor = getResources().getAssets().openFd("startup/" + paramString);
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

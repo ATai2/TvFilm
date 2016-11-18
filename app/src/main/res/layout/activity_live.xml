@@ -4,35 +4,46 @@
                 android:layout_height="match_parent"
                 android:background="@mipmap/bg">
 
-
     <LinearLayout
-        android:id="@+id/video_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/topbar"
+        android:id="@+id/ll_rigth"
+        android:orientation="vertical"
         android:layout_toRightOf="@+id/tab_container"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <include
+            android:id="@+id/topbar"
+            layout="@layout/topbar"
+            />
+        <LinearLayout
+            android:id="@+id/video_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="40dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="50dp"
-            android:paddingBottom="40dp"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:descendantFocusability="afterDescendants"
-            android:fadeScrollbars="false"
-            android:focusable="false"
-            android:scrollbarFadeDuration="0"
-            android:scrollbarThumbVertical="@drawable/scroll"
-            android:scrollbarTrackVertical="@drawable/bg_scroll"
-            android:scrollbars="vertical"
-            />
-    </LinearLayout>
+            android:layout_below="@id/topbar"
+            android:layout_toRightOf="@+id/tab_container"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="40dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="50dp"
+                android:paddingBottom="40dp"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:descendantFocusability="afterDescendants"
+                android:fadeScrollbars="false"
+                android:focusable="false"
+                android:scrollbarFadeDuration="0"
+                android:scrollbarThumbVertical="@drawable/scroll"
+                android:scrollbarTrackVertical="@drawable/bg_scroll"
+                android:scrollbars="vertical"
+                />
+        </LinearLayout>
 
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/tab_container"
@@ -69,12 +80,7 @@
 
     </LinearLayout>
 
-    <include
-        android:id="@+id/topbar"
-        layout="@layout/topbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/tab_container"/>
+
 
 </RelativeLayout>
 

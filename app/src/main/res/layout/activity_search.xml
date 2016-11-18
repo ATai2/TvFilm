@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/ll_search_whole"
-              android:background="@mipmap/bg"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="@mipmap/bg"
               android:orientation="vertical">
-<include layout="@layout/topbar"/>
+
+    <include layout="@layout/topbar"
+        />
+
     <RelativeLayout
         android:id="@+id/left_menu"
         android:layout_width="match_parent"
@@ -14,59 +17,89 @@
         android:paddingLeft="30dp"
         android:paddingTop="50dp">
 
-        <EditText
-            android:id="@+id/edit_search"
-            android:layout_width="600dp"
-            android:layout_height="45dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/search_bg"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center"
-            android:hint="编辑影片名"
-            android:maxLength="10"
-            android:nextFocusDown="@+id/rv_history"
-            android:paddingLeft="32dp"
-            android:paddingRight="20dp"
-            android:textColor="@color/wheat"
-            android:textColorHint="@color/wheat"
-            android:textSize="22dp"
-            />
+        <RelativeLayout
+            android:id="@+id/ll_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <EditText
+                android:id="@+id/edit_search"
+                android:layout_width="600dp"
+                android:layout_height="45dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/search_bg"
+                android:focusable="false"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:hint="编辑影片首字母"
+                android:maxLength="10"
+                android:nextFocusDown="@+id/rv_history"
+                android:paddingLeft="32dp"
+                android:paddingRight="20dp"
+                android:textColor="@color/wheat"
+                android:textColorHint="@color/wheat"
+                android:textSize="22dp"
+                />
+
+            <Button
+                android:id="@+id/btn_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_toRightOf="@id/edit_search"
+                android:background="@drawable/default_selector_corner"
+                android:text="清除"
+                android:textColor="@color/white60"/>
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_letters"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/ll_edit"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:descendantFocusability="afterDescendants"
+            android:nextFocusUp="@id/btn_clear"
+            android:paddingLeft="80dp"
+            android:paddingRight="80dp"></android.support.v7.widget.RecyclerView>
 
         <TextView
             android:id="@+id/tv_history"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/edit_search"
+            android:layout_below="@id/rv_letters"
             android:text="历史播放"
             android:textColor="@color/white"
             android:textSize="26sp"/>
+
         <TextView
             android:id="@+id/tv_history_clear"
-            android:layout_below="@id/edit_search"
-            android:layout_toRightOf="@id/tv_history"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/rv_letters"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@id/tv_history"
             android:background="@drawable/default_selector_white"
             android:focusable="true"
-            android:nextFocusUp="@id/edit_search"
-            android:nextFocusLeft="@id/rv_history"
-            android:nextFocusRight="@id/rv_history"
             android:nextFocusDown="@id/rv_history"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:text="清除历史"
             android:textColor="@color/blueviolet"
             android:textSize="22sp"/>
+
         <LinearLayout
-            android:layout_below="@id/tv_history"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="200dp"
+            android:layout_below="@id/tv_history"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/iv_left_history"
@@ -79,17 +112,17 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_history"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="200dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:clipChildren="false"
-                android:clipToPadding="false"
                 android:layout_below="@id/tv_history"
                 android:layout_marginRight="20dp"
                 android:layout_toRightOf="@id/iv_left_history"
+                android:layout_weight="1"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:descendantFocusability="afterDescendants"
                 android:nextFocusUp="@id/edit_search"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 />
 
             <ImageView
@@ -106,10 +139,9 @@
     </RelativeLayout>
 
 
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="200dp"
         android:layout_toRightOf="@+id/left_menu"
         android:layout_weight="1"
         android:descendantFocusability="afterDescendants">
@@ -133,6 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/first_search_text"
             android:layout_marginBottom="20dp"
+            android:layout_marginLeft="30dp"
             android:layout_marginTop="20dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -141,23 +174,26 @@
                 android:id="@+id/iv_left"
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
+                android:paddingRight="10dp"
                 android:src="@drawable/arrow_left"
                 android:visibility="invisible"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerview"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="200dp"
-                android:layout_marginLeft="1dp"
-                android:layout_marginRight="30dp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:descendantFocusability="afterDescendants"
-                android:nextFocusUp="@id/tv_history_clear"/>
+                android:nextFocusUp="@id/tv_history_clear"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"/>
 
             <ImageView
                 android:id="@+id/iv_right"
                 android:layout_width="30dp"
+                android:paddingLeft="10dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/arrow_right"
                 android:visibility="invisible"/>

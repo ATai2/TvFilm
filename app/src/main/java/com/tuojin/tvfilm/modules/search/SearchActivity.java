@@ -1,6 +1,9 @@
 package com.tuojin.tvfilm.modules.search;
 
+
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.widget.TextView;
 
@@ -17,6 +20,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.BindView;
+
 
 /**
  * 文 件 名: SearchActivity
@@ -35,6 +39,7 @@ public class SearchActivity extends BaseActivity<SearchContract.View, SearchPres
     TextView mTvTime;
     private SimpleDateFormat mDf;
     private Fragment mSearchFrag;
+//    private SearchFragmentLeft mSearchFrag;
 
     @Override
     protected SearchPresenterImpl initPresenter() {
@@ -54,7 +59,7 @@ public class SearchActivity extends BaseActivity<SearchContract.View, SearchPres
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (mSearchFrag != null) {
-            ((SearchFragment) mSearchFrag).onKeyUp(keyCode, event);
+            ((SearchFragment)mSearchFrag).onKeyUp(keyCode, event);
         }
 
         return super.onKeyUp(keyCode, event);
@@ -62,9 +67,9 @@ public class SearchActivity extends BaseActivity<SearchContract.View, SearchPres
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (mSearchFrag != null) {
-            ((SearchFragment) mSearchFrag).onKeyDown(keyCode, event);
-        }
+//        if (mSearchFrag != null) {
+//            mSearchFrag.onKeyDown(keyCode, event);
+//        }
         return super.onKeyDown(keyCode, event);
     }
 
@@ -85,8 +90,11 @@ public class SearchActivity extends BaseActivity<SearchContract.View, SearchPres
 
     @Override
     protected void initView() {
-
-
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        mSearchFrag = new SearchFragmentLeft();
+//        fragmentTransaction.add(R.id.frag_search, mSearchFrag);
+//        fragmentTransaction.commit();
     }
 
     @Override

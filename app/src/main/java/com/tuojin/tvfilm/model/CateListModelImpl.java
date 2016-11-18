@@ -9,7 +9,7 @@ import com.tuojin.tvfilm.utils.Constant;
  * Created by MVPHelper on 2016/09/22
  */
 
-public class CateListModelImpl implements CateListContract.Model, Constant {
+public class CateListModelImpl implements CateListContract.Model {
 
     CateListPresenterImpl mPresenter;
 

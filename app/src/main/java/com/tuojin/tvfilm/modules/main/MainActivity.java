@@ -1,7 +1,6 @@
 package com.tuojin.tvfilm.modules.main;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -11,20 +10,27 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.utils.SPUtils;
 import com.google.gson.Gson;
+import com.litesuits.orm.LiteOrm;
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseActivity;
+import com.tuojin.tvfilm.base.BaseApplication;
 import com.tuojin.tvfilm.base.BaseFragment;
+import com.tuojin.tvfilm.bean.LiteFilmCollectionBean;
 import com.tuojin.tvfilm.bean.TerminalBean;
 import com.tuojin.tvfilm.bean.TerminalListBean;
 import com.tuojin.tvfilm.contract.HotRecommContract;
 import com.tuojin.tvfilm.event.TerminalBindEvent;
 import com.tuojin.tvfilm.event.TerminalListEvent;
+import com.tuojin.tvfilm.modules.catelist.FilmListActivity;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
 import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
@@ -36,6 +42,7 @@ import com.tuojin.tvfilm.modules.search.SearchActivity;
 import com.tuojin.tvfilm.net.BaseApiResponse;
 import com.tuojin.tvfilm.presenter.HotRecommPresenterImpl;
 import com.tuojin.tvfilm.service.AutoBahnService;
+import com.tuojin.tvfilm.utils.Constant;
 import com.tuojin.tvfilm.utils.LogUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -51,7 +58,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -91,10 +97,21 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
     int type;
     @BindView(R.id.tv_time)
     TextView mTvTime;
+    @BindView(R.id.tv_setting)
+    TextView mTvSetting;
+    @BindView(R.id.tv_search)
+    TextView mTvSearch;
+    @BindView(R.id.tv_collect)
+    TextView mTvCollect;
+    @BindView(R.id.rl_container)
+    LinearLayout mRlContainer;
+    @BindView(R.id.relative)
+    RelativeLayout mRelative;
     private int[] mIntArray;
     private AlertDialog mDialog;
     private RecyclerView mRecyclerView;
     private List<TerminalBean> mList;
+    private LiteOrm mMLiteOrm;
 
 
     @Override
@@ -128,6 +145,10 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
 
     @Override
     protected void initView() {
+        SPUtils utils = new SPUtils(this, "terminal");
+        Constant.TERMINAL_CODE= utils.getString("code");
+        Constant.IP_TERMINAL=utils.getString("ip");
+
         mVpContainer.setOffscreenPageLimit(5);
         // mVpContainer.setCurrentItem(0);
         mRbHotRecom.requestFocus();
@@ -181,14 +202,33 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
 
             }
         });
-//        mVpContainer.setCurrentItem(1);
         //设置焦点改变监听
         mRbHotRecom.setOnFocusChangeListener(this);
         mRbCatgory.setOnFocusChangeListener(this);
         mRabSortlist.setOnFocusChangeListener(this);
         mRabAlbum.setOnFocusChangeListener(this);
-//        mRabSearch.setOnFocusChangeListener(this);
 
+        mTvSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mMLiteOrm = ((BaseApplication) mActivity.getApplication()).mLiteOrm;
+        mTvCollect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ArrayList<LiteFilmCollectionBean> query = mMLiteOrm.query(LiteFilmCollectionBean.class);
+                String s = new Gson().toJson(query);
+                Intent intent = new Intent(MainActivity.this, FilmListActivity.class);
+                intent.putExtra("data", s);
+                intent.putExtra("type", "收藏");
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -213,19 +253,19 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
 //                ((RecommFragment)mHotRecommFrag).mRvRecomm.requestFocus();
 //            }
 //        }
-        if (mVpContainer.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+        if (mVpContainer.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
             switch (type) {
                 case 0:
-                    mVpContainer.findFocus().setNextFocusUpId(R.id.rab_hotrecomm);
+                    mVpContainer.findFocus().setNextFocusDownId(R.id.rab_hotrecomm);
                     break;
                 case 1:
-                    mVpContainer.findFocus().setNextFocusUpId(R.id.rab_category);
+                    mVpContainer.findFocus().setNextFocusDownId(R.id.rab_category);
                     break;
                 case 2:
-                    mVpContainer.findFocus().setNextFocusUpId(R.id.rab_sortlist);
+                    mVpContainer.findFocus().setNextFocusDownId(R.id.rab_sortlist);
                     break;
                 case 3:
-                    mVpContainer.findFocus().setNextFocusUpId(R.id.rab_album);
+                    mVpContainer.findFocus().setNextFocusDownId(R.id.rab_album);
                     break;
 //                case 4:
 //                    mVpContainer.findFocus().setNextFocusUpId(R.id.rab_search);
@@ -256,12 +296,12 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
                 View inflate = inflater.inflate(R.layout.dialog_binding, null);
                 builder.setView(inflate);
                 mRecyclerView = (RecyclerView) inflate.findViewById(R.id.recyclerview);
-                LinearLayoutManager ll=new LinearLayoutManager(MainActivity.this);
+                LinearLayoutManager ll = new LinearLayoutManager(MainActivity.this);
                 ll.setOrientation(LinearLayoutManager.VERTICAL);
                 mRecyclerView.setLayoutManager(ll);
                 mDialog = builder.create();
                 mDialog.show();
-                mDialog.getWindow().setLayout(400,500);
+                mDialog.getWindow().setLayout(400, 400);
                 break;
             case R.id.rab_search:
                 startActivity(new Intent(this, SearchActivity.class));
@@ -270,7 +310,6 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
     }
 
     /**
-     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -278,37 +317,52 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
         BaseApiResponse baseApiResponse = new Gson().fromJson(event.msg, BaseApiResponse.class);
         mDialog.dismiss();
         try {
-            JSONObject object=new JSONObject(baseApiResponse.getData().toString());
+            JSONObject object = new JSONObject(baseApiResponse.getData().toString());
             String msg = object.getString("msg");
             Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+            mPresenter.onResume();
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
     /**
-     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(TerminalListEvent event) {
         TerminalListBean terminalListBean = new Gson().fromJson(event.msg, TerminalListBean.class);
         mList = terminalListBean.getData().getData();
-        CommonAdapter<TerminalBean> adapter=new CommonAdapter<TerminalBean>(MainActivity.this,R.layout.item_radbtn, mList,2) {
+        CommonAdapter<TerminalBean> adapter = new CommonAdapter<TerminalBean>(MainActivity.this, R.layout.item_radbtn, mList, 2) {
             @Override
             public void convert(ViewHolder holder, TerminalBean terminalBean) {
-                holder.setText(R.id.radbtn_item,terminalBean.getTerminal_name());
-//                holder.setTextColor(R.id.radbtn_item,R.color.red:R.color.white)
+                holder.setText(R.id.radbtn_item, terminalBean.getTerminal_name());
+//                if (terminalBean.getMac() == null || terminalBean.getMac().trim().equals("")) {
+//                    holder.setTextColor(R.id.radbtn_item, R.color.white);
+//                } else {
+//                    holder.setTextColor(R.id.radbtn_item, R.color.red);
+//                }
             }
         };
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(ViewGroup parent, View view, Object o, int position) {
-                mPresenter.bind(mList.get(position));
+                TerminalBean terminalBean = mList.get(position);
+                if (terminalBean.getMac() == null || terminalBean.getMac().trim().equals(""))
+                    mPresenter.bind(terminalBean);
+                ip = terminalBean.getTerminal_ip();
+                Constant.IP_TERMINAL = terminalBean.getTerminal_ip();
+                Constant.TERMINAL_CODE=terminalBean.getTerminal_code();
+                new SPUtils(MainActivity.this, "terminal").putString("ip", ip);
+                new SPUtils(MainActivity.this, "terminal").putString("code", terminalBean.getTerminal_code());
             }
         });
         mRecyclerView.setAdapter(adapter);
     }
+
+    String ip;
+
     //返回键按2次，
     @Override
     public void onBackPressed() {
@@ -374,12 +428,5 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
     @Override
     public void showMessage(String msg) {
 
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 }

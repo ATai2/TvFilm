@@ -16,9 +16,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.tuojin.tvfilm.R;
+import com.tuojin.tvfilm.bean.ErrorBean;
 import com.tuojin.tvfilm.event.EmptyEvent;
+import com.tuojin.tvfilm.event.ErrorEvent;
 import com.tuojin.tvfilm.service.AutoBahnService;
 import com.tuojin.tvfilm.widget.CustomProgressDialog;
 
@@ -88,6 +92,11 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onMessageEvent(EmptyEvent event) {
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onMessageEvent(ErrorEvent event) {
+        Toast.makeText(mActivity, new Gson().fromJson(event.msg, ErrorBean.class).getData().getMsg(), Toast.LENGTH_SHORT).show();
     }
     @Override
     protected void onDestroy() {

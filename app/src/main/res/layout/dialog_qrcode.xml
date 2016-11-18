@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="280dp"
-              android:padding="12dp"
               android:layout_height="wrap_content"
               android:background="@color/black"
               android:gravity="center_horizontal"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:padding="12dp">
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:text="支付二维码"
-                android:textSize="36sp"
-                android:textColor="@color/white"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
             <TextView
-                android:textColor="@color/white"
-android:textSize="28sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="请用支付宝扫描以下二维码，尽快完成在线支付"/>
+                android:text="支付二维码"
+                android:textColor="@color/white"
+                android:textSize="36sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="请用支付宝扫描以下二维码，尽快完成在线支付"
+                android:textColor="@color/white"
+                android:textSize="28sp"/>
 
             <ImageView
                 android:id="@+id/iv_qrcode"
@@ -36,6 +37,11 @@ android:textSize="28sp"
                 android:layout_height="250dp"
                 android:scaleType="centerCrop"
                 />
+            <TextView
+                android:text="提示：请确定绑定影厅！"
+                android:textColor="@color/white60"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
 
@@ -52,7 +58,7 @@ android:textSize="28sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:textColor="@color/white"
         android:background="@drawable/default_selector_blue"
-        android:text="取消观看"/>
+        android:text="取消观看"
+        android:textColor="@color/white"/>
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.tuojin.tvfilm.modules.search;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -9,8 +10,10 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,6 +27,7 @@ import com.litesuits.orm.LiteOrm;
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseApplication;
 import com.tuojin.tvfilm.base.BaseFragment;
+import com.tuojin.tvfilm.bean.ErrorBean;
 import com.tuojin.tvfilm.bean.FilmBean;
 import com.tuojin.tvfilm.bean.LiteFilmBean;
 import com.tuojin.tvfilm.bean.RecommBean;
@@ -31,6 +35,7 @@ import com.tuojin.tvfilm.contract.SearchContract;
 import com.tuojin.tvfilm.event.FilmPlayRefreshSearchEvent;
 import com.tuojin.tvfilm.event.KeyWordEvent;
 import com.tuojin.tvfilm.event.SearchHotEvent;
+import com.tuojin.tvfilm.event.SearchNoListEvent;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
 import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
@@ -46,6 +51,7 @@ import java.util.List;
 import java.util.Set;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 文 件 名: SearchFragment
@@ -87,6 +93,10 @@ public class SearchFragment extends BaseFragment<SearchContract.View, SearchPres
     ImageButton mIvBack;
     @BindView(R.id.title_topbar)
     TextView mTitleTopbar;
+    @BindView(R.id.btn_clear)
+    Button mBtnClear;
+    @BindView(R.id.rv_letters)
+    RecyclerView mRvLetters;
 
     private String mKey = "";
     private List<FilmBean> mList = new ArrayList<>();
@@ -102,6 +112,8 @@ public class SearchFragment extends BaseFragment<SearchContract.View, SearchPres
     private CommonAdapter<FilmBean> mHistoryAdapter;
     private CommonAdapter<FilmBean> mOtherAdapter;
     private FilmBean mValue;
+    private List<String> mMenuList;
+    private LinearLayoutManager mLayoutManagerl;
 
 
     @Override
@@ -152,15 +164,30 @@ public class SearchFragment extends BaseFragment<SearchContract.View, SearchPres
             }
         });
 
+
+        mLayoutManagerl = new LinearLayoutManager(mActivity);
+        mLayoutManagerl.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mRvLetters.setHasFixedSize(true);
+        mRvLetters.setLayoutManager(mLayoutManagerl);
+        mMenuList = new ArrayList<>();
+        for (int i = 'A'; i <= 'Z'; i++) {
+            mMenuList.add(String.valueOf((char) i));
+        }
+        mRvLetters.setAdapter(new AtoZAdapter());
+
         dblist();
         mPresenter.hotSearch();
         addListner();
         mEditSearch.requestFocus();
-
-
     }
 
     private void addListner() {
+        mBtnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditSearch.setText("");
+            }
+        });
 //        mLlSearchWhole.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
 //            @Override
 //            public void onGlobalFocusChanged(View oldFocus, View newFocus) {
@@ -180,7 +207,6 @@ public class SearchFragment extends BaseFragment<SearchContract.View, SearchPres
     public void onMessageEvent(FilmPlayRefreshSearchEvent event) {
         Log.d("play", event.msg.toString());
         // mFilmBeanListHistory.add(0, event.msg);
-
         dblist();
     }
 
@@ -193,13 +219,22 @@ public class SearchFragment extends BaseFragment<SearchContract.View, SearchPres
 
     private void fillList(List<FilmBean> mDatas) {
         mList = mDatas;
-        mOtherAdapter = new CommonAdapter<FilmBean>(mActivity, R.layout.item_other_recomm, mList, 2) {
+        mOtherAdapter = new CommonAdapter<FilmBean>(mActivity, R.layout.item_other_linear, mList, 1) {
             @Override
             public void convert(ViewHolder holder, FilmBean bean) {
                 holder.setText(R.id.movie_title_other, bean.getMovie_name());
-                holder.setText(R.id.movie_title_other_score, bean.getScore());
                 holder.setImageResource(R.id.movie_image_other, bean.getPoster());
                 holder.setScaleAnimation(R.id.movie_title_other);
+                holder.setOnTextFocusChangeListner(R.id.rl_container, R.id.movie_title_other, R.id.movie_image_other, new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if (hasFocus) {
+                            v.setVisibility(View.VISIBLE);
+                        } else {
+                            v.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                });
 
             }
         };
@@ -277,6 +312,17 @@ public class SearchFragment extends BaseFragment<SearchContract.View, SearchPres
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(SearchNoListEvent event) {
+        String msg = new Gson().fromJson(event.msg, ErrorBean.class).getData().getMsg();
+        if (msg.equals("无数据")) {
+            mFirstSearchText.setText(msg);
+            mRecyclerview.removeAllViews();
+            mList=new ArrayList<>();
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(KeyWordEvent event) {
         String msg = event.msg;
         List<FilmBean> beanList = new Gson().fromJson(msg, RecommBean.class).getData().getData();
@@ -289,7 +335,7 @@ public class SearchFragment extends BaseFragment<SearchContract.View, SearchPres
         } else {
             mFirstSearchText.setText("搜索到" + mList.size() + "部影片");
 
-            mAdapter = new CommonAdapter<FilmBean>(mActivity, R.layout.item_other_linear, mList, 2) {
+            mAdapter = new CommonAdapter<FilmBean>(mActivity, R.layout.item_other_linear, mList, 1) {
                 @Override
                 public void convert(ViewHolder holder, FilmBean bean) {
 //                    holder.setText(R.id.movie_title_other, bean.getMovie_name());
@@ -384,12 +430,67 @@ public class SearchFragment extends BaseFragment<SearchContract.View, SearchPres
 
 
     public void onKeyDown(int keyCode, KeyEvent event) {
-//        if (mTvHistoryClear.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-//            mRvHistory.requestFocus();
-//        }
-//        if (mRvHistory.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-//            mEditSearch.requestFocus();
-//        }
+        if (mTvHistoryClear.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+            mRvHistory.requestFocus();
+        }
+        if (mRvHistory.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+            mEditSearch.requestFocus();
+        }
+        if (mRvLetters.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+            mBtnClear.requestFocus();
+        }
+
+        if (mIvBack.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+            mBtnClear.requestFocus();
+        }
     }
 
+    //菜单适配器
+    class AtoZAdapter extends RecyclerView.Adapter<AtoZAdapter.ViewHolder> {
+        @Override
+        public AtoZAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(mActivity).inflate(R.layout.item_textview, parent, false);
+            AtoZAdapter.ViewHolder holder = new AtoZAdapter.ViewHolder(view);
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(AtoZAdapter.ViewHolder holder, int position) {
+
+            holder.mRadbtnItem.setText(mMenuList.get(position));
+//            if (position == 0) {
+////                holder.mRadbtnItem.requestFocus();
+////                btn = holder.mRadbtnItem;
+////                mPresenter.list("A");
+//            }
+            holder.mRadbtnItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mEditSearch.setText(mEditSearch.getText().toString()+((TextView)v).getText());
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return mMenuList.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            @BindView(R.id.radbtn_item)
+            TextView mRadbtnItem;
+
+            ViewHolder(View view) {
+                super(view);
+                ButterKnife.bind(this, view);
+            }
+        }
+    }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
 }

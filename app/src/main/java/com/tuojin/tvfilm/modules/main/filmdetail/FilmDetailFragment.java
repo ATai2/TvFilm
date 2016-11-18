@@ -10,7 +10,6 @@ import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,12 +18,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.utils.FileUtils;
+import com.blankj.utilcode.utils.SPUtils;
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -33,32 +34,41 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.litesuits.orm.LiteOrm;
+import com.litesuits.orm.db.assit.QueryBuilder;
+import com.litesuits.orm.db.assit.WhereBuilder;
 import com.open.androidtvwidget.BuildConfig;
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseApplication;
 import com.tuojin.tvfilm.base.BaseFragment;
+import com.tuojin.tvfilm.bean.ErrorBean;
 import com.tuojin.tvfilm.bean.FilmBean;
 import com.tuojin.tvfilm.bean.FilmDetailBean;
+import com.tuojin.tvfilm.bean.FilmStatusBean;
 import com.tuojin.tvfilm.bean.LiteFilmBean;
+import com.tuojin.tvfilm.bean.LiteFilmCollectionBean;
 import com.tuojin.tvfilm.bean.PayAliBean;
 import com.tuojin.tvfilm.bean.RecommBean;
 import com.tuojin.tvfilm.contract.FilmDetailContract;
 import com.tuojin.tvfilm.event.DetailEvent;
 import com.tuojin.tvfilm.event.DetailListEvent;
+import com.tuojin.tvfilm.event.ErrorEvent;
 import com.tuojin.tvfilm.event.FilmPauseEvent;
 import com.tuojin.tvfilm.event.FilmPlayEvent;
 import com.tuojin.tvfilm.event.FilmPlayRefreshSearchEvent;
+import com.tuojin.tvfilm.event.FilmRePlayEvent;
+import com.tuojin.tvfilm.event.FilmStatusEvent;
 import com.tuojin.tvfilm.event.FilmStopEvent;
 import com.tuojin.tvfilm.event.PayEvent;
 import com.tuojin.tvfilm.event.PayFailEvent;
 import com.tuojin.tvfilm.event.PayReviewEvent;
+import com.tuojin.tvfilm.event.PreviewConfirmEvent;
 import com.tuojin.tvfilm.event.QrCodeEvent;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
 import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
 import com.tuojin.tvfilm.presenter.FilmDetailPresenterImpl;
 import com.tuojin.tvfilm.utils.ImageLoaderUtils;
-import com.tuojin.tvfilm.widget.PayRequestDialog;
+import com.tuojin.tvfilm.widget.CustomRecycleView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -67,11 +77,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -115,9 +124,17 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     @BindView(R.id.iv_left)
     ImageView mIvLeft;
     @BindView(R.id.rv_film_detail)
-    RecyclerView mRvFilmDetail;
+    CustomRecycleView mRvFilmDetail;
     @BindView(R.id.iv_right)
     ImageView mIvRight;
+    @BindView(R.id.btn_stop)
+    Button mBtnStop;
+    @BindView(R.id.btn_collect)
+    Button mBtnCollect;
+    @BindView(R.id.ll_bottom)
+    LinearLayout mLlBottom;
+    @BindView(R.id.rl_detail_al)
+    RelativeLayout mRlDetailAl;
 
 
     private FilmDetailBean.DataBean.FilmDetailDataBean mBean;
@@ -132,10 +149,10 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     private AlertDialog mDialog;
     private ImageView mImageView;
     private ProgressBar mProgressBar;
-    private Timer mTimer;
     private String mFilePath;
     private LiteOrm mMLiteOrm;
-    private PayRequestDialog mPayRequestDialog;
+    private boolean isCollected;
+    private boolean isPaused;
 
     @Override
     protected int getLayoutId() {
@@ -144,9 +161,24 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
 
     @Override
     protected void initView() {
+        mMLiteOrm = ((BaseApplication) mActivity.getApplication()).mLiteOrm;
+
         Bundle arguments = getArguments();
         mFilm = arguments.getParcelable("film");
         mBig = arguments.getBoolean("big", false);
+        mPresenter.checkFilm();
+
+//               收藏判断
+        final String s = new Gson().toJson(mFilm);
+        ArrayList<LiteFilmCollectionBean> query = mMLiteOrm.query(new QueryBuilder<LiteFilmCollectionBean>(LiteFilmCollectionBean.class)
+                .where(LiteFilmCollectionBean.FIMLBEAN + "=?", s));
+        isCollected = (query == null || query.size() == 0) ? false : true;
+
+        if (isCollected) {
+            mBtnCollect.setText("已收藏");
+        } else {
+            mBtnCollect.setText("未收藏");
+        }
 
         mTitleTopbar.setText("电影详情");
         LinearLayoutManager layout = new LinearLayoutManager(mActivity);
@@ -160,16 +192,43 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
 //                playRecord();
                 if (!isPlaying) {
                     showLoading();
+                    if (isPaused) {
+                        mPresenter.continuPlay();
+                    }
                     mPresenter.play(mBean);
                 } else {
-                    mPresenter.stop(mBean);
+                    mPresenter.pause();
                 }
             }
         });
 
+        mBtnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isStoped) {
+                    mPresenter.stop(mBean);
+                    mPresenter.checkFilm();
+                }
+            }
+        });
+
+        mBtnCollect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LiteFilmCollectionBean bean = new LiteFilmCollectionBean();
+                bean.setFilmBean(s);
+                if (isCollected) {
+                    mMLiteOrm.delete(new WhereBuilder(LiteFilmCollectionBean.class)
+                            .where(LiteFilmCollectionBean.FIMLBEAN + "=?", new Object[]{s}));
+                    mBtnCollect.setText("未收藏");
+                } else {
+                    mMLiteOrm.save(bean);
+                    mBtnCollect.setText("已收藏");
+                }
+                isCollected = !isCollected;
+            }
+        });
     }
-
-
 //    /**
 //     * 详情页初始化
 //     *
@@ -191,7 +250,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         FilmDetailBean.DataBean.FilmDetailDataBean data = new Gson().fromJson(event.bean, FilmDetailBean.class).getData().getData();
         mBean = data;
         if (mBean.getCharge_flag().equals("1")) {
-            mBig=true;
+            mBig = true;
         }
         ImageLoaderUtils.showRecommIcom(mActivity, "/MID" + mBean.getPoster(), mIvFilmpicDetail);
         mTvFilmnameDetail.setText(mBean.getMovie_name());
@@ -219,6 +278,24 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         });
     }
 
+    /**
+     * 播放状态
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(FilmStatusEvent event) {
+        FilmStatusBean.DataBean.StatusBean data = new Gson().fromJson(event.msg, FilmStatusBean.class).getData().getData();
+        if (data != null && data.getObStatus().getState().equals("PLAYING")) {
+            mTitleTopbar.setText("电影详情（正在播放：" + data.getObStatus().getShowName() + "）");
+        } else if (data != null && data.getObStatus().getState().equals("PAUSED")) {
+            mTitleTopbar.setText("电影详情（播放暂停：" + data.getObStatus().getShowName() + "）");
+        } else if (data != null && data.getObStatus().getState().equals("STOPPED")) {
+            mTitleTopbar.setText("电影详情");
+        } else {
+            mTitleTopbar.setText("电影详情");
+        }
+    }
 
     /**
      * 喜欢列表
@@ -235,12 +312,14 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
 
                 holder.setText(R.id.movie_title_other, bean.getMovie_name());
                 holder.setImageResource(R.id.movie_image_other, bean.getPoster());
+//                holder.setOn
 //                holder.setScaleAnimation(R.id.movie_title_other);
                 holder.setOnTextFocusChangeListner(R.id.rl_container, R.id.movie_title_other, R.id.movie_image_other, new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
                         if (hasFocus) {
                             v.setVisibility(View.VISIBLE);
+
                         } else {
                             v.setVisibility(View.INVISIBLE);
                         }
@@ -289,12 +368,10 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(PayEvent event) {
         Log.d("12", "onMessageEvent: " + event.msg);
-//        Toast.makeText(getActivity(), event.msg, Toast.LENGTH_SHORT).show();
         isPaied = true;
-//        mPresenter.play(mBean);
-        mBtnPlay.setText("停止");
+        mBtnPlay.setText("暂停");
         isPlaying = true;
-        mPresenter.rePlay();
+        mPresenter.previewrePlay();
         if (mAlertDialogQr != null) {
             mAlertDialogQr.dismiss();
         }
@@ -313,7 +390,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(PayFailEvent event) {
         Toast.makeText(getActivity(), event.msg, Toast.LENGTH_LONG).show();
-        mPresenter.stop(mBean);
+        mPresenter.previewstop(mBean);
         mBtnPlay.setText("播放");
     }
 
@@ -326,10 +403,25 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     public void onMessageEvent(FilmPauseEvent event) {
         Toast.makeText(getActivity(), event.msg, Toast.LENGTH_LONG).show();
         isPlaying = false;
+        isPaused=true;
+        mBtnPlay.setText("播放");
+        mPresenter.checkFilm();
     }
 
     /**
+     * 暂停影片,继续播放
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(FilmRePlayEvent event) {
+        Toast.makeText(mActivity, "影片继续播放成功", Toast.LENGTH_SHORT).show();
+        mBtnPlay.setText("暂停");
+
+    }
+    /**
      * 停止影片
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -338,6 +430,8 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         mBtnPlay.setText("播放");
         isPlaying = false;
         isStoped = true;
+
+        mPresenter.checkFilm();
     }
 
     /**
@@ -354,15 +448,35 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
 
         if (mBig) {
             aliPayDialog();
-            mTimer = new Timer();
-            mTimer.schedule(new MyTimerTask(), 15 * 60 * 1000);//15分钟
+//            mTimer = new Timer();
+//            mTimer.schedule(new MyTimerTask(), 15 * 60 * 1000);//15分钟
 
         }
         isStoped = false;
         isPreview = true;
         isPlaying = true;
-        mBtnPlay.setText("停止");
+        mBtnPlay.setText("暂停");
+
+        mPresenter.checkFilm();
 //        timer.schedule(mTimerTask,15*60*1000);
+    }
+
+    /**
+     * 预览暂停，提示支付
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(PreviewConfirmEvent event) {
+        if (BuildConfig.DEBUG) Log.d(TAG, event.msg);
+
+        Toast.makeText(getActivity(), event.msg, Toast.LENGTH_LONG).show();
+        isPlaying = false;
+        mBtnPlay.setText("已暂停");
+        mPresenter.checkFilm();
+
+        qrPayFilm();
+//        aliPayDialog();
     }
 
     /**
@@ -370,7 +484,6 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
      */
     private void playRecord() {
         Log.d("play", "playRecord: ");
-        mMLiteOrm = ((BaseApplication) mActivity.getApplication()).mLiteOrm;
 //        mMLiteOrm.de
         LiteFilmBean bean = new LiteFilmBean();
         String s = new Gson().toJson(mFilm);
@@ -401,38 +514,41 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         } else {
             mIvRight.setVisibility(View.VISIBLE);
         }
-    }
 
+//        if (mIvBack.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+//            mIvBack.setNextFocusDownId();
+//        }
+    }
 
     /**
      * 计时器
      */
-    class MyTimerTask extends TimerTask {
-
-        @Override
-        public void run() {
-            //倒计时结束，开始执行弹出操作--支付宝。 如果已支付，继续观看，如果没有支付暂停，弹二维码框。
-            if (!isPaied) {
-                Log.d("ws", "run: timertask");
-                mPresenter.pause();
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mAlertDialogQr == null || (mAlertDialogQr != null && !mAlertDialogQr.isShowing())) {
-                            mDialog.hide();
-                            showLoading();
-                            qrPayFilm();
-                            mTimer.cancel();
-//                            if () {
-//                                mPresenter.playStatus();
-//                            }
-                        }
-                    }
-                });
-                isPreview = false;
-            }
-        }
-    }
+//    class MyTimerTask extends TimerTask {
+//
+//        @Override
+//        public void run() {
+//            //倒计时结束，开始执行弹出操作--支付宝。 如果已支付，继续观看，如果没有支付暂停，弹二维码框。
+//            if (!isPaied) {
+//                Log.d("ws", "run: timertask");
+//                mPresenter.pause();
+//                mActivity.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (mAlertDialogQr == null || (mAlertDialogQr != null && !mAlertDialogQr.isShowing())) {
+//                            mDialog.hide();
+//                            showLoading();
+//                            qrPayFilm();
+//                            mTimer.cancel();
+////                            if () {
+////                                mPresenter.playStatus();
+////                            }
+//                        }
+//                    }
+//                });
+//                isPreview = false;
+//            }
+//        }
+//    }
 
     /**
      * 先判断是否为大片？
@@ -454,32 +570,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
             Button btnPay = (Button) inflate.findViewById(R.id.btn_pay);
             Button btnPayLater = (Button) inflate.findViewById(R.id.btn_later);
             Button btnPayCancel = (Button) inflate.findViewById(R.id.btn_cancle);
-//            mPayRequestDialog = new PayRequestDialog();
-//            mPayRequestDialog.show(mActivity.getFragmentManager(), "payrequest");
-//            mPayRequestDialog.setClickListener1(new PayRequestDialog.OnbtnClickListener1() {
-//                @Override
-//                public void click() {
-//                    qrPayFilm();
-//                    mPayRequestDialog.dismiss();
-//                }
-//            });
-//            mPayRequestDialog.setClickListener2(new PayRequestDialog.OnbtnClickListener2() {
-//                @Override
-//                public void click() {
-//                    mPayRequestDialog.dismiss();
-//                }
-//            });
-//            mPayRequestDialog.setClickListener3(new PayRequestDialog.OnbtnClickListener3() {
-//                @Override
-//                public void click() {
-//                    if (!isStoped) {
-//                        mPresenter.stop(mBean);
-//                    }
-//                    isPlaying = false;
-//                    mPayRequestDialog.dismiss();
-//                }
-//            });
-//                    先播放，再支付
+
             btnPay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -489,10 +580,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
             btnPayLater.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    mPresenter.play(mBean);
-
                     mDialog.cancel();
-//                    mDialog=null;
                 }
             });
 
@@ -533,15 +621,22 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
      * 预览后支付页,先loading，然后弹出页面。
      */
     private void qrPayFilm() {
-
         mPresenter.getQrCode(mBean);
-
     }
 
+    /**
+     * 错误提示
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ErrorEvent event) {
+        ErrorBean errorBean = new Gson().fromJson(event.msg, ErrorBean.class);
+        Toast.makeText(mActivity, errorBean.getData().getMsg(), Toast.LENGTH_SHORT).show();
+    }
 
     /**
      * 二维码
-     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -614,7 +709,8 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
 
     @Override
     protected FilmDetailPresenterImpl initPresenter() {
-        return new FilmDetailPresenterImpl();
+        String ip = new SPUtils(mActivity, "terminal").getString("ip");
+        return new FilmDetailPresenterImpl(ip);
     }
 
     ;
@@ -633,11 +729,6 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     }
 
     /**
-     * 显示二维码
-     *
-     * @param qrCode
-     */
-    /**
      * 大片预览结束
      *
      * @param event
@@ -645,25 +736,27 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(PayReviewEvent event) {
         Toast.makeText(getActivity(), event.msg, Toast.LENGTH_SHORT).show();
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setTitle("大片预览结束");
-        builder.setMessage("");
-        LayoutInflater inflater = LayoutInflater.from(mActivity);
-        View inflate = inflater.inflate(R.layout.dialog_qrcode, null);
-        builder.setView(inflate);
-        mAlertDialogQr = builder.create();
-        mAlertDialogQr.show();
-        mImageView = (ImageView) inflate.findViewById(R.id.iv_qrcode);
-        mProgressBar = (ProgressBar) inflate.findViewById(R.id.pb_pay);
-        mProgressBar.setVisibility(View.INVISIBLE);
-        mPresenter.getQrCode(mBean);
-        Button btnPayCancel = (Button) inflate.findViewById(R.id.btn_cancle);
-        btnPayCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialogQr.dismiss();
-            }
-        });
+        qrPayFilm();
+        mPresenter.checkFilm();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+//        builder.setTitle("大片预览结束");
+//        builder.setMessage("");
+//        LayoutInflater inflater = LayoutInflater.from(mActivity);
+//        View inflate = inflater.inflate(R.layout.dialog_qrcode, null);
+//        builder.setView(inflate);
+//        mAlertDialogQr = builder.create();
+//        mAlertDialogQr.show();
+//        mImageView = (ImageView) inflate.findViewById(R.id.iv_qrcode);
+//        mProgressBar = (ProgressBar) inflate.findViewById(R.id.pb_pay);
+//        mProgressBar.setVisibility(View.INVISIBLE);
+//        mPresenter.getQrCode(mBean);
+//        Button btnPayCancel = (Button) inflate.findViewById(R.id.btn_cancle);
+//        btnPayCancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mAlertDialogQr.dismiss();
+//            }
+//        });
     }
 
     @Override
@@ -802,10 +895,9 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     public void onDestroyView() {
         super.onDestroyView();
         FileUtils.deleteFile(mFilePath);
-        if (!isStoped) {
+        if (!isStoped||isPlaying) {
             mPresenter.stop(mBean);
         }
-
     }
 
 

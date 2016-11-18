@@ -5,9 +5,6 @@ import com.tuojin.tvfilm.net.TvFilmNetWorkWS;
 import com.tuojin.tvfilm.presenter.SearchPresenterImpl;
 import com.tuojin.tvfilm.utils.Constant;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 /**
  * Created by MVPHelper on 2016/09/21
  */
@@ -23,17 +20,23 @@ public class SearchModelImpl implements SearchContract.Model {
     @Override
     public void search(String key) {
 //        mPresenter.mView.showLoading();
-        try {
-            String cmd = Constant.PADMAC +
-                    "|getFilmList|terminalCode=" +
-                    Constant.TERMINAL_CODE +
-                    "&searchMode=&keyword=" +
-                    URLEncoder.encode(key, "utf-8") +
-                    "&movieTypeStr=&placeId=&yearId=&actorId=&directorId=&startIndex=0&endIndex=100";
-            mNetWorkWS.sendMsg(cmd, 6);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            String cmd = Constant.PADMAC +
+//                    "|getFilmList|terminalCode=" +
+//                    Constant.TERMINAL_CODE +
+//                    "&searchMode=&keyword=" +
+//                    URLEncoder.encode(key, "utf-8") +
+//                    "&movieTypeStr=&placeId=&yearId=&actorId=&directorId=&startIndex=0&endIndex=100";
+//            mNetWorkWS.sendMsg(cmd, 6);
+
+        String cmd = Constant.PADMAC +
+                "|getFilmListByFirstKey|terminalCode=" +
+                Constant.TERMINAL_CODE +
+                "&firstKey=" +
+                key +
+                "&startIndex=0&endIndex=100";
+        mNetWorkWS.sendMsg(cmd, 6);
+
     }
 
     @Override

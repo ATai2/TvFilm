@@ -1,5 +1,7 @@
 package com.tuojin.tvfilm.model;
 
+import android.content.Context;
+
 import com.tuojin.tvfilm.bean.FilmDetailBean;
 import com.tuojin.tvfilm.contract.FilmDetailContract;
 import com.tuojin.tvfilm.net.TvFilmNetWorkWS;
@@ -16,11 +18,15 @@ import java.util.Date;
  */
 
 public class FilmDetailModelImpl implements FilmDetailContract.Model {
-    public FilmDetailModelImpl(FilmDetailPresenterImpl presenter) {
-        mPresenter = presenter;
-    }
-    TvFilmNetWorkWS netWorkWS =new TvFilmNetWorkWS();
+    TvFilmNetWorkWS netWorkWS = new TvFilmNetWorkWS();
     FilmDetailPresenterImpl mPresenter;
+    String IP_TERMINAL;
+
+    public FilmDetailModelImpl(FilmDetailPresenterImpl presenter, String ip) {
+        mPresenter = presenter;
+        Context context = mPresenter.getContext();
+        IP_TERMINAL = ip;
+    }
 
 
     @Override
@@ -47,7 +53,7 @@ public class FilmDetailModelImpl implements FilmDetailContract.Model {
             String kdm = bean.getKdm_addr().replace("/", "%2F");
             String cmd = Constant.PADMAC + "|startPlay|mac=" + Constant.PADMAC +
                     "&ipAddress=" +
-                    Constant.IP_TERMINAL +
+                    IP_TERMINAL +
                     "&terminalCode=" + Constant.TERMINAL_CODE +
                     "&splname=" + Constant.PADMAC +
                     "&cplname=" + encode +
@@ -55,8 +61,8 @@ public class FilmDetailModelImpl implements FilmDetailContract.Model {
                     "&total_duration=" + bean.getFilmlength() +
                     "&cpl_dcpuri=" + replace +
                     "&cpl_kdmuri=" + kdm +
-                    "&timeStamp=" + new Date().getTime()+
-                    "&charge_flag="+bean.getCharge_flag();
+                    "&timeStamp=" + new Date().getTime() +
+                    "&charge_flag=" + bean.getCharge_flag();
             netWorkWS.sendMsg(cmd);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -67,22 +73,23 @@ public class FilmDetailModelImpl implements FilmDetailContract.Model {
     public void initList() {
         //网络请求
 
-        netWorkWS.sendMsg(Constant.PADMAC + "|getFilmListOrderByHotest|orderByFeild=newest&orderByType=desc&terminalCode=" +
+        netWorkWS.sendMsg(Constant.PADMAC + "|getFilmListOrderByHotest|" +
+                        "orderByFeild=newest&orderByType=desc&terminalCode=" +
                         Constant.TERMINAL_CODE + "&startIndex=0&endIndex=10"
-                ,102);
+                , 102);
     }
 
 
     @Override
     public void getQrCode(FilmDetailBean.DataBean.FilmDetailDataBean bean) {
 
-            String cmd = Constant.PADMAC + "|payAli|mac=" + Constant.PADMAC +
-                    "&ipAddress=" +
-                    Constant.IP_TERMINAL +
-                    "&terminalCode=" + Constant.TERMINAL_CODE +
-                    "&cpluuid=" + bean.getUuid() +
-                    "&timeStamp=" + new Date().getTime();
-            netWorkWS.sendMsg(cmd);
+        String cmd = Constant.PADMAC + "|payAli|mac=" + Constant.PADMAC +
+                "&ipAddress=" +
+                IP_TERMINAL +
+                "&terminalCode=" + Constant.TERMINAL_CODE +
+                "&cpluuid=" + bean.getUuid() +
+                "&timeStamp=" + new Date().getTime();
+        netWorkWS.sendMsg(cmd);
 
     }
 
@@ -91,7 +98,7 @@ public class FilmDetailModelImpl implements FilmDetailContract.Model {
 
         String cmd = Constant.PADMAC + "|pausePlay|mac=" +
                 Constant.PADMAC +
-                "&ipAddress=" + Constant.IP_TERMINAL +
+                "&ipAddress=" + IP_TERMINAL +
                 "&terminalCode=" + Constant.TERMINAL_CODE +
                 "&timeStamp=" + new Date().getTime();
         LogUtils.d("11", cmd);
@@ -103,7 +110,7 @@ public class FilmDetailModelImpl implements FilmDetailContract.Model {
 
         String cmd = Constant.PADMAC + "|playStatus|mac=" +
                 Constant.PADMAC +
-                "&ipAddress=" + Constant.IP_TERMINAL +
+                "&ipAddress=" + IP_TERMINAL +
                 "&terminalCode=" + Constant.TERMINAL_CODE +
                 "&timeStamp=" + new Date().getTime();
         LogUtils.d("11", cmd);
@@ -115,7 +122,7 @@ public class FilmDetailModelImpl implements FilmDetailContract.Model {
 
         String cmd = Constant.PADMAC + "|continuePlay|mac=" +
                 Constant.PADMAC +
-                "&ipAddress=" + Constant.IP_TERMINAL +
+                "&ipAddress=" + IP_TERMINAL +
                 "&terminalCode=" + Constant.TERMINAL_CODE +
                 "&timeStamp=" + new Date().getTime();
         LogUtils.d("11", cmd);
@@ -126,13 +133,53 @@ public class FilmDetailModelImpl implements FilmDetailContract.Model {
 
         String cmd = Constant.PADMAC + "|stopPlay|mac=" +
                 Constant.PADMAC +
-                "&ipAddress=" + Constant.IP_TERMINAL +
+                "&ipAddress=" + IP_TERMINAL +
                 "&terminalCode=" + Constant.TERMINAL_CODE +
                 "&timeStamp=" + new Date().getTime();
 
         LogUtils.d("11", cmd);
         netWorkWS.sendMsg(cmd);
     }
-//  通过网络获得影片详情
 
+    public void checkFilm() {
+//        PAD1465889962927|playStatus|mac=PAD1465889962927&ipAddress=10.1.0.236&terminalCode=SMET15128361&timeStamp=1465890817397
+        String cmd = Constant.PADMAC + "|playStatus|mac=" +
+                Constant.PADMAC +
+                "&ipAddress=" + IP_TERMINAL +
+                "&terminalCode=" + Constant.TERMINAL_CODE +
+                "&timeStamp=" + new Date().getTime();
+
+        LogUtils.d("11", cmd);
+        netWorkWS.sendMsg(cmd);
+    }
+
+    public void previewReplay() {
+        String cmd = Constant.PADMAC + "|previewContinue|mac=" +
+                Constant.PADMAC +
+                "&ipAddress=" + IP_TERMINAL +
+                "&terminalCode=" + Constant.TERMINAL_CODE +
+                "&timeStamp=" + new Date().getTime();
+        LogUtils.d("11", cmd);
+        netWorkWS.sendMsg(cmd);
+    }
+
+    public void previewStop(FilmDetailBean.DataBean.FilmDetailDataBean bean) {
+        String cmd = Constant.PADMAC + "|previewStop|mac=" +
+                Constant.PADMAC +
+                "&ipAddress=" + IP_TERMINAL +
+                "&terminalCode=" + Constant.TERMINAL_CODE +
+                "&timeStamp=" + new Date().getTime();
+        LogUtils.d("11", cmd);
+        netWorkWS.sendMsg(cmd);
+    }
+
+    public void continuePlay() {
+        String cmd = Constant.PADMAC + "|continuePlay|mac=" +
+                Constant.PADMAC +
+                "&ipAddress=" + IP_TERMINAL +
+                "&terminalCode=" + Constant.TERMINAL_CODE +
+                "&timeStamp=" + new Date().getTime();
+        LogUtils.d("11", cmd);
+        netWorkWS.sendMsg(cmd);
+    }
 }

@@ -30,6 +30,6 @@ public class ActorModelImpl implements ActorContract.Model{
                 "&searchMode=&keyword=&movieTypeStr=&placeId=" +
                 "&yearId=&actorId=" +
                 id +
-                "&directorId=&startIndex=0&endIndex=100");
+                "&directorId=&startIndex=0&endIndex=100",4);
     }
 }
