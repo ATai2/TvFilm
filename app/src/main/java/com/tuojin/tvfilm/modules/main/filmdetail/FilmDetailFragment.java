@@ -36,7 +36,6 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.litesuits.orm.LiteOrm;
 import com.litesuits.orm.db.assit.QueryBuilder;
 import com.litesuits.orm.db.assit.WhereBuilder;
-import com.open.androidtvwidget.BuildConfig;
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseApplication;
 import com.tuojin.tvfilm.base.BaseFragment;
@@ -442,7 +441,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(FilmPlayEvent event) {
-        if (BuildConfig.DEBUG) Log.d(TAG, event.msg);
+        Log.d(TAG, event.msg);
         playRecord();
         hideLoading();
 
@@ -468,7 +467,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(PreviewConfirmEvent event) {
-        if (BuildConfig.DEBUG) Log.d(TAG, event.msg);
+        Log.d(TAG, event.msg);
 
         Toast.makeText(getActivity(), event.msg, Toast.LENGTH_LONG).show();
         isPlaying = false;
