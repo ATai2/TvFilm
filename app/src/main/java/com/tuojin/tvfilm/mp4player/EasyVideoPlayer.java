@@ -32,7 +32,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -195,13 +194,13 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
                 int pauseDrawableResId = a.getResourceId(R.styleable.EasyVideoPlayer_evp_pauseDrawable, -1);
 
                 if (restartDrawableResId != -1) {
-                    mRestartDrawable = AppCompatResources.getDrawable(context, restartDrawableResId);
+                    mRestartDrawable = getResources().getDrawable(restartDrawableResId);
                 }
                 if (playDrawableResId != -1) {
-                    mPlayDrawable = AppCompatResources.getDrawable(context, playDrawableResId);
+                    mPlayDrawable = getResources().getDrawable(playDrawableResId);
                 }
                 if (pauseDrawableResId != -1) {
-                    mPauseDrawable = AppCompatResources.getDrawable(context, pauseDrawableResId);
+                    mPauseDrawable = getResources().getDrawable(pauseDrawableResId);
                 }
 
                 mHideControlsOnPlay = a.getBoolean(R.styleable.EasyVideoPlayer_evp_hideControlsOnPlay, true);
@@ -233,11 +232,11 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
             mSubmitText = context.getResources().getText(R.string.evp_submit);
 
         if (mRestartDrawable == null)
-            mRestartDrawable = AppCompatResources.getDrawable(context, R.drawable.evp_action_restart);
+            mRestartDrawable = getResources().getDrawable(R.drawable.evp_action_restart);
         if (mPlayDrawable == null)
-            mPlayDrawable = AppCompatResources.getDrawable(context, R.drawable.evp_action_play);
+            mPlayDrawable = getResources().getDrawable(R.drawable.evp_action_play);
         if (mPauseDrawable == null)
-            mPauseDrawable = AppCompatResources.getDrawable(context, R.drawable.evp_action_pause);
+            mPauseDrawable = getResources().getDrawable(R.drawable.evp_action_pause);
     }
 
     @Override
@@ -336,7 +335,7 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
 
     @Override
     public void setRestartDrawableRes(@DrawableRes int res) {
-        setRestartDrawable(AppCompatResources.getDrawable(getContext(), res));
+        setRestartDrawable(getResources().getDrawable(res));
     }
 
     @Override
@@ -347,7 +346,7 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
 
     @Override
     public void setPlayDrawableRes(@DrawableRes int res) {
-        setPlayDrawable(AppCompatResources.getDrawable(getContext(), res));
+        setPlayDrawable(getResources().getDrawable(res));
     }
 
     @Override
@@ -358,7 +357,7 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
 
     @Override
     public void setPauseDrawableRes(@DrawableRes int res) {
-        setPauseDrawable(AppCompatResources.getDrawable(getContext(), res));
+        setPauseDrawable(getResources().getDrawable(res));
     }
 
     @Override
@@ -876,7 +875,7 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
     public void onClick(View view) {
         int currentPosition = getCurrentPosition();
         int duration = getDuration();
-        int interval=20000;
+        int interval = 20000;
         if (view.getId() == R.id.btnPlayPause) {
             if (mPlayer.isPlaying()) {
                 pause();
@@ -890,7 +889,7 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
 
             int pos = currentPosition - interval;
             if (pos <= 0) {
-                pos=0;
+                pos = 0;
             }
             seekTo(pos);
 //            if (!isPlaying()) start();
@@ -901,14 +900,13 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
 
             int pos = currentPosition + interval;
             if (pos > duration) {
-                pos=duration;
+                pos = duration;
             }
             seekTo(pos);
 //            if (mCallback != null)
 //                mCallback.onSubmit(this, mSource);
         }
     }
-
 
 
     @Override
@@ -1076,9 +1074,9 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
         tintSelector(mBtnRight, labelColor);
         mLabelCustom.setTextColor(labelColor);
         mLabelBottom.setTextColor(labelColor);
-        mPlayDrawable = tintDrawable(mPlayDrawable.mutate(), labelColor);
-        mRestartDrawable = tintDrawable(mRestartDrawable.mutate(), labelColor);
-        mPauseDrawable = tintDrawable(mPauseDrawable.mutate(), labelColor);
+//        mPlayDrawable = tintDrawable(mPlayDrawable.mutate(), labelColor);
+//        mRestartDrawable = tintDrawable(mRestartDrawable.mutate(), labelColor);
+//        mPauseDrawable = tintDrawable(mPauseDrawable.mutate(), labelColor);
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

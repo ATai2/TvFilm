@@ -29,7 +29,7 @@ public class FullScreenLiveActivity extends AppCompatActivity {
         String url = getIntent().getStringExtra("url");
         Log.d("abs", url);
 
-        url = "http://192.168.1.243/Westworld.S01E01.2016.HD1080P.X264.AAC.English.CHS-ENG.Mp4Ba.mp4";
+//        url = "http://192.168.1.243/Westworld.S01E01.2016.HD1080P.X264.AAC.English.CHS-ENG.Mp4Ba.mp4";
 //
 //        url = "http://192.168.1.243/Shanghai%20Tower%20(650%20meters).mp4";
 

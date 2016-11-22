@@ -76,6 +76,8 @@
         </activity>
         <activity android:name=".modules.catelist.live.EMVVActivity">
         </activity>
+        <activity android:name=".mp4player.local.LocalActivity">
+        </activity>
     </application>
 
 </manifest>

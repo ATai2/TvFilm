@@ -44,6 +44,8 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    compile 'me.zhanghai.android.materialprogressbar:library:1.1.7'
+
 //    compile 'com.devbrackets.android:exomedia:3.1.0'
 //    compile project(':library')
 //    compile 'com.afollestad.material-dialogs:core:0.9.1.0'

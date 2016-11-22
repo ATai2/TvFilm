@@ -129,7 +129,6 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/default_selector_corner"
                     android:focusable="true"
-                    android:nextFocusRight="@+id/btn_stop"
                     android:text="播放"
                     android:textColor="@color/white"
                     android:textSize="32sp"/>
@@ -143,8 +142,32 @@
                     android:focusable="true"
                     android:layout_marginLeft="24dp"
 
-                    android:nextFocusRight="@+id/btn_collect"
                     android:text="停止"
+                    android:textColor="@color/white"
+                    android:textSize="32sp"/>
+
+                <Button
+                    android:id="@+id/btn_before"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="24dp"
+                    android:background="@drawable/default_selector_corner"
+                    android:focusable="true"
+                    android:text="快退"
+                    android:textColor="@color/white"
+                    android:textSize="32sp"/>
+                <Button
+                    android:id="@+id/btn_next"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="24dp"
+                    android:background="@drawable/default_selector_corner"
+                    android:focusable="true"
+                    android:text="快进"
                     android:textColor="@color/white"
                     android:textSize="32sp"/>
 
@@ -152,15 +175,44 @@
                     android:id="@+id/btn_collect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="24dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/default_selector_corner"
                     android:focusable="true"
-                    android:nextFocusRight="@+id/btn_stop"
                     android:text="收藏"
                     android:textColor="@color/white"
                     android:textSize="32sp"/>
+
             </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_marginRight="70dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_position"
+                    android:text="00"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <SeekBar
+                    android:id="@+id/sb_progress"
+
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/tv_end"
+                    android:text="00"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
 
         </LinearLayout>
     </RelativeLayout>

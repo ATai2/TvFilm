@@ -70,6 +70,10 @@ public class FilmDetailPresenterImpl extends BasePresenter<FilmDetailContract.Vi
         mDetailModel.checkFilm();
     }
 
+    public void checkFilm(int p) {
+        mDetailModel.checkFilm(p);
+    }
+
     public void previewrePlay() {
         mDetailModel.previewReplay();
     }
@@ -80,5 +84,9 @@ public class FilmDetailPresenterImpl extends BasePresenter<FilmDetailContract.Vi
 
     public void continuPlay() {
         mDetailModel.continuePlay();
+    }
+
+    public void gotoPostion(int currentposition) {
+        mDetailModel.gotoPlay(currentposition);
     }
 }

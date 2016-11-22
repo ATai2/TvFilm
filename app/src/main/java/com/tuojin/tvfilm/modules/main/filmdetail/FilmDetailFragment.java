@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +58,7 @@ import com.tuojin.tvfilm.event.FilmPlayEvent;
 import com.tuojin.tvfilm.event.FilmPlayRefreshSearchEvent;
 import com.tuojin.tvfilm.event.FilmRePlayEvent;
 import com.tuojin.tvfilm.event.FilmStatusEvent;
+import com.tuojin.tvfilm.event.FilmStatusUpdateEvent;
 import com.tuojin.tvfilm.event.FilmStopEvent;
 import com.tuojin.tvfilm.event.PayEvent;
 import com.tuojin.tvfilm.event.PayFailEvent;
@@ -65,6 +68,7 @@ import com.tuojin.tvfilm.event.QrCodeEvent;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
 import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
+import com.tuojin.tvfilm.mp4player.Util;
 import com.tuojin.tvfilm.presenter.FilmDetailPresenterImpl;
 import com.tuojin.tvfilm.utils.ImageLoaderUtils;
 import com.tuojin.tvfilm.widget.CustomRecycleView;
@@ -80,6 +84,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -134,6 +140,16 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     LinearLayout mLlBottom;
     @BindView(R.id.rl_detail_al)
     RelativeLayout mRlDetailAl;
+    @BindView(R.id.btn_before)
+    Button mBtnBefore;
+    @BindView(R.id.btn_next)
+    Button mBtnNext;
+    @BindView(R.id.tv_position)
+    TextView mTvPosition;
+    @BindView(R.id.tv_end)
+    TextView mTvEnd;
+    @BindView(R.id.sb_progress)
+    SeekBar mSeekBar;
 
 
     private FilmDetailBean.DataBean.FilmDetailDataBean mBean;
@@ -152,6 +168,34 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     private LiteOrm mMLiteOrm;
     private boolean isCollected;
     private boolean isPaused;
+    private boolean checkFirst;//更新是否为第一次，第一次获得播放位置，第二次快进或快退更新UI。
+    private ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            while (isPlaying) {
+                mPresenter.checkFilm(90);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    };
+
+//    private Handler mHandler=new Handler(){
+//        @Override
+//        public void handleMessage(Message msg) {
+//            if (msg.what == 0) {
+//                mPresenter.checkFilm(90);
+//                if (isPlaying) {
+//                    mHandler.sendEmptyMessageDelayed(0,1000);
+//                }
+//            }
+//        }
+//    };
 
     @Override
     protected int getLayoutId() {
@@ -183,6 +227,10 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         LinearLayoutManager layout = new LinearLayoutManager(mActivity);
         layout.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRvFilmDetail.setLayoutManager(layout);
+
+        //进度条的更新
+//        mHandler.sendEmptyMessage(0);
+
 
         mBtnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,19 +273,38 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
                     mBtnCollect.setText("已收藏");
                 }
                 isCollected = !isCollected;
+
+            }
+        });
+        hideController();
+
+        mBtnBefore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int currentposition = (int) mTvPosition.getTag();
+                int total = (int) mTvEnd.getTag();
+                currentposition = (int) (-total * 0.01 + currentposition);
+                if (currentposition < 0) {
+                    currentposition = 0;
+                }
+                mPresenter.gotoPostion(currentposition);
+            }
+        });
+        mBtnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int currentposition = (int) mTvPosition.getTag();
+                int total = (int) mTvEnd.getTag();
+                currentposition = (int) (total * 0.01 + currentposition);
+                if (currentposition >total) {
+                    currentposition = total;
+                }
+                Log.d("asdf", "currentposition:" + currentposition);
+                Log.d("asdf", "total:" + total);
+                mPresenter.gotoPostion(currentposition);
             }
         });
     }
-//    /**
-//     * 详情页初始化
-//     *
-//     * @param event
-//     */
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onMessageEvent(PaySuccessEvent event) {
-//        if ()
-//
-//    }
 
     /**
      * 详情页初始化
@@ -294,6 +361,31 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         } else {
             mTitleTopbar.setText("电影详情");
         }
+    }
+
+    boolean isNext;
+
+    /**
+     * 播放更新显示
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(FilmStatusUpdateEvent event) {
+        FilmStatusBean.DataBean.StatusBean data = new Gson().fromJson(event.msg, FilmStatusBean.class).getData().getData();
+        String showPostionPlayedDuration = data.getObStatus().getShowPostionPlayedDuration();
+        String showPostionTotalDuration = data.getObStatus().getShowPostionTotalDuration();
+        int position = Integer.parseInt(showPostionPlayedDuration);
+        int total = Integer.parseInt(showPostionTotalDuration);
+        mSeekBar.setMax(total);
+
+        mTvPosition.setText(Util.getDurationString(((long) position * 1000), true));
+        mTvPosition.setTag(position);
+        mTvEnd.setText(Util.getDurationString(((long) total * 1000), true));
+        mTvEnd.setTag(total);
+        mSeekBar.setProgress(position);
+
+//        mHandler.sendEmptyMessage(0);
     }
 
     /**
@@ -402,7 +494,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     public void onMessageEvent(FilmPauseEvent event) {
         Toast.makeText(getActivity(), event.msg, Toast.LENGTH_LONG).show();
         isPlaying = false;
-        isPaused=true;
+        isPaused = true;
         mBtnPlay.setText("播放");
         mPresenter.checkFilm();
     }
@@ -416,8 +508,10 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     public void onMessageEvent(FilmRePlayEvent event) {
         Toast.makeText(mActivity, "影片继续播放成功", Toast.LENGTH_SHORT).show();
         mBtnPlay.setText("暂停");
+//        mExecutorService.execute(mRunnable);
 
     }
+
     /**
      * 停止影片
      *
@@ -431,6 +525,8 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         isStoped = true;
 
         mPresenter.checkFilm();
+        hideController();
+        mExecutorService.shutdownNow();
     }
 
     /**
@@ -457,6 +553,9 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         mBtnPlay.setText("暂停");
 
         mPresenter.checkFilm();
+
+        showController();
+        mExecutorService.execute(mRunnable);
 //        timer.schedule(mTimerTask,15*60*1000);
     }
 
@@ -636,6 +735,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
 
     /**
      * 二维码
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -881,6 +981,45 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         mPresenter.initList();
     }
 
+    class SeekBarAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            while (isPlaying) {
+
+                try {
+                    mPresenter.checkFilm(90);
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+
+            super.onProgressUpdate(values);
+        }
+    }
+
+    private void showController() {
+        mBtnBefore.setVisibility(View.VISIBLE);
+        mBtnNext.setVisibility(View.VISIBLE);
+        mSeekBar.setVisibility(View.VISIBLE);
+        mTvEnd.setVisibility(View.VISIBLE);
+        mTvPosition.setVisibility(View.VISIBLE);
+    }
+
+    private void hideController() {
+        mBtnBefore.setVisibility(View.GONE);
+        mBtnNext.setVisibility(View.GONE);
+        mSeekBar.setVisibility(View.GONE);
+        mTvEnd.setVisibility(View.GONE);
+        mTvPosition.setVisibility(View.GONE);
+    }
+
 
     boolean begin;
 
@@ -894,10 +1033,11 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     public void onDestroyView() {
         super.onDestroyView();
         FileUtils.deleteFile(mFilePath);
-        if (!isStoped||isPlaying) {
+        if (!isStoped || isPlaying) {
             mPresenter.stop(mBean);
         }
+        isPlaying = false;
+        //关闭线程池，取消任务
+        mExecutorService.shutdownNow();
     }
-
-
 }

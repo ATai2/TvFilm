@@ -148,9 +148,19 @@ public class FilmDetailModelImpl implements FilmDetailContract.Model {
                 "&ipAddress=" + IP_TERMINAL +
                 "&terminalCode=" + Constant.TERMINAL_CODE +
                 "&timeStamp=" + new Date().getTime();
-
         LogUtils.d("11", cmd);
         netWorkWS.sendMsg(cmd);
+    }
+
+    public void checkFilm(int p) {
+        String cmd = Constant.PADMAC + "|playStatus|mac=" +
+                Constant.PADMAC +
+                "&ipAddress=" + IP_TERMINAL +
+                "&terminalCode=" + Constant.TERMINAL_CODE +
+                "&timeStamp=" + new Date().getTime();
+
+        LogUtils.d("11", cmd);
+        netWorkWS.sendMsg(cmd,p);
     }
 
     public void previewReplay() {
@@ -178,6 +188,17 @@ public class FilmDetailModelImpl implements FilmDetailContract.Model {
                 Constant.PADMAC +
                 "&ipAddress=" + IP_TERMINAL +
                 "&terminalCode=" + Constant.TERMINAL_CODE +
+                "&timeStamp=" + new Date().getTime();
+        LogUtils.d("11", cmd);
+        netWorkWS.sendMsg(cmd);
+    }
+
+    public void gotoPlay(int position) {
+        String cmd = Constant.PADMAC + "|goToPosition|mac=" +
+                Constant.PADMAC +
+                "&ipAddress=" + IP_TERMINAL +
+                "&terminalCode=" + Constant.TERMINAL_CODE +
+                "&gototime="+ position+
                 "&timeStamp=" + new Date().getTime();
         LogUtils.d("11", cmd);
         netWorkWS.sendMsg(cmd);

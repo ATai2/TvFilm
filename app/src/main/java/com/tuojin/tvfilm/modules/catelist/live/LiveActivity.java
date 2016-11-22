@@ -190,8 +190,8 @@ public class LiveActivity extends BaseActivity<LiveContract.View, LivePresenterI
                     @Override
                     public void onClick(View v) {
 //                        mPresenter.playLive(bean);
-                        Intent intent=new Intent(LiveActivity.this,FullScreenLiveActivity.class);
-//                        Intent intent=new Intent(LiveActivity.this,MP4Activity.class);
+//                        Intent intent=new Intent(LiveActivity.this,FullScreenLiveActivity.class);
+                        Intent intent=new Intent(LiveActivity.this,MP4Activity.class);
                         String lturl = bean.getLturl();
                         Log.d("abs", lturl);
                         String key = "k2hrwtgk0wybzdysm2sbl8";

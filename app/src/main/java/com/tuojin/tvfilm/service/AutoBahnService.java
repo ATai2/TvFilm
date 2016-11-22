@@ -21,12 +21,14 @@ import com.tuojin.tvfilm.event.ErrorEvent;
 import com.tuojin.tvfilm.event.FilmAdEvent;
 import com.tuojin.tvfilm.event.FilmBigEvent;
 import com.tuojin.tvfilm.event.FilmDoubanEvent;
+import com.tuojin.tvfilm.event.FilmGotoPositionEvent;
 import com.tuojin.tvfilm.event.FilmHotEvent;
 import com.tuojin.tvfilm.event.FilmNewEvent;
 import com.tuojin.tvfilm.event.FilmPauseEvent;
 import com.tuojin.tvfilm.event.FilmPlayEvent;
 import com.tuojin.tvfilm.event.FilmRePlayEvent;
 import com.tuojin.tvfilm.event.FilmStatusEvent;
+import com.tuojin.tvfilm.event.FilmStatusUpdateEvent;
 import com.tuojin.tvfilm.event.FilmStopEvent;
 import com.tuojin.tvfilm.event.FilmTypeEvent;
 import com.tuojin.tvfilm.event.HotRecommEvent;
@@ -163,12 +165,17 @@ public class AutoBahnService extends Service  {
                                 EventBus.getDefault().post(new FilmRePlayEvent("影片继续播放"));
                                 break;
                             case Constant.PLAYSTATUS:
-                                //影片继续播放
-                                EventBus.getDefault().post(new FilmStatusEvent(s));
+                                //影片状态
+                                if (mInt == 90) {
+                                    EventBus.getDefault().post(new FilmStatusUpdateEvent(s));
+                                } else {
+                                    EventBus.getDefault().post(new FilmStatusEvent(s));
+                                }
+
                                 break;
                             case Constant.GOTOPOSITION:
                                 //影片跳转播放
-                                EventBus.getDefault().post(new FilmPauseEvent("影片跳转播放"));
+                                EventBus.getDefault().post(new FilmGotoPositionEvent(s));
                                 break;
                             case Constant.GETTERMINAL:
                                 //获取影厅列表

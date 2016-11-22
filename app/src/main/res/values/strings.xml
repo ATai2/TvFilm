@@ -27,6 +27,10 @@
     <string name="title_activity_exo_video">ExoVideoActivity</string>
 
 
+    <string name="evp_submit">快进</string>
+    <string name="evp_retry">快退</string>
+
+
     <string name="application_name">ExoPlayer2 Demo</string>
 
     <string name="video">Video</string>
