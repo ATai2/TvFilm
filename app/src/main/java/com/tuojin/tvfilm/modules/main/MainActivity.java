@@ -1,6 +1,7 @@
 package com.tuojin.tvfilm.modules.main;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -10,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -28,6 +30,8 @@ import com.tuojin.tvfilm.bean.LiteFilmCollectionBean;
 import com.tuojin.tvfilm.bean.TerminalBean;
 import com.tuojin.tvfilm.bean.TerminalListBean;
 import com.tuojin.tvfilm.contract.HotRecommContract;
+import com.tuojin.tvfilm.event.LoginEvent;
+import com.tuojin.tvfilm.event.ServiceCallEvent;
 import com.tuojin.tvfilm.event.TerminalBindEvent;
 import com.tuojin.tvfilm.event.TerminalListEvent;
 import com.tuojin.tvfilm.modules.catelist.FilmListActivity;
@@ -58,6 +62,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -107,11 +112,18 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
     LinearLayout mRlContainer;
     @BindView(R.id.relative)
     RelativeLayout mRelative;
+    @BindView(R.id.tv_status)
+    TextView mTvStatus;
+    @BindView(R.id.tv_status_uname)
+    TextView mTvStatusUname;
+    @BindView(R.id.tv_call)
+    TextView mTvCall;
     private int[] mIntArray;
     private AlertDialog mDialog;
     private RecyclerView mRecyclerView;
     private List<TerminalBean> mList;
     private LiteOrm mMLiteOrm;
+    private String mTerminal_name;
 
 
     @Override
@@ -127,6 +139,13 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
     }
 
     private SimpleDateFormat mDf;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 
     class MyTimer extends TimerTask {
 
@@ -146,8 +165,8 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
     @Override
     protected void initView() {
         SPUtils utils = new SPUtils(this, "terminal");
-        Constant.TERMINAL_CODE= utils.getString("code");
-        Constant.IP_TERMINAL=utils.getString("ip");
+        Constant.TERMINAL_CODE = utils.getString("code");
+        Constant.IP_TERMINAL = utils.getString("ip");
 
         mVpContainer.setOffscreenPageLimit(5);
         // mVpContainer.setCurrentItem(0);
@@ -157,7 +176,12 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
         mCategoryFrag = new CategoryFragment();
         mSortListFrag = new SortListFragment();
         mAlbumFrag = new AlbumFragment();
-//        mSearchFrag = new SearchFragment();
+//        mSearchFrag = new SearchFragment();   new SPUtils(MainActivity.this,"setting").putString("terminalName",mTerminal_name);
+
+        String string = new SPUtils(MainActivity.this, "terminal").getString("terminalName");
+        if (string != null) {
+            mTvStatus.setText("绑定影厅：" + string);
+        }
 
         mFragmentList.add(mHotRecommFrag);
         mFragmentList.add(mCategoryFrag);
@@ -227,6 +251,27 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
                 intent.putExtra("data", s);
                 intent.putExtra("type", "收藏");
                 startActivity(intent);
+            }
+        });
+
+        mTvCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+                LayoutInflater inflater = LayoutInflater.from(mActivity);
+                View inflate = inflater.inflate(R.layout.dialog_call, null);
+                final EditText editText= (EditText) inflate.findViewById(R.id.et_call);
+
+                builder.setView(inflate);
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+                inflate.findViewById(R.id.btn_send).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mPresenter.call(editText.getText().toString().trim());
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 
@@ -313,18 +358,36 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ServiceCallEvent event) {
+        Toast.makeText(this, "呼叫成功，请耐心等待...", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(TerminalBindEvent event) {
         BaseApiResponse baseApiResponse = new Gson().fromJson(event.msg, BaseApiResponse.class);
         mDialog.dismiss();
         try {
             JSONObject object = new JSONObject(baseApiResponse.getData().toString());
             String msg = object.getString("msg");
+//            String username = object.getString("username");
+            mTvStatus.setText("绑定影厅：" + mTerminal_name);
+            new SPUtils(MainActivity.this,"terminal").putString("terminalName",mTerminal_name);
             Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+//            mTvStatus.setText(username);
             mPresenter.onResume();
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(LoginEvent event) {
+
     }
 
     /**
@@ -337,12 +400,9 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
         CommonAdapter<TerminalBean> adapter = new CommonAdapter<TerminalBean>(MainActivity.this, R.layout.item_radbtn, mList, 2) {
             @Override
             public void convert(ViewHolder holder, TerminalBean terminalBean) {
+
                 holder.setText(R.id.radbtn_item, terminalBean.getTerminal_name());
-//                if (terminalBean.getMac() == null || terminalBean.getMac().trim().equals("")) {
-//                    holder.setTextColor(R.id.radbtn_item, R.color.white);
-//                } else {
-//                    holder.setTextColor(R.id.radbtn_item, R.color.red);
-//                }
+
             }
         };
         adapter.setOnItemClickListener(new OnItemClickListener() {
@@ -351,9 +411,12 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
                 TerminalBean terminalBean = mList.get(position);
                 if (terminalBean.getMac() == null || terminalBean.getMac().trim().equals(""))
                     mPresenter.bind(terminalBean);
+                mTerminal_name = terminalBean.getTerminal_name();
                 ip = terminalBean.getTerminal_ip();
+
                 Constant.IP_TERMINAL = terminalBean.getTerminal_ip();
-                Constant.TERMINAL_CODE=terminalBean.getTerminal_code();
+                Constant.TERMINAL_CODE = terminalBean.getTerminal_code();
+
                 new SPUtils(MainActivity.this, "terminal").putString("ip", ip);
                 new SPUtils(MainActivity.this, "terminal").putString("code", terminalBean.getTerminal_code());
             }

@@ -24,4 +24,8 @@ public class HotRecommPresenterImpl extends BasePresenter<HotRecommContract.View
     public void bind(TerminalBean terminalBean) {
         model.bind(terminalBean);
     }
+
+    public void call(String msg) {
+        model.call(msg);
+    }
 }

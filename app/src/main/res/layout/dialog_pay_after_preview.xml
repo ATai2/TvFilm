@@ -14,7 +14,7 @@
 
         android:layout_marginTop="16dp"
         android:layout_height="wrap_content"
-        android:text="@string/pay_ok"/>
+        android:text="@string/pay_preview_confirm"/>
 
     <TextView
         android:id="@+id/tv_des"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:textSize="32sp"
         android:textColor="@color/white"
-        android:text="该影片需要按此点播收费"/>
+        android:text="请选择支付方式："/>
 
     <Button
         android:id="@+id/btn_pay"
@@ -33,11 +33,6 @@
         android:id="@+id/btn_pay_weixin"
         style="@style/pay_btn"
         android:text="微信支付"/>
-
-    <Button
-        android:id="@+id/btn_later"
-        style="@style/pay_btn"
-        android:text="看看再说"/>
 
     <Button
         android:id="@+id/btn_cancle"

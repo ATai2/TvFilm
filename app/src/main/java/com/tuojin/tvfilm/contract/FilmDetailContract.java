@@ -29,7 +29,7 @@ public interface Presenter{
 
     void stop(FilmDetailBean.DataBean.FilmDetailDataBean bean);
 
-    void getQrCode(FilmDetailBean.DataBean.FilmDetailDataBean bean);
+    void getQrCode(FilmDetailBean.DataBean.FilmDetailDataBean bean,int i);
 
     void pause();
 
@@ -44,7 +44,7 @@ public interface Model{
 
     void initList();
 
-    void getQrCode(FilmDetailBean.DataBean.FilmDetailDataBean bean);
+    void getQrCode(FilmDetailBean.DataBean.FilmDetailDataBean bean,int i);
 
     void pause();
 

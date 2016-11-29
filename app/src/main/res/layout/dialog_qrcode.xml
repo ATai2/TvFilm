@@ -25,6 +25,7 @@
                 android:textSize="36sp"/>
 
             <TextView
+                android:id="@+id/tv_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="请用支付宝扫描以下二维码，尽快完成在线支付"

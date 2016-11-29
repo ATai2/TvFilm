@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -65,6 +67,7 @@ import com.tuojin.tvfilm.event.PayFailEvent;
 import com.tuojin.tvfilm.event.PayReviewEvent;
 import com.tuojin.tvfilm.event.PreviewConfirmEvent;
 import com.tuojin.tvfilm.event.QrCodeEvent;
+import com.tuojin.tvfilm.event.QrCodeWxEvent;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
 import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
@@ -91,6 +94,12 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
+ * 修改的较为复杂，现将逻辑说明如下：
+ * 1.页面进入，获得详情和推荐列表
+ * 2.数据库查看是否加入收藏
+ * 3.非大片，点击播放
+ *
+ *
  * 需要控制片头15分钟，停止发送停止命令。
  * * A simple {@link Fragment} subclass.
  */
@@ -173,10 +182,11 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
+//            对播放状态的轮询，获得播放进度
             while (isPlaying) {
                 mPresenter.checkFilm(90);
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -184,18 +194,19 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
 
         }
     };
+    private AlertDialog mAlertPreEnd;
+    public static final int ALIPAY=0;
+    public static final int WXPAY=1;
 
-//    private Handler mHandler=new Handler(){
-//        @Override
-//        public void handleMessage(Message msg) {
-//            if (msg.what == 0) {
-//                mPresenter.checkFilm(90);
-//                if (isPlaying) {
-//                    mHandler.sendEmptyMessageDelayed(0,1000);
-//                }
-//            }
-//        }
-//    };
+    private Handler mHandler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == ALIPAY) {
+
+            }
+        }
+    };
 
     @Override
     protected int getLayoutId() {
@@ -210,7 +221,6 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         mFilm = arguments.getParcelable("film");
         mBig = arguments.getBoolean("big", false);
         mPresenter.checkFilm();
-
 //               收藏判断
         final String s = new Gson().toJson(mFilm);
         ArrayList<LiteFilmCollectionBean> query = mMLiteOrm.query(new QueryBuilder<LiteFilmCollectionBean>(LiteFilmCollectionBean.class)
@@ -228,15 +238,9 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         layout.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRvFilmDetail.setLayoutManager(layout);
 
-        //进度条的更新
-//        mHandler.sendEmptyMessage(0);
-
-
         mBtnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                测试
-//                playRecord();
                 if (!isPlaying) {
                     showLoading();
                     if (isPaused) {
@@ -273,11 +277,9 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
                     mBtnCollect.setText("已收藏");
                 }
                 isCollected = !isCollected;
-
             }
         });
         hideController();
-
         mBtnBefore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -296,7 +298,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
                 int currentposition = (int) mTvPosition.getTag();
                 int total = (int) mTvEnd.getTag();
                 currentposition = (int) (total * 0.01 + currentposition);
-                if (currentposition >total) {
+                if (currentposition > total) {
                     currentposition = total;
                 }
                 Log.d("asdf", "currentposition:" + currentposition);
@@ -326,22 +328,12 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         mTvDbscoreScorDetail.setText(mBean.getScore());
         mTvDescDetail.setText(mBean.getBrief());
         mBtnPlay.setFocusable(true);
-        //  mBig = mBean.getCharge_price() < 0.01 ? false : true  大片的flag找找看
-//        if (mBean.getCharge_price() < 0.01)
-//            mBig = false;
-
         if (mBig) {
             mIvFlag.setVisibility(View.VISIBLE);
         } else {
             mIvFlag.setVisibility(View.INVISIBLE);
         }
         mBtnPlay.requestFocus();
-        mBtnPlay.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-
-            }
-        });
     }
 
     /**
@@ -354,16 +346,22 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         FilmStatusBean.DataBean.StatusBean data = new Gson().fromJson(event.msg, FilmStatusBean.class).getData().getData();
         if (data != null && data.getObStatus().getState().equals("PLAYING")) {
             mTitleTopbar.setText("电影详情（正在播放：" + data.getObStatus().getShowName() + "）");
+            showController();
+            isPlaying=true;
         } else if (data != null && data.getObStatus().getState().equals("PAUSED")) {
             mTitleTopbar.setText("电影详情（播放暂停：" + data.getObStatus().getShowName() + "）");
+            showController();
+            isPlaying=false;
+            isPaused=true;
         } else if (data != null && data.getObStatus().getState().equals("STOPPED")) {
+            isStoped=true;
+            isPaused=false;
+            isPlaying=false;
             mTitleTopbar.setText("电影详情");
         } else {
             mTitleTopbar.setText("电影详情");
         }
     }
-
-    boolean isNext;
 
     /**
      * 播放更新显示
@@ -378,14 +376,11 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         int position = Integer.parseInt(showPostionPlayedDuration);
         int total = Integer.parseInt(showPostionTotalDuration);
         mSeekBar.setMax(total);
-
         mTvPosition.setText(Util.getDurationString(((long) position * 1000), true));
         mTvPosition.setTag(position);
         mTvEnd.setText(Util.getDurationString(((long) total * 1000), true));
         mTvEnd.setTag(total);
         mSeekBar.setProgress(position);
-
-//        mHandler.sendEmptyMessage(0);
     }
 
     /**
@@ -400,11 +395,8 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         CommonAdapter<FilmBean> adapter = new CommonAdapter<FilmBean>(mActivity, R.layout.item_other_linear, data, 0) {
             @Override
             public void convert(ViewHolder holder, FilmBean bean) {
-
                 holder.setText(R.id.movie_title_other, bean.getMovie_name());
                 holder.setImageResource(R.id.movie_image_other, bean.getPoster());
-//                holder.setOn
-//                holder.setScaleAnimation(R.id.movie_title_other);
                 holder.setOnTextFocusChangeListner(R.id.rl_container, R.id.movie_title_other, R.id.movie_image_other, new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
@@ -458,7 +450,6 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(PayEvent event) {
-        Log.d("12", "onMessageEvent: " + event.msg);
         isPaied = true;
         mBtnPlay.setText("暂停");
         isPlaying = true;
@@ -475,7 +466,6 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
 
     /**
      * 支付失败
-     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -487,7 +477,6 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
 
     /**
      * 暂停影片
-     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -501,15 +490,12 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
 
     /**
      * 暂停影片,继续播放
-     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(FilmRePlayEvent event) {
         Toast.makeText(mActivity, "影片继续播放成功", Toast.LENGTH_SHORT).show();
         mBtnPlay.setText("暂停");
-//        mExecutorService.execute(mRunnable);
-
     }
 
     /**
@@ -519,11 +505,9 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(FilmStopEvent event) {
-//        Toast.makeText(getActivity(), event.msg, Toast.LENGTH_LONG).show();
         mBtnPlay.setText("播放");
         isPlaying = false;
         isStoped = true;
-
         mPresenter.checkFilm();
         hideController();
         mExecutorService.shutdownNow();
@@ -540,23 +524,17 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         Log.d(TAG, event.msg);
         playRecord();
         hideLoading();
-
-        if (mBig) {
-            aliPayDialog();
-//            mTimer = new Timer();
-//            mTimer.schedule(new MyTimerTask(), 15 * 60 * 1000);//15分钟
-
-        }
         isStoped = false;
         isPreview = true;
         isPlaying = true;
+        if (mBig) {
+            aliPayDialog();
+        }
+
         mBtnPlay.setText("暂停");
-
         mPresenter.checkFilm();
-
         showController();
         mExecutorService.execute(mRunnable);
-//        timer.schedule(mTimerTask,15*60*1000);
     }
 
     /**
@@ -567,14 +545,11 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(PreviewConfirmEvent event) {
         Log.d(TAG, event.msg);
-
         Toast.makeText(getActivity(), event.msg, Toast.LENGTH_LONG).show();
         isPlaying = false;
         mBtnPlay.setText("已暂停");
         mPresenter.checkFilm();
-
-        qrPayFilm();
-//        aliPayDialog();
+        qrCodeShowDialog(event.msg);
     }
 
     /**
@@ -582,7 +557,6 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
      */
     private void playRecord() {
         Log.d("play", "playRecord: ");
-//        mMLiteOrm.de
         LiteFilmBean bean = new LiteFilmBean();
         String s = new Gson().toJson(mFilm);
         bean.setFilmBean(s);
@@ -594,7 +568,6 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
 
     /**
      * 处理activity的onKeyUp事件
-     *
      * @param keyCode
      * @param event
      */
@@ -604,7 +577,6 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
             mIvLeft.setVisibility(View.INVISIBLE);
         } else {
             mIvLeft.setVisibility(View.VISIBLE);
-
         }
         if (((LinearLayoutManager) mRvFilmDetail.getLayoutManager()).findLastVisibleItemPosition() == mList.size() - 1
                 ) {
@@ -612,41 +584,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         } else {
             mIvRight.setVisibility(View.VISIBLE);
         }
-
-//        if (mIvBack.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-//            mIvBack.setNextFocusDownId();
-//        }
     }
-
-    /**
-     * 计时器
-     */
-//    class MyTimerTask extends TimerTask {
-//
-//        @Override
-//        public void run() {
-//            //倒计时结束，开始执行弹出操作--支付宝。 如果已支付，继续观看，如果没有支付暂停，弹二维码框。
-//            if (!isPaied) {
-//                Log.d("ws", "run: timertask");
-//                mPresenter.pause();
-//                mActivity.runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (mAlertDialogQr == null || (mAlertDialogQr != null && !mAlertDialogQr.isShowing())) {
-//                            mDialog.hide();
-//                            showLoading();
-//                            qrPayFilm();
-//                            mTimer.cancel();
-////                            if () {
-////                                mPresenter.playStatus();
-////                            }
-//                        }
-//                    }
-//                });
-//                isPreview = false;
-//            }
-//        }
-//    }
 
     /**
      * 先判断是否为大片？
@@ -666,13 +604,22 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
             mDialog = builder.create();
             mDialog.show();
             Button btnPay = (Button) inflate.findViewById(R.id.btn_pay);
+            Button btnPayWx = (Button) inflate.findViewById(R.id.btn_pay_weixin);
             Button btnPayLater = (Button) inflate.findViewById(R.id.btn_later);
             Button btnPayCancel = (Button) inflate.findViewById(R.id.btn_cancle);
 
             btnPay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    qrPayFilm();
+                    qrPayFilm(0);
+                    mDialog.dismiss();
+                }
+            });
+            btnPayWx.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    qrPayFilm(1);
+                    mDialog.dismiss();
                 }
             });
             btnPayLater.setOnClickListener(new View.OnClickListener() {
@@ -692,39 +639,18 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
                     mDialog.dismiss();
                 }
             });
-//            mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//                @Override
-//                public void onCancel(DialogInterface dialog) {
-//                    if (!isStoped) {
-//                        mPresenter.stop(mBean);
-//                    }
-//                    isPlaying = false;
-//                }
-//            });
-//        }else {
-//            if (!isPlaying){
-//                Toast.makeText(mActivity, "播放影片", Toast.LENGTH_SHORT).show();
-//                mPresenter.play(mBean);
-//                mBtnPlay.setText("停止");
-//            }else {
-//                Toast.makeText(mActivity, "停止播放影片", Toast.LENGTH_SHORT).show();
-//                mPresenter.stop(mBean);
-//                mBtnPlay.setText("播放");
-//            }
-//            isPlaying = !isPlaying;
         }
     }
 
     /**
      * 预览后支付页,先loading，然后弹出页面。
      */
-    private void qrPayFilm() {
-        mPresenter.getQrCode(mBean);
+    private void qrPayFilm(int i) {
+        mPresenter.getQrCode(mBean, i);
     }
 
     /**
      * 错误提示
-     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -740,11 +666,23 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(QrCodeEvent event) {
-        String qrCode = new Gson().fromJson(event.bean, PayAliBean.class).getData().getQrCode();
+        qrCodeShowDialog(event.bean);
+    }
+
+    //    显示二维码方法
+    private void qrCodeShowDialog(String event) {
+        PayAliBean payAliBean = new Gson().fromJson(event, PayAliBean.class);
+        String qrCode = payAliBean.getData().getQrCode();
         hideLoading();
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View inflate = inflater.inflate(R.layout.dialog_qrcode, null);
+        TextView tvDesc= (TextView) inflate.findViewById(R.id.tv_desc);
+        if (payAliBean.getMsgType().equals("payAli")) {
+            tvDesc.setText("请用支付宝扫描以下二维码，尽快完成在线支付");
+        }else{
+            tvDesc.setText("请用微信扫描以下二维码，尽快完成在线支付");
+        }
         builder.setView(inflate);
         mAlertDialogQr = builder.create();
         mAlertDialogQr.show();
@@ -765,6 +703,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
                     mPresenter.stop(mBean);
                 }
                 isPlaying = false;
+//                mAlertDialogQr.dismiss();
             }
         });
         mAlertDialogQr.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -803,17 +742,25 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
         } else {
             Toast.makeText(mActivity, "二维码无法获得，请稍后重试", Toast.LENGTH_SHORT).show();
         }
+
+
     }
 
+    /**
+     * 二维码
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(QrCodeWxEvent event) {
+        qrCodeShowDialog(event.bean);
+    }
 
     @Override
     protected FilmDetailPresenterImpl initPresenter() {
         String ip = new SPUtils(mActivity, "terminal").getString("ip");
         return new FilmDetailPresenterImpl(ip);
     }
-
-    ;
-
 
     //文件存储根目录
     private String getFileRoot(Context context) {
@@ -835,27 +782,40 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(PayReviewEvent event) {
         Toast.makeText(getActivity(), event.msg, Toast.LENGTH_SHORT).show();
-        qrPayFilm();
+        filmPreShowDialog();
         mPresenter.checkFilm();
-//        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-//        builder.setTitle("大片预览结束");
-//        builder.setMessage("");
-//        LayoutInflater inflater = LayoutInflater.from(mActivity);
-//        View inflate = inflater.inflate(R.layout.dialog_qrcode, null);
-//        builder.setView(inflate);
-//        mAlertDialogQr = builder.create();
-//        mAlertDialogQr.show();
-//        mImageView = (ImageView) inflate.findViewById(R.id.iv_qrcode);
-//        mProgressBar = (ProgressBar) inflate.findViewById(R.id.pb_pay);
-//        mProgressBar.setVisibility(View.INVISIBLE);
-//        mPresenter.getQrCode(mBean);
-//        Button btnPayCancel = (Button) inflate.findViewById(R.id.btn_cancle);
-//        btnPayCancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mAlertDialogQr.dismiss();
-//            }
-//        });
+    }
+
+    private void filmPreShowDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setTitle("大片预览结束");
+        builder.setMessage("");
+        LayoutInflater inflater = LayoutInflater.from(mActivity);
+        View inflate = inflater.inflate(R.layout.dialog_pay_after_preview, null);
+        inflate.findViewById(R.id.btn_pay).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qrPayFilm(0);
+            }
+        });
+        inflate.findViewById(R.id.btn_pay_weixin).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qrPayFilm(1);
+            }
+        });
+
+        builder.setView(inflate);
+        mAlertPreEnd = builder.create();
+        mAlertPreEnd.show();
+
+        Button btnPayCancel = (Button) inflate.findViewById(R.id.btn_cancle);
+        btnPayCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAlertDialogQr.dismiss();
+            }
+        });
     }
 
     @Override
@@ -894,6 +854,7 @@ public class FilmDetailFragment extends BaseFragment<FilmDetailContract.View, Fi
                     mBtnPlay.setText("播放");
                 }
                 isPlaying = false;
+
             }
         });
 

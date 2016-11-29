@@ -39,8 +39,10 @@ import com.tuojin.tvfilm.event.PayEvent;
 import com.tuojin.tvfilm.event.PayReviewEvent;
 import com.tuojin.tvfilm.event.PreviewConfirmEvent;
 import com.tuojin.tvfilm.event.QrCodeEvent;
+import com.tuojin.tvfilm.event.QrCodeWxEvent;
 import com.tuojin.tvfilm.event.SearchHotEvent;
 import com.tuojin.tvfilm.event.SearchNoListEvent;
+import com.tuojin.tvfilm.event.ServiceCallEvent;
 import com.tuojin.tvfilm.event.TerminalBindEvent;
 import com.tuojin.tvfilm.event.TerminalListEvent;
 import com.tuojin.tvfilm.event.YearEvent;
@@ -224,6 +226,10 @@ public class AutoBahnService extends Service  {
                                 //地区列表
                                 EventBus.getDefault().post(new AreaEvent(s));
                                 break;
+                            case Constant.SERVICECALL:
+                                //地区列表
+                                EventBus.getDefault().post(new ServiceCallEvent(s));
+                                break;
                             case Constant.LIVELIST:
                                 //直播列表
                                 EventBus.getDefault().post(new LiveListEvent(s));
@@ -244,10 +250,6 @@ public class AutoBahnService extends Service  {
                                 //地区列表
                                 EventBus.getDefault().post(new KeyWordEvent(s));
                                 break;
-//                            case Constant.SCORELIST:
-//                                //地区列表
-//                                EventBus.getDefault().post(new AreaEvent(s));
-//                                break;
                             case Constant.FILMLIST:
                                 //影片类型
                                 if (mInt == 1) {
@@ -276,6 +278,10 @@ public class AutoBahnService extends Service  {
                             case Constant.ALIPAY:
                                 //二维码
                                 EventBus.getDefault().post(new QrCodeEvent(s));
+                                break;
+                            case Constant.WXIPAY:
+                                //二维码
+                                EventBus.getDefault().post(new QrCodeWxEvent(s));
                                 break;
                             case Constant.DETAIL:
                                 //影片明晰

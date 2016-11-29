@@ -35,6 +35,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.TextureView;
@@ -239,6 +240,30 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
             mPauseDrawable = getResources().getDrawable(R.drawable.evp_action_pause);
     }
 
+    int interval=20000;
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int keyCode = event.getKeyCode();
+        if (getCurrentPosition()<getDuration() && (keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT)){
+            //点击前进5秒，这个可以自由设置
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                seekTo(getCurrentPosition() + interval); //unit:millsecond
+                showControls();
+            }
+            return true;
+        }else if (getCurrentPosition()>0 && (keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD || keyCode == KeyEvent.KEYCODE_DPAD_LEFT)){
+            //点击后退5秒
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                seekTo(getCurrentPosition() - interval);
+                showControls();
+            }
+            return true;
+        }
+
+        return super.dispatchKeyEvent(event);
+    }
+
+
     @Override
     public void setSource(@NonNull Uri source) {
         boolean hadSource = mSource != null;
@@ -299,7 +324,6 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
             mLabelBottom.setVisibility(View.GONE);
         else mLabelBottom.setVisibility(View.VISIBLE);
     }
-
     @Override
     public void setBottomLabelTextRes(@StringRes int textRes) {
         setBottomLabelText(getResources().getText(textRes));
@@ -816,8 +840,8 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
         // Inflate controls
         mControlsFrame = li.inflate(R.layout.evp_include_controls, this, false);
         final FrameLayout.LayoutParams controlsLp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        controlsLp.gravity = Gravity.BOTTOM;
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        controlsLp.gravity = Gravity.CENTER;
         addView(mControlsFrame, controlsLp);
         if (mControlsDisabled) {
             mClickFrame.setOnClickListener(null);
@@ -960,34 +984,34 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
     }
 
     private void invalidateActions() {
-        switch (mLeftAction) {
-            case LEFT_ACTION_NONE:
-                mBtnRetry.setVisibility(View.GONE);
-                mBtnLeft.setVisibility(View.GONE);
-                break;
-            case LEFT_ACTION_RESTART:
-                mBtnRetry.setVisibility(View.GONE);
-                mBtnLeft.setVisibility(View.VISIBLE);
-                break;
-            case LEFT_ACTION_RETRY:
-                mBtnRetry.setVisibility(View.VISIBLE);
-                mBtnLeft.setVisibility(View.GONE);
-                break;
-        }
-        switch (mRightAction) {
-            case RIGHT_ACTION_NONE:
-                mBtnRight.setVisibility(View.GONE);
-                mLabelCustom.setVisibility(View.GONE);
-                break;
-            case RIGHT_ACTION_SUBMIT:
-                mBtnRight.setVisibility(View.VISIBLE);
-                mLabelCustom.setVisibility(View.GONE);
-                break;
-            case RIGHT_ACTION_CUSTOM_LABEL:
-                mBtnRight.setVisibility(View.GONE);
-                mLabelCustom.setVisibility(View.VISIBLE);
-                break;
-        }
+//        switch (mLeftAction) {
+//            case LEFT_ACTION_NONE:
+//                mBtnRetry.setVisibility(View.GONE);
+//                mBtnLeft.setVisibility(View.GONE);
+//                break;
+//            case LEFT_ACTION_RESTART:
+//                mBtnRetry.setVisibility(View.GONE);
+//                mBtnLeft.setVisibility(View.VISIBLE);
+//                break;
+//            case LEFT_ACTION_RETRY:
+//                mBtnRetry.setVisibility(View.VISIBLE);
+//                mBtnLeft.setVisibility(View.GONE);
+//                break;
+//        }
+//        switch (mRightAction) {
+//            case RIGHT_ACTION_NONE:
+//                mBtnRight.setVisibility(View.GONE);
+//                mLabelCustom.setVisibility(View.GONE);
+//                break;
+//            case RIGHT_ACTION_SUBMIT:
+//                mBtnRight.setVisibility(View.VISIBLE);
+//                mLabelCustom.setVisibility(View.GONE);
+//                break;
+//            case RIGHT_ACTION_CUSTOM_LABEL:
+//                mBtnRight.setVisibility(View.GONE);
+//                mLabelCustom.setVisibility(View.VISIBLE);
+//                break;
+//        }
     }
 
     private void adjustAspectRatio(int viewWidth, int viewHeight, int videoWidth, int videoHeight) {
@@ -1062,7 +1086,7 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
 
     private void invalidateThemeColors() {
         final int labelColor = Util.isColorDark(mThemeColor) ? Color.WHITE : Color.BLACK;
-        mControlsFrame.setBackgroundColor(Util.adjustAlpha(mThemeColor, 0.8f));
+//        mControlsFrame.setBackgroundColor(Util.adjustAlpha(mThemeColor, 0.8f));
         tintSelector(mBtnLeft, labelColor);
         tintSelector(mBtnPlayPause, labelColor);
         mLabelDuration.setTextColor(labelColor);

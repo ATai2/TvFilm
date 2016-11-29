@@ -96,7 +96,8 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onMessageEvent(ErrorEvent event) {
-        Toast.makeText(mActivity, new Gson().fromJson(event.msg, ErrorBean.class).getData().getMsg(), Toast.LENGTH_SHORT).show();
+        ErrorBean errorBean = new Gson().fromJson(event.msg, ErrorBean.class);
+        Toast.makeText(mActivity, errorBean.getData().getMsg(), Toast.LENGTH_SHORT).show();
     }
     @Override
     protected void onDestroy() {
@@ -119,20 +120,11 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
     public abstract int getLayoutID();
 
     public void setBackground(RadioButton radOne, RadioButton radTwo, RadioButton radThree, RadioButton radFour, RadioButton radFive) {
-        //  radOne.setBackgroundResource(R.drawable.title_bg);
-//        radOne.setBackground(null);
-//        radTwo.setBackground(null);
-//        radThree.setBackground(null);
-//        radFour.setBackground(null);
-//        radFive.setBackground(null);
-
         radOne.setSelected(true);
         radTwo.setSelected(false);
         radThree.setSelected(false);
         radFour.setSelected(false);
         radFive.setSelected(false);
-
-
     }
 
     //RadioButton 选中时的背景

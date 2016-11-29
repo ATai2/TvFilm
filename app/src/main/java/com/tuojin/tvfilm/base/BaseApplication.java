@@ -7,6 +7,9 @@ import com.litesuits.orm.LiteOrm;
 import com.tuojin.tvfilm.net.TvFilmNetWorkWS;
 import com.tuojin.tvfilm.service.AutoBahnService;
 
+import cn.finalteam.okhttpfinal.OkHttpFinal;
+import cn.finalteam.okhttpfinal.OkHttpFinalConfiguration;
+
 /**
  * 文 件 名: BaseApplication
  * 创 建 人: Administrator
@@ -26,7 +29,8 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        OkHttpFinalConfiguration.Builder builder = new OkHttpFinalConfiguration.Builder();
+        OkHttpFinal.getInstance().init(builder.build());
         startService(new Intent(getApplicationContext(), AutoBahnService.class));
 
         BaseContextManager.getInstance().mContext = getApplicationContext();

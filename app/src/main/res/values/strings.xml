@@ -73,5 +73,6 @@
 
     <string name="sample_list_load_error">One or more sample lists failed to load</string>
     <string name="error">错误</string>
+    <string name="pay_preview_confirm">预览结束</string>
 
 </resources>

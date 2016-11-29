@@ -42,13 +42,8 @@ public class FilmDetailPresenterImpl extends BasePresenter<FilmDetailContract.Vi
     }
 
     @Override
-    public void getQrCode(FilmDetailBean.DataBean.FilmDetailDataBean bean) {
-        mDetailModel.getQrCode(bean);
-    }
-
-
-    public void qrCode(String qrCode) {
-        mView.qrCode(qrCode);
+    public void getQrCode(FilmDetailBean.DataBean.FilmDetailDataBean bean,int i) {
+        mDetailModel.getQrCode(bean,i);
     }
 
     @Override
@@ -59,11 +54,6 @@ public class FilmDetailPresenterImpl extends BasePresenter<FilmDetailContract.Vi
     @Override
     public void rePlay() {
         mDetailModel.rePlay();
-    }
-
-
-    public void playStatus() {
-        mDetailModel.playStatus();
     }
 
     public void checkFilm() {

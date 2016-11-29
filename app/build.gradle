@@ -34,6 +34,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.2.1'
     compile 'com.romainpiel.shimmer:library:1.4.0@aar'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'cn.finalteam:okhttpfinal:2.0.7'
     compile 'com.koushikdutta.async:androidasync:2.+'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.github.bumptech.glide:glide:3.6.1'

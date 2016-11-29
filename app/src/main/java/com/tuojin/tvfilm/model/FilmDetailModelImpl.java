@@ -80,17 +80,16 @@ public class FilmDetailModelImpl implements FilmDetailContract.Model {
     }
 
 
-    @Override
-    public void getQrCode(FilmDetailBean.DataBean.FilmDetailDataBean bean) {
 
-        String cmd = Constant.PADMAC + "|payAli|mac=" + Constant.PADMAC +
+    public void getQrCode(FilmDetailBean.DataBean.FilmDetailDataBean bean,int i) {
+
+        String cmd = Constant.PADMAC + "|"+(i==0?"payAli":"payWx")+"|mac=" + Constant.PADMAC +
                 "&ipAddress=" +
                 IP_TERMINAL +
                 "&terminalCode=" + Constant.TERMINAL_CODE +
                 "&cpluuid=" + bean.getUuid() +
                 "&timeStamp=" + new Date().getTime();
         netWorkWS.sendMsg(cmd);
-
     }
 
     @Override

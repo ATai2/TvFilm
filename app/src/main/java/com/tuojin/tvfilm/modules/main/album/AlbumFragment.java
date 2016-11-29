@@ -56,9 +56,10 @@ public class AlbumFragment extends BaseFragment<AlbumContract.View, AlbumPresent
         mRvAlbum.setHasFixedSize(true);
         mRvAlbum.setLayoutManager(focusGridLayoutManager);
         final List<String> listName=new ArrayList<>();
-        listName.add("http://192.168.1.243/Westworld.S01E01.2016.HD1080P.X264.AAC.English.CHS-ENG.Mp4Ba.mp4");
-        listName.add("http://192.168.1.243/Shanghai%20Tower%20(650%20meters).mp4");
-        listName.add("http://192.168.1.243/KievStar.mp4");
+//        listName.add("http://192.168.1.243/What's%20up%20Hong%20Kong.mp4");
+        listName.add("http://192.168.1.243/hideandseek.mp4");
+        listName.add("http://192.168.1.243/The.Big.Bang.Theory.S09E03.中英字幕.WEB-HR.AAC.1024X576.x264.mp4");
+        listName.add("http://192.168.1.243/The.Big.Bang.Theory.S09E04.WEB-HR.AAC.1024X576.x264.mp4");
 
         Drawable drawable = mActivity.getResources().getDrawable(R.drawable.aa);
         List<Drawable> pics=new ArrayList<>();
@@ -75,7 +76,6 @@ public class AlbumFragment extends BaseFragment<AlbumContract.View, AlbumPresent
         mOtherAdapter = new CommonAdapter<AlbumInfo>(mActivity, R.layout.item_other_album, list, 2) {
             @Override
             public void convert(ViewHolder holder, AlbumInfo bean) {
-//                holder.setScaleAnimation(R.id.movie_title_other);
                 holder.setImageDrawable(R.id.movie_image_other,bean.getPic());
             }
         };

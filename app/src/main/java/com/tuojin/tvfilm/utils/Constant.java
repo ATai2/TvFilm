@@ -11,6 +11,7 @@ package com.tuojin.tvfilm.utils;
  * 修改备注：
  */
 public class Constant {
+
 //    int TYPE = 100;
 //    int YEAR = 102;
 //    int DIRECTOR = 103;
@@ -52,6 +53,7 @@ public class Constant {
    public static final String SCORELIST = "getFilmListOrderByScore";
    public static final String DETAIL = "getFilmDetail";
    public static final String ALIPAY = "payAli";
+   public static final String WXIPAY = "payWx";
    public static final String FILMLIST = "getFilmList";
    public static final String STARTPLAY = "startPlay";
    public static final String PAY_PREVIEWOVER = "payPreviewOver";
@@ -62,7 +64,7 @@ public class Constant {
    public static final String PLAYSTATUS = "playStatus";
    public static final String GOTOPOSITION = "goToPosition";
    public static final String FIRSTKEY = "getFilmListByFirstKey";
-
+   public static final String SERVICECALL ="callService" ;
    public static final String BIGPAUSE = "previewConfirm";
    public static final String BIGPAUSECONTINUE = "previewConfirm";
    public static final String BIGSTOP = "previewConfirm";
