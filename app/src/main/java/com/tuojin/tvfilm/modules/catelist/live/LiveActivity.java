@@ -1,29 +1,40 @@
 package com.tuojin.tvfilm.modules.catelist.live;
 
-import android.os.Bundle;
+import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseActivity;
 import com.tuojin.tvfilm.bean.LiveBean;
+import com.tuojin.tvfilm.bean.LiveContentBean;
+import com.tuojin.tvfilm.bean.LiveContentListBean;
+import com.tuojin.tvfilm.bean.LiveListBean;
 import com.tuojin.tvfilm.contract.LiveContract;
+import com.tuojin.tvfilm.event.LiveContentEvent;
+import com.tuojin.tvfilm.event.LiveListEvent;
+import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
+import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
 import com.tuojin.tvfilm.presenter.LivePresenterImpl;
-import com.tuojin.tvfilm.utils.ImageLoaderUtils;
+import com.tuojin.tvfilm.utils.LiveUtil;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
 /**
  * 文 件 名: LiveActivity
@@ -35,29 +46,30 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
  * 修改时间：
  * 修改备注：
  */
-public class LiveActivity extends BaseActivity<LiveContract.View, LivePresenterImpl>implements LiveContract.View {
+public class LiveActivity extends BaseActivity<LiveContract.View, LivePresenterImpl> implements LiveContract.View {
 
 
-    @BindView(R.id.iv_back)
-    ImageButton mIvBack;
-    @BindView(R.id.title)
-    TextView mTitle;
-    @BindView(R.id.jc_video)
-    JCVideoPlayerStandard mJcVideo;
-    @BindView(R.id.btn_start)
-    Button mBtnStart;
-    @BindView(R.id.btn_stop)
-    Button mBtnStop;
-    @BindView(R.id.tv_live_content)
-    TextView mTvLiveContent;
+    @BindView(R.id.recyclerview)
+    RecyclerView mRecyclerview;
+    @BindView(R.id.video_container)
+    LinearLayout mVideoContainer;
     @BindView(R.id.tv_menutitle)
     TextView mTvMenutitle;
     @BindView(R.id.rv_menu)
     RecyclerView mRvMenu;
     @BindView(R.id.tab_container)
     LinearLayout mTabContainer;
+    @BindView(R.id.iv_back)
+    ImageButton mIvBack;
+    @BindView(R.id.title_topbar)
+    TextView mTitleTopbar;
     private List<LiveBean> mMenuList;
     TextView btn;
+    private String[] mTnames;
+    private String[] mUrls;
+    LiveContentBean mLiveContentBean;
+    boolean flag;
+
     @Override
     protected LivePresenterImpl initPresenter() {
         return new LivePresenterImpl();
@@ -65,39 +77,43 @@ public class LiveActivity extends BaseActivity<LiveContract.View, LivePresenterI
 
     @Override
     protected void initData() {
+    }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (mRecyclerview.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+            if (btn != null) {
+                btn.requestFocus();
+            }
+        }
+        if (mRvMenu.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+            mRecyclerview.requestFocus();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
     protected void initView() {
-        mTitle.setText("直播");
+        mPresenter.attach(this);
+        mTitleTopbar.setText("直播");
+        mTvMenutitle.setText("直播列表");
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
+        LinearLayoutManager layoutManagerContent = new LinearLayoutManager(this);
+        layoutManagerContent.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerview.setLayoutManager(layoutManagerContent);
+
+        mRvMenu.setLayoutManager(layoutManager);
         mPresenter.menu();
+    }
 
-
-
-        mJcVideo.setUp("http://2449.vod.myqcloud.com/2449_22ca37a6ea9011e5acaaf51d105342e3.f20.mp4"
-                , JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");
-        ImageLoaderUtils.showPictureForJCVideo(this, "http://cos.myqcloud.com/1000264/qcloud_video_attachment/842646334/vod_cover/cover1458036374.jpg", mJcVideo.thumbImageView);
-
-        mBtnStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mJcVideo.onClick(mJcVideo.startButton);
-            }
-        });
-        mBtnStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mJcVideo.release();
-            }
-        });
-//        mBtnFull.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mJcVideo.onClick(mJcVideo.fullscreenButton);
-//            }
-//        });
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0 && resultCode == 1) {
+            flag = true;
+        }
     }
 
     @Override
@@ -122,61 +138,100 @@ public class LiveActivity extends BaseActivity<LiveContract.View, LivePresenterI
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    protected void onPause() {
+        super.onPause();
+//        JCVideoPlayerStandard.releaseAllVideos();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        JCVideoPlayerStandard.releaseAllVideos();
+    protected void onResume() {
+        super.onResume();
+//        if (mLiveContentBean!=null&&mJcVideo!=null&&flag){
+//            mJcVideo.onClick(mJcVideo.startButton);
+//        }
     }
 
     @Override
     public void onBackPressed() {
-        if (JCVideoPlayer.backPress()) {
-            return;
-        }
+//        if (JCVideoPlayer.backPress()) {
+//            return;
+//        }
         super.onBackPressed();
 
     }
 
     @Override
     public void initMenu(List<LiveBean> mDatas) {
-        mMenuList = mDatas;
-        runOnUiThread(new Runnable() {
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(LiveListEvent event) {
+        List<LiveBean> list = new Gson().fromJson(event.msg, LiveListBean.class).getData().getData();
+        mMenuList = list;
+        mRvMenu.setAdapter(new AtoZAdapter());
+    }
+
+    /**
+     * 直播内容
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(LiveContentEvent event) {
+        List<LiveContentBean> liveContentBeen = new Gson().fromJson(event.msg, LiveContentListBean.class).getData().getData();
+        CommonAdapter<LiveContentBean> adapter = new CommonAdapter<LiveContentBean>(LiveActivity.this,
+                R.layout.item_live_content2, liveContentBeen, 1) {
             @Override
-            public void run() {
-                mRvMenu.setAdapter(new AtoZAdapter());
+            public void convert(ViewHolder holder, final LiveContentBean bean) {
+                holder.setText(R.id.tv_title, bean.getLivecontent());
+                holder.setText(R.id.tv_time, bean.getOpentime().substring(5, bean.getOpentime().length()));
+                holder.setText(R.id.tv_timeend, bean.getEndtime().substring(5, bean.getOpentime().length()));
+                holder.setOnClickListener(R.id.btn_playlive, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+//                        mPresenter.playLive(bean);
+//                        Intent intent=new Intent(LiveActivity.this,FullScreenLiveActivity.class);
+                        Intent intent=new Intent(LiveActivity.this,MP4Activity.class);
+                        String lturl = bean.getLturl();
+                        Log.d("abs", lturl);
+                        String key = "k2hrwtgk0wybzdysm2sbl8";
+                        String url = LiveUtil.getLiveFinalUrl(lturl, key);
+                        Log.d("abs", url);
+                        intent.putExtra("url", url);
+                        startActivity(intent);
+                    }
+                });
             }
-        });
+        };
+        mRecyclerview.setAdapter(adapter);
     }
 
     //菜单适配器
     class AtoZAdapter extends RecyclerView.Adapter<AtoZAdapter.ViewHolder> {
         @Override
-        public AtoZAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(LiveActivity.this).inflate(R.layout.item_radbtn, parent, false);
-            AtoZAdapter.ViewHolder holder = new AtoZAdapter.ViewHolder(view);
+            ViewHolder holder = new ViewHolder(view);
             return holder;
         }
 
         @Override
-        public void onBindViewHolder(AtoZAdapter.ViewHolder holder, int position) {
-
+        public void onBindViewHolder(ViewHolder holder, final int position) {
+            final int itempos = position;
             holder.mRadbtnItem.setText(mMenuList.get(position).getLcname());
+//            holder.mRadbtnItem.findFocus().setNextFocusRightId(R.id.btn_start);
             if (position == 0) {
                 holder.mRadbtnItem.requestFocus();
                 btn = holder.mRadbtnItem;
-//                mPresenter.list("A");
+                mPresenter.list(btn.getText().toString());
             }
             holder.mRadbtnItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     btn = (TextView) v;
-//                    mPresenter.list(btn.getText().toString());
+                    final String text = btn.getText().toString();
+                    mTitleTopbar.setText(text);
+                    mPresenter.list(text);
                 }
             });
         }

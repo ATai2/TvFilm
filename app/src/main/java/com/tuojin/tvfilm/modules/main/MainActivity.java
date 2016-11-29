@@ -1,29 +1,68 @@
 package com.tuojin.tvfilm.modules.main;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.utils.SPUtils;
+import com.google.gson.Gson;
+import com.litesuits.orm.LiteOrm;
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseActivity;
+import com.tuojin.tvfilm.base.BaseApplication;
 import com.tuojin.tvfilm.base.BaseFragment;
+import com.tuojin.tvfilm.bean.LiteFilmCollectionBean;
+import com.tuojin.tvfilm.bean.TerminalBean;
+import com.tuojin.tvfilm.bean.TerminalListBean;
 import com.tuojin.tvfilm.contract.HotRecommContract;
+import com.tuojin.tvfilm.event.LoginEvent;
+import com.tuojin.tvfilm.event.ServiceCallEvent;
+import com.tuojin.tvfilm.event.TerminalBindEvent;
+import com.tuojin.tvfilm.event.TerminalListEvent;
+import com.tuojin.tvfilm.modules.catelist.FilmListActivity;
+import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
+import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
+import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
 import com.tuojin.tvfilm.modules.main.album.AlbumFragment;
 import com.tuojin.tvfilm.modules.main.category.CategoryFragment;
 import com.tuojin.tvfilm.modules.main.hotrecomm.RecommFragment;
 import com.tuojin.tvfilm.modules.main.sortlist.SortListFragment;
-import com.tuojin.tvfilm.modules.search.SearchFragment;
+import com.tuojin.tvfilm.modules.search.SearchActivity;
+import com.tuojin.tvfilm.net.BaseApiResponse;
 import com.tuojin.tvfilm.presenter.HotRecommPresenterImpl;
+import com.tuojin.tvfilm.service.AutoBahnService;
+import com.tuojin.tvfilm.utils.Constant;
 import com.tuojin.tvfilm.utils.LogUtils;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -56,11 +95,35 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
     @BindView(R.id.mVpContainer)
     ViewPager mVpContainer;
 
-    BaseFragment mHotRecommFrag, mCategoryFrag, mSortListFrag, mAlbumFrag, mSearchFrag;
+    BaseFragment mHotRecommFrag, mCategoryFrag, mSortListFrag, mAlbumFrag;
+    //    BaseFragment mHotRecommFrag, mCategoryFrag, mSortListFrag, mAlbumFrag, mSearchFrag;
     List<BaseFragment> mFragmentList;
     int mPressedCount = 0;
     int type;
+    @BindView(R.id.tv_time)
+    TextView mTvTime;
+    @BindView(R.id.tv_setting)
+    TextView mTvSetting;
+    @BindView(R.id.tv_search)
+    TextView mTvSearch;
+    @BindView(R.id.tv_collect)
+    TextView mTvCollect;
+    @BindView(R.id.rl_container)
+    LinearLayout mRlContainer;
+    @BindView(R.id.relative)
+    RelativeLayout mRelative;
+    @BindView(R.id.tv_status)
+    TextView mTvStatus;
+    @BindView(R.id.tv_status_uname)
+    TextView mTvStatusUname;
+    @BindView(R.id.tv_call)
+    TextView mTvCall;
     private int[] mIntArray;
+    private AlertDialog mDialog;
+    private RecyclerView mRecyclerView;
+    private List<TerminalBean> mList;
+    private LiteOrm mMLiteOrm;
+    private String mTerminal_name;
 
 
     @Override
@@ -70,33 +133,61 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
 
     @Override
     protected void initData() {
+        mDf = new SimpleDateFormat("MM-dd EEEE HH:mm:ss");
+        Timer timer = new Timer();
+        timer.schedule(new MyTimer(), 1000, 1000);
+    }
+
+    private SimpleDateFormat mDf;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+    class MyTimer extends TimerTask {
+
+        @Override
+        public void run() {
+            final String time = mDf.format(new Date());
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mTvTime.setText(time);
+                }
+            });
+
+        }
     }
 
     @Override
     protected void initView() {
-        mRbHotRecom.requestFocus();
+        SPUtils utils = new SPUtils(this, "terminal");
+        Constant.TERMINAL_CODE = utils.getString("code");
+        Constant.IP_TERMINAL = utils.getString("ip");
 
         mVpContainer.setOffscreenPageLimit(5);
-        mVpContainer.setCurrentItem(0);
-        //设置焦点改变监听
-        mRbHotRecom.setOnFocusChangeListener(this);
-        mRbCatgory.setOnFocusChangeListener(this);
-        mRabSortlist.setOnFocusChangeListener(this);
-        mRabAlbum.setOnFocusChangeListener(this);
-        mRabSearch.setOnFocusChangeListener(this);
-
+        // mVpContainer.setCurrentItem(0);
+        mRbHotRecom.requestFocus();
         mFragmentList = new ArrayList<>();
         mHotRecommFrag = new RecommFragment();
         mCategoryFrag = new CategoryFragment();
         mSortListFrag = new SortListFragment();
         mAlbumFrag = new AlbumFragment();
-        mSearchFrag = new SearchFragment();
+//        mSearchFrag = new SearchFragment();   new SPUtils(MainActivity.this,"setting").putString("terminalName",mTerminal_name);
+
+        String string = new SPUtils(MainActivity.this, "terminal").getString("terminalName");
+        if (string != null) {
+            mTvStatus.setText("绑定影厅：" + string);
+        }
 
         mFragmentList.add(mHotRecommFrag);
         mFragmentList.add(mCategoryFrag);
         mFragmentList.add(mSortListFrag);
         mFragmentList.add(mAlbumFrag);
-        mFragmentList.add(mSearchFrag);
+//        mFragmentList.add(mSearchFrag);
 
         MainAdapter adapter = new MainAdapter(getSupportFragmentManager(), mFragmentList);
         mVpContainer.setAdapter(adapter);
@@ -123,9 +214,9 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
                     case 3:
                         setBackground(mRabAlbum, mRabSearch, mRbHotRecom, mRbCatgory, mRabSortlist);
                         break;
-                    case 4:
-                        setBackground(mRabSearch, mRbHotRecom, mRbCatgory, mRabSortlist, mRabAlbum);
-                        break;
+//                    case 4:
+//                        setBackground(mRabSearch, mRbHotRecom, mRbCatgory, mRabSortlist, mRabAlbum);
+//                        break;
                 }
                 mVpContainer.setCurrentItem(position);
             }
@@ -135,8 +226,55 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
 
             }
         });
-        mVpContainer.setCurrentItem(0);
-        mRbHotRecom.requestFocus();
+        //设置焦点改变监听
+        mRbHotRecom.setOnFocusChangeListener(this);
+        mRbCatgory.setOnFocusChangeListener(this);
+        mRabSortlist.setOnFocusChangeListener(this);
+        mRabAlbum.setOnFocusChangeListener(this);
+
+        mTvSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mMLiteOrm = ((BaseApplication) mActivity.getApplication()).mLiteOrm;
+        mTvCollect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ArrayList<LiteFilmCollectionBean> query = mMLiteOrm.query(LiteFilmCollectionBean.class);
+                String s = new Gson().toJson(query);
+                Intent intent = new Intent(MainActivity.this, FilmListActivity.class);
+                intent.putExtra("data", s);
+                intent.putExtra("type", "收藏");
+                startActivity(intent);
+            }
+        });
+
+        mTvCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+                LayoutInflater inflater = LayoutInflater.from(mActivity);
+                View inflate = inflater.inflate(R.layout.dialog_call, null);
+                final EditText editText= (EditText) inflate.findViewById(R.id.et_call);
+
+                builder.setView(inflate);
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+                inflate.findViewById(R.id.btn_send).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mPresenter.call(editText.getText().toString().trim());
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+
     }
 
     @Override
@@ -144,32 +282,48 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
         return R.layout.activity_main;
     }
 
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+//        if (mSearchFrag != null) {
+//            ((SearchFragment)mSearchFrag).onKeyUp(keyCode, event);
+//        }
+        return super.onKeyUp(keyCode, event);
+    }
+
     //tv的方向按键响应
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (mVpContainer.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+//        if (mRbHotRecom.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+//            if (mHotRecommFrag != null) {
+//                ((RecommFragment)mHotRecommFrag).mRvRecomm.requestFocus();
+//            }
+//        }
+        if (mVpContainer.hasFocus() && keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
             switch (type) {
                 case 0:
-                    mVpContainer.findFocus().setNextFocusUpId(R.id.rab_hotrecomm);
+                    mVpContainer.findFocus().setNextFocusDownId(R.id.rab_hotrecomm);
                     break;
                 case 1:
-                    mVpContainer.findFocus().setNextFocusUpId(R.id.rab_category);
+                    mVpContainer.findFocus().setNextFocusDownId(R.id.rab_category);
                     break;
                 case 2:
-                    mVpContainer.findFocus().setNextFocusUpId(R.id.rab_sortlist);
+                    mVpContainer.findFocus().setNextFocusDownId(R.id.rab_sortlist);
                     break;
                 case 3:
-                    mVpContainer.findFocus().setNextFocusUpId(R.id.rab_album);
+                    mVpContainer.findFocus().setNextFocusDownId(R.id.rab_album);
                     break;
-                case 4:
-                    mVpContainer.findFocus().setNextFocusUpId(R.id.rab_search);
-                    break;
+//                case 4:
+//                    mVpContainer.findFocus().setNextFocusUpId(R.id.rab_search);
+//                    break;
             }
         }
+//        if (mSearchFrag != null) {
+//            ((SearchFragment)mSearchFrag).onKeyDown(keyCode, event);
+//        }
         return super.onKeyDown(keyCode, event);
     }
 
-    @OnClick({R.id.rab_hotrecomm, R.id.rab_category, R.id.rab_sortlist, R.id.rab_album, R.id.rab_search})
+    @OnClick({R.id.rab_hotrecomm, R.id.rab_category, R.id.rab_sortlist, R.id.rab_album, R.id.rab_search, R.id.tv_setting})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rab_hotrecomm:
@@ -180,11 +334,97 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
                 break;
             case R.id.rab_album:
                 break;
+            case R.id.tv_setting:
+                mPresenter.terminal();
+                AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+                LayoutInflater inflater = LayoutInflater.from(mActivity);
+                View inflate = inflater.inflate(R.layout.dialog_binding, null);
+                builder.setView(inflate);
+                mRecyclerView = (RecyclerView) inflate.findViewById(R.id.recyclerview);
+                LinearLayoutManager ll = new LinearLayoutManager(MainActivity.this);
+                ll.setOrientation(LinearLayoutManager.VERTICAL);
+                mRecyclerView.setLayoutManager(ll);
+                mDialog = builder.create();
+                mDialog.show();
+                mDialog.getWindow().setLayout(400, 400);
+                break;
             case R.id.rab_search:
-//                startActivity(new Intent(this, SearchActivity.class));
+                startActivity(new Intent(this, SearchActivity.class));
                 break;
         }
     }
+
+    /**
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ServiceCallEvent event) {
+        Toast.makeText(this, "呼叫成功，请耐心等待...", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(TerminalBindEvent event) {
+        BaseApiResponse baseApiResponse = new Gson().fromJson(event.msg, BaseApiResponse.class);
+        mDialog.dismiss();
+        try {
+            JSONObject object = new JSONObject(baseApiResponse.getData().toString());
+            String msg = object.getString("msg");
+//            String username = object.getString("username");
+            mTvStatus.setText("绑定影厅：" + mTerminal_name);
+            new SPUtils(MainActivity.this,"terminal").putString("terminalName",mTerminal_name);
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+//            mTvStatus.setText(username);
+            mPresenter.onResume();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(LoginEvent event) {
+
+    }
+
+    /**
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(TerminalListEvent event) {
+        TerminalListBean terminalListBean = new Gson().fromJson(event.msg, TerminalListBean.class);
+        mList = terminalListBean.getData().getData();
+        CommonAdapter<TerminalBean> adapter = new CommonAdapter<TerminalBean>(MainActivity.this, R.layout.item_radbtn, mList, 2) {
+            @Override
+            public void convert(ViewHolder holder, TerminalBean terminalBean) {
+
+                holder.setText(R.id.radbtn_item, terminalBean.getTerminal_name());
+
+            }
+        };
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(ViewGroup parent, View view, Object o, int position) {
+                TerminalBean terminalBean = mList.get(position);
+                if (terminalBean.getMac() == null || terminalBean.getMac().trim().equals(""))
+                    mPresenter.bind(terminalBean);
+                mTerminal_name = terminalBean.getTerminal_name();
+                ip = terminalBean.getTerminal_ip();
+
+                Constant.IP_TERMINAL = terminalBean.getTerminal_ip();
+                Constant.TERMINAL_CODE = terminalBean.getTerminal_code();
+
+                new SPUtils(MainActivity.this, "terminal").putString("ip", ip);
+                new SPUtils(MainActivity.this, "terminal").putString("code", terminalBean.getTerminal_code());
+            }
+        });
+        mRecyclerView.setAdapter(adapter);
+    }
+
+    String ip;
 
     //返回键按2次，
     @Override
@@ -192,6 +432,7 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
         this.mPressedCount++;
         if (mPressedCount == 2) {
             super.onBackPressed();
+            //  ((BaseApplication) getApplication()).mService.closeConnection();
             return;
         }
         Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
@@ -203,12 +444,19 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
         }, 2000L);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(getApplicationContext(), AutoBahnService.class));
+    }
+
     //  RadioButton控制viewpager
     @Override
     public void onFocusChange(View view, boolean b) {
         switch (view.getId()) {
             case R.id.rab_hotrecomm:
                 LogUtils.d("11", "hot");
+                setBackground(mRbHotRecom, mRbCatgory, mRabSortlist, mRabAlbum, mRabSearch);
 //                mRbHotRecom.setTextColor(Color.WHITE);
                 mVpContainer.setCurrentItem(0);
                 break;
@@ -227,11 +475,11 @@ public class MainActivity extends BaseActivity<HotRecommContract.View, HotRecomm
 //                mRabAlbum.setTextColor(Color.WHITE);
                 mVpContainer.setCurrentItem(3);
                 break;
-            case R.id.rab_search:
-                LogUtils.d("11", "rab_search");
+//            case R.id.rab_search:
+//                LogUtils.d("11", "rab_search");
 //                mRabSearch.setTextColor(Color.WHITE);
-                mVpContainer.setCurrentItem(4);
-                break;
+//                mVpContainer.setCurrentItem(4);
+//                break;
         }
     }
 

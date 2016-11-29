@@ -3,4 +3,5 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/radbtn_item"
         style="@style/Widget.TabIndicator"
+        android:textColor="@color/white"
         android:text="首页" />

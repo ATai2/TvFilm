@@ -1,19 +1,34 @@
 package com.tuojin.tvfilm.base;
 
 import android.app.Dialog;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.tuojin.tvfilm.R;
+import com.tuojin.tvfilm.bean.ErrorBean;
+import com.tuojin.tvfilm.event.EmptyEvent;
+import com.tuojin.tvfilm.event.ErrorEvent;
+import com.tuojin.tvfilm.service.AutoBahnService;
 import com.tuojin.tvfilm.widget.CustomProgressDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
 
@@ -31,8 +46,12 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
     String type;
     protected T mPresenter;
     protected BaseActivity mActivity;
+    public AutoBahnService mService;
+    protected String TAG = "abs";
     public Dialog dialog;
     public CustomProgressDialog progressDialog;
+    private ServiceConnection mConn;
+
     public void setPresenter(T presenter) {
         this.mPresenter = presenter;
     }
@@ -44,8 +63,23 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
+
+        EventBus.getDefault().register(this);
+
+        mConn = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                mService = ((AutoBahnService.MyBinder) service).getInstance();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                Log.d(TAG, "onServiceDisconnected: ");
+            }
+        };
+        bindService(new Intent(this, AutoBahnService.class), mConn, BIND_AUTO_CREATE);
         //设置无标题
-        mActivity=this;
+        mActivity = this;
         mInflater = LayoutInflater.from(mActivity);
         setContentView(getLayoutID());
         ButterKnife.bind(this);
@@ -53,6 +87,23 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
         initView();
         initData();
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onMessageEvent(EmptyEvent event) {
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onMessageEvent(ErrorEvent event) {
+        ErrorBean errorBean = new Gson().fromJson(event.msg, ErrorBean.class);
+        Toast.makeText(mActivity, errorBean.getData().getMsg(), Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(mConn);
+        EventBus.getDefault().unregister(this);
     }
 
     protected abstract T initPresenter();
@@ -69,26 +120,18 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
     public abstract int getLayoutID();
 
     public void setBackground(RadioButton radOne, RadioButton radTwo, RadioButton radThree, RadioButton radFour, RadioButton radFive) {
-        //  radOne.setBackgroundResource(R.drawable.title_bg);
-//        radOne.setBackground(null);
-//        radTwo.setBackground(null);
-//        radThree.setBackground(null);
-//        radFour.setBackground(null);
-//        radFive.setBackground(null);
-
         radOne.setSelected(true);
         radTwo.setSelected(false);
         radThree.setSelected(false);
         radFour.setSelected(false);
         radFive.setSelected(false);
-
-
     }
 
     //RadioButton 选中时的背景
     public void setButtonFocus(RadioButton btn) {
         btn.setBackgroundResource(R.drawable.btn_bg);
     }
+
     //RadioButton为null
     public void setButtonNull(RadioButton btn) {
         btn.setBackground(null);
@@ -128,6 +171,7 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
 
     private RelativeLayout layout;
     private LayoutInflater mInflater;
+
     //Dialog
     public void setDialog(int layoutId) {
         layout = (RelativeLayout) mInflater.inflate(layoutId, null);
@@ -140,7 +184,6 @@ public abstract class BaseActivity<V, T extends BasePresenter<V>> extends AppCom
         dialog.getWindow().setAttributes(params);
 
     }
-
 
 
 }

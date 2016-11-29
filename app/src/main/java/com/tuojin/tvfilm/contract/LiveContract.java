@@ -24,11 +24,14 @@ public interface Presenter{
     void menu();
 
     void initMenu(List<LiveBean> mDatas);
+
+    void list(String text);
 }
 
 public interface Model{
     void menu();
 
+    void list(String text);
 }
 
 

@@ -22,4 +22,20 @@
     <dimen name="dialog_text_size_small">20.0sp</dimen>
     <!-- 滚动窗口 -->
     <dimen name="fading_edge">80dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="evp_content_inset">16dp</dimen>
+    <dimen name="evp_content_inset_half">8dp</dimen>
+    <dimen name="evp_content_inset_less">1dp</dimen>
+    <dimen name="evp_content_inset_iconbuttons">2dp</dimen>
+
+    <dimen name="evp_text_size_small">10sp</dimen>
+
+    <dimen name="evp_button_size">48dp</dimen>
+    <dimen name="evp_text_size_medium">14sp</dimen>
+
+    <dimen name="evp_negative_inset_large">-8dp</dimen>
+    <dimen name="evp_negative_inset_small">-2dp</dimen>
+
+
 </resources>

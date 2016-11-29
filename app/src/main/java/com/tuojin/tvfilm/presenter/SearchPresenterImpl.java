@@ -21,4 +21,9 @@ public class SearchPresenterImpl extends BasePresenter<SearchContract.View> impl
     public void refreshUI(List<FilmBean> beanList) {
         mView.refreshUI(beanList);
     }
+
+    @Override
+    public void hotSearch() {
+        mModel.hotSearch();
+    }
 }

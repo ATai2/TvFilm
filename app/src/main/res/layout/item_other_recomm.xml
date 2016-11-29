@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_container"
+    android:layout_width="160dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:background="@drawable/default_selector"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:clipToPadding="false"
+    android:focusable="true"
+    >
+
+    <ImageView
+        android:id="@+id/movie_image_other"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="1dp"
+        android:adjustViewBounds="true"
+        android:background="@color/white_50"
+        android:clipToPadding="false"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:id="@+id/movie_title_other"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/black40"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="123"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        />
+
+    <TextView
+        android:id="@+id/movie_title_other_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginRight="4dp"
+        android:paddingRight="4dp"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="123"
+        android:textColor="@color/orange"
+        android:textSize="20dp"
+        />
+</FrameLayout>

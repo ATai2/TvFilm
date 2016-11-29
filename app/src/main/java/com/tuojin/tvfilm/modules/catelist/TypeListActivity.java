@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseActivity;
 import com.tuojin.tvfilm.bean.FilmBean;
+import com.tuojin.tvfilm.bean.FilmTypeBean;
 import com.tuojin.tvfilm.contract.FilmTypeContract;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
 import com.tuojin.tvfilm.modules.catelist.type.OtherFragmentType;
@@ -272,6 +273,11 @@ public class TypeListActivity extends BaseActivity<FilmTypeContract.View, FilmTy
 
     @Override
     public void initFilmFragment(List<FilmBean> data) {
+
+    }
+
+    @Override
+    public void initMenu(List<FilmTypeBean> list) {
 
     }
 

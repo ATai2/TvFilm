@@ -1,9 +1,6 @@
 package com.tuojin.tvfilm.contract;
 
 import com.tuojin.tvfilm.base.BaseView;
-import com.tuojin.tvfilm.bean.AreaBean;
-
-import java.util.List;
 
 /**
  * 文 件 名: AreaContract
@@ -17,19 +14,11 @@ import java.util.List;
  */
 public class AreaContract {
 public interface View extends BaseView{
-    void initList(List<AreaBean> list);
-
-    void initListByArea(String data, String s);
 }
 
 public interface Presenter{
     void list(String a);
-
-    void initList(List<AreaBean> list);
-
     void listByArea(int id, String movie_country);
-
-    void initListByArea(String s, String data);
 }
 
 public interface Model{

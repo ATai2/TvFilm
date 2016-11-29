@@ -13,11 +13,12 @@ import android.os.Parcelable;
  * 修改时间：
  * 修改备注：
  */
-public  class FilmBean implements Parcelable {
+public class FilmBean implements Parcelable {
     private String score;
     private String expiredate;
     private String publishdate;
     private String type;
+    private Double charge_price;
     private String createtime;
     private String filmlength;
     private int movie_clickcount;
@@ -41,6 +42,11 @@ public  class FilmBean implements Parcelable {
     private String mid;
     private String uuid;
     private String brief;
+    /**
+     * charge_flag : 1
+     */
+
+    private String charge_flag;
 
     public String getScore() {
         return score;
@@ -72,6 +78,14 @@ public  class FilmBean implements Parcelable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Double getCharge_price() {
+        return charge_price;
+    }
+
+    public void setCharge_price(Double charge_price) {
+        this.charge_price = charge_price;
     }
 
     public Object getCreatetime() {
@@ -338,4 +352,12 @@ public  class FilmBean implements Parcelable {
             return new FilmBean[size];
         }
     };
+
+    public String getCharge_flag() {
+        return charge_flag;
+    }
+
+    public void setCharge_flag(String charge_flag) {
+        this.charge_flag = charge_flag;
+    }
 }

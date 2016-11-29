@@ -18,9 +18,6 @@ import java.util.List;
 public class SortListContract {
 public interface View extends BaseView {
     //RecyclerView初始化
-    void setRecyclerItem(List<FilmBean> mList);
-
-    void refreshUI();
 }
 
 public interface Presenter{

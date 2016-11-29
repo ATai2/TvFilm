@@ -1,20 +1,44 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:windowAnimationStyle">@style/fade</item>
+    </style>
+
+    <style name="fade" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/fade_out</item>
+    </style>
+    <declare-styleable name="MaterialProgressBar"><attr format="enum" name="mpb_progressStyle"><enum name="circular" value="0"/><enum name="horizontal" value="1"/></attr><attr format="boolean" name="mpb_setBothDrawables"/><attr format="boolean" name="mpb_useIntrinsicPadding"/><attr format="boolean" name="mpb_showTrack"/><attr name="android:tint"/><attr format="enum" name="mpb_tintMode"><enum name="src_over" value="3"/><enum name="src_in" value="5"/><enum name="src_atop" value="9"/><enum name="multiply" value="14"/><enum name="screen" value="15"/><enum name="add" value="16"/></attr></declare-styleable>
+    <style name="Widget.MaterialProgressBar.ProgressBar" parent="android:Widget.ProgressBar">
+        <item name="android:indeterminateDrawable">@null</item>
+        <item name="android:minWidth">48dp</item>
+        <item name="android:maxWidth">48dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:maxHeight">48dp</item>
+    </style>
+    <style name="Widget.MaterialProgressBar.ProgressBar.Horizontal" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:indeterminateDrawable">@null</item>
+        <item name="android:minHeight">16dp</item>
+        <item name="android:maxHeight">16dp</item>
     </style>
 
     <!--控件样式部分，   尽量使用安卓原生的样式-->
-    <style name="Widget" />
+    <style name="Widget"/>
     <!-- 首页RadioButton样式 -->
     <style name="Widget.TabIndicator_three" parent="@style/Widget">
-        <item name="android:layout_width">115dp</item>
+        <item name="android:layout_width">180dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_height">55dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginRight">5dp</item>
         <item name="android:textColor">@color/white60</item>
         <item name="android:button">@null</item>
         <item name="android:textSize">30sp</item>
@@ -41,14 +65,13 @@
 
     <style name="Widget.TabIndicator" parent="@style/Widget">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_height">42dp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">21dp</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:background">@drawable/radio_selectot</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_marginTop">20dp</item>
         <item name="android:button">@null</item>
     </style>
     <!-- appname样式 -->
@@ -82,7 +105,7 @@
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
     </style>
 
-    <style name="textview_category" >
+    <style name="textview_category">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
@@ -93,10 +116,23 @@
     </style>
 
     <style name="categoryitem">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:textSize">60sp</item>
+        <item name="android:background">@color/black40</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">true</item>
+    </style>
+
+    <style name="categoryitemsmall">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:textSize">30sp</item>
         <item name="android:ellipsize">marquee</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">true</item>
@@ -115,11 +151,53 @@
         <item name="android:focusable">true</item>
         <item name="android:layout_margin">5dp</item>
     </style>
+
     <style name="SortFragStyleSmall" parent="Widget">
         <item name="android:layout_width">250dp</item>
         <item name="android:layout_height">250dp</item>
         <item name="android:focusable">true</item>
         <item name="android:layout_margin">5dp</item>
     </style>
+
+    <style name="dialogText1">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="dialogText2">
+        <item name="android:textColor">@color/wheat</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="pay_btn">
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:textColor">@color/whitesmoke</item>
+        <item name="android:textSize">30dp</item>
+        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">wrap_content</item>
+
+        <item name="android:background">@drawable/default_selector_blue</item>
+    </style>
+
+    <style name="live_text">
+        <item name="android:layout_marginLeft">12dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 </resources>

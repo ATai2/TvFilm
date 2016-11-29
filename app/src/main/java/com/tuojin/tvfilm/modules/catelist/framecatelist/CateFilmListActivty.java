@@ -22,7 +22,6 @@ import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
 import com.tuojin.tvfilm.modules.catelist.framecatelist.adapter.RabDirectorAdapter;
 import com.tuojin.tvfilm.modules.catelist.framecatelist.adapter.RabTypeAdapter;
 import com.tuojin.tvfilm.presenter.CateListFilmPresenterImpl;
-import com.tuojin.tvfilm.utils.Constant;
 
 import java.util.List;
 
@@ -41,7 +40,7 @@ import butterknife.OnClick;
  * 修改备注：
  */
 public class CateFilmListActivty extends BaseActivity<CateListFilmContract.View, CateListFilmPresenterImpl> implements
-        CateListFilmContract.View, Constant {
+        CateListFilmContract.View {
 
     @BindView(R.id.index_type)
     TextView mIndexType;
@@ -167,8 +166,8 @@ public class CateFilmListActivty extends BaseActivity<CateListFilmContract.View,
                 case 0:
                     initDirector();
                     break;
-                case CFLA_INITLIST:
-                    initFilmList();
+//                case Constant.CFLA_INITLIST:
+//                    initFilmList();
             }
         }
     };
@@ -205,7 +204,7 @@ public class CateFilmListActivty extends BaseActivity<CateListFilmContract.View,
     @Override
     public void initFilmFragment(List<FilmBean> data1) {
         mFilmBeanList = data1;
-        mHandler.sendEmptyMessage(CFLA_INITLIST);
+//        mHandler.sendEmptyMessage(CFLA_INITLIST);
     }
 
     @Override

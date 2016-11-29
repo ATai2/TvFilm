@@ -9,16 +9,130 @@
 
     <RelativeLayout
         android:id="@+id/relative"
+        android:padding="20dp"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:gravity="center">
+       >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:focusable="true"
+            android:gravity="center"
+            android:background="@drawable/default_selector_corner"
+            android:layout_marginLeft="10dp"
+            android:text="设置"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:id="@+id/tv_setting"/>
 
+        <TextView
+            android:id="@+id/tv_search"
+            android:layout_toRightOf="@id/tv_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/default_selector_corner"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="搜索"
+            android:textColor="@color/white"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/tv_collect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/tv_search"
+            android:background="@drawable/default_selector_corner"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="收藏列表"
+            android:textColor="@color/white"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/tv_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/tv_collect"
+            android:background="@drawable/default_selector_corner"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="呼叫服务"
+            android:textColor="@color/white"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/tv_self"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/tv_collect"
+            android:background="@drawable/default_selector_corner"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="自有内容"
+            android:textColor="@color/white"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_toRightOf="@+id/tv_call"
+            android:textColor="@color/white"
+            android:layout_marginLeft="20dp"
+            android:textSize="24dp"
+            android:visibility="visible"
+            android:layout_alignBaseline="@id/tv_call"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tv_status_uname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_alignBaseline="@id/tv_collect"
+            android:layout_toRightOf="@+id/tv_status"
+            android:text="lkdalfjdlakjdlsfjlasd"
+            android:textColor="@color/white"
+            android:textSize="24dp"/>
+
+        <include
+            layout="@layout/item_time"
+            android:layout_gravity="left|center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/mVpContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:descendantFocusability="afterDescendants"
+        android:focusable="false"
+        />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
         <RadioGroup
             android:id="@+id/group"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginTop="18dp"
+            android:layout_gravity="center"
             android:gravity="center"
             android:orientation="horizontal">
             <!--android:background="@drawable/title_bar_bg"-->
@@ -48,18 +162,12 @@
 
             <RadioButton
                 android:id="@+id/rab_search"
+                android:visibility="gone"
                 style="@style/Widget.TabIndicator_three"
                 android:background="@drawable/btn_selector_search"
                 android:nextFocusDown="@+id/edit_search"
                 />
         </RadioGroup>
-    </RelativeLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/mVpContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:descendantFocusability="afterDescendants"
-        android:focusable="true"
-        />
+    </FrameLayout>
 </LinearLayout>

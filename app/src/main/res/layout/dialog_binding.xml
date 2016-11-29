@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="360dp"
+              android:layout_height="300dp"
+              android:background="@color/black"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+
+        android:text="绑定影厅"
+        android:textColor="@color/white"
+        android:textSize="36sp"/>
+
+    <TextView
+        android:id="@+id/tv_title1"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*未绑定影厅"
+        android:textColor="@color/white"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*已绑定影厅"
+        android:textColor="@color/red"
+        android:textSize="20sp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       android:layout_margin="20dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:descendantFocusability="afterDescendants"
+        android:fadeScrollbars="false"
+        android:focusable="false"
+        android:paddingBottom="40dp"
+        android:scrollbarFadeDuration="0"
+        android:scrollbarThumbVertical="@drawable/scroll"
+        android:scrollbarTrackVertical="@drawable/bg_scroll"
+        android:scrollbars="vertical"
+        />
+</LinearLayout>

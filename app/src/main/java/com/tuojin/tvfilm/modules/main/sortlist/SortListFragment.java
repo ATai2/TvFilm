@@ -1,24 +1,16 @@
 package com.tuojin.tvfilm.modules.main.sortlist;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseFragment;
 import com.tuojin.tvfilm.base.BaseView;
-import com.tuojin.tvfilm.bean.FilmBean;
 import com.tuojin.tvfilm.contract.SortListContract;
 import com.tuojin.tvfilm.presenter.SortListPresenterImpl;
 
-import java.util.List;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 文 件 名: SortListFragment
@@ -43,7 +35,7 @@ public class SortListFragment extends BaseFragment<SortListContract.View, SortLi
 
     @Override
     protected void initView() {
-        StaggeredGridLayoutManager layout = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL);
+        StaggeredGridLayoutManager layout = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
         mRvSort.setLayoutManager(layout);
         SortAdapter adapter=new SortAdapter(mActivity);
         mRvSort.setAdapter(adapter);
@@ -60,25 +52,6 @@ public class SortListFragment extends BaseFragment<SortListContract.View, SortLi
     @Override
     protected SortListPresenterImpl initPresenter() {
         return null;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
-
-
-    @Override
-    public void setRecyclerItem(List<FilmBean> mList) {
-
-    }
-
-    @Override
-    public void refreshUI() {
-
     }
 
 }

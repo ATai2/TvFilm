@@ -1,23 +1,17 @@
 package com.tuojin.tvfilm.model;
-import com.google.gson.Gson;
-import com.tuojin.tvfilm.bean.FilmBean;
-import com.tuojin.tvfilm.bean.RecommBean;
+
 import com.tuojin.tvfilm.contract.SearchContract;
 import com.tuojin.tvfilm.net.TvFilmNetWorkWS;
 import com.tuojin.tvfilm.presenter.SearchPresenterImpl;
 import com.tuojin.tvfilm.utils.Constant;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.List;
-
 /**
-* Created by MVPHelper on 2016/09/21
-*/
+ * Created by MVPHelper on 2016/09/21
+ */
 
-public class SearchModelImpl implements SearchContract.Model{
+public class SearchModelImpl implements SearchContract.Model {
     SearchPresenterImpl mPresenter;
-    TvFilmNetWorkWS mNetWorkWS=new TvFilmNetWorkWS();
+    TvFilmNetWorkWS mNetWorkWS = new TvFilmNetWorkWS();
 
     public SearchModelImpl(SearchPresenterImpl presenter) {
         mPresenter = presenter;
@@ -25,35 +19,34 @@ public class SearchModelImpl implements SearchContract.Model{
 
     @Override
     public void search(String key) {
-        mPresenter.mView.showLoading();
-        try {
-            String cmd = Constant.PADMAC +
-                    "|getFilmList|terminalCode=" +
-                    Constant.TERMINAL_CODE +
-                    "&searchMode=&keyword=" +
-                    URLEncoder.encode(key, "utf-8") +
-                    "&movieTypeStr=&placeId=&yearId=&actorId=&directorId=&startIndex=0&endIndex=100";
-            mNetWorkWS.sendMsg(cmd, new TvFilmNetWorkWS.Success() {
-                @Override
-                public void excute(String data) {
-                    List<FilmBean> beanList = new Gson().fromJson(data, RecommBean.class).getData().getData();
-                    if (beanList != null&&beanList.size()!=0) {
-                        mPresenter.refreshUI(beanList);
-                        mPresenter.mView.hideLoading();
-                    }else if (beanList.size()==0){
-                        mPresenter.mView.hideLoading();
-                        mPresenter.mView.showMessage("查无此片");
-                    }
+//        mPresenter.mView.showLoading();
+//        try {
+//            String cmd = Constant.PADMAC +
+//                    "|getFilmList|terminalCode=" +
+//                    Constant.TERMINAL_CODE +
+//                    "&searchMode=&keyword=" +
+//                    URLEncoder.encode(key, "utf-8") +
+//                    "&movieTypeStr=&placeId=&yearId=&actorId=&directorId=&startIndex=0&endIndex=100";
+//            mNetWorkWS.sendMsg(cmd, 6);
 
-                }
-            }, new TvFilmNetWorkWS.Failure() {
-                @Override
-                public void excute(String data) {
+        String cmd = Constant.PADMAC +
+                "|getFilmListByFirstKey|terminalCode=" +
+                Constant.TERMINAL_CODE +
+                "&firstKey=" +
+                key +
+                "&startIndex=0&endIndex=100";
+        mNetWorkWS.sendMsg(cmd, 6);
 
-                }
-            });
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+    }
+
+    @Override
+    public void hotSearch() {
+
+        String cmd = Constant.PADMAC +
+                "|getFilmListOrderByHotest|orderByFeild=hotest&orderByType=desc&terminalCode=" +
+                Constant.TERMINAL_CODE +
+                "&startIndex=0&endIndex=20";
+        mNetWorkWS.sendMsg(cmd, 104);
+
     }
 }

@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by zhy on 16/4/9.
@@ -22,6 +24,10 @@ public abstract class CommonAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
+    }
+
+    public void refresh(Set<T> datas){
+        mDatas=new ArrayList<>(datas);
     }
 
     public CommonAdapter(Context context, int layoutId, List<T> datas, int type) {
@@ -63,16 +69,13 @@ public abstract class CommonAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+
+//        此处需要怎么处理？
+        if (mType ==2 && position == 0) {
+            holder.itemView.requestFocus();
+        }
         holder.updatePosition(position);
         convert(holder, mDatas.get(position));
-//        此处需要怎么处理？
-//        if (mType == ConstantUtil.TWO && position == 0) {
-//            holder.itemView.requestFocus();
-//        }
-        if (position==0){
-//            holder.itemView.requestFocus();
-        }
-
     }
 
     public abstract void convert(ViewHolder holder, T t);

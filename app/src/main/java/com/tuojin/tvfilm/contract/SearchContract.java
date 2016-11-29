@@ -24,10 +24,14 @@ public interface Presenter{
     void search(String key);
 
     void refreshUI(List<FilmBean> beanList);
+
+    void hotSearch();
 }
 
 public interface Model{
     void search(String key);
+
+    void hotSearch();
 }
 
 

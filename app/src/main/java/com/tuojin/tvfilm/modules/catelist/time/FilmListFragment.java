@@ -83,13 +83,5 @@ public class FilmListFragment  extends BaseFragment<SortListContract.View, SortL
         return new SortListPresenterImpl();
     }
 
-    @Override
-    public void setRecyclerItem(List<FilmBean> mList) {
 
-    }
-
-    @Override
-    public void refreshUI() {
-
-    }
 }

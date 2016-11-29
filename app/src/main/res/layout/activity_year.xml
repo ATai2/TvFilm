@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:background="@color/black"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@mipmap/bg">
 
 
     <LinearLayout
@@ -10,66 +10,103 @@
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/tab_container"
         android:orientation="vertical">
+
         <include
             android:id="@+id/topbar"
             layout="@layout/topbar"/>
+
         <TextView
             android:id="@+id/index_type"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:focusable="false"
             android:layout_marginLeft="16dp"
-            android:textSize="25dp"
+            android:focusable="false"
             android:text="年份："
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:visibility="gone"
             />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/main_fragment"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="35dp"
-            android:nextFocusUp="@+id/iv_back"
-            android:nextFocusLeft="@+id/rv_menu"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
             android:layout_toRightOf="@+id/include1"
+            android:layout_weight="1"
             android:descendantFocusability="afterDescendants"
-            />
+            android:paddingBottom="30dp"
+            android:paddingTop="30dp"
+            >
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/main_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/include1"
+                android:layout_weight="1"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:descendantFocusability="afterDescendants"
+                android:nextFocusLeft="@+id/rv_menu"
+                android:nextFocusUp="@+id/iv_back"
+                android:paddingBottom="20dp"
+                android:paddingRight="30dp"
+                android:paddingTop="20dp"
+                />
+        </FrameLayout>
+
     </LinearLayout>
 
 
     <LinearLayout
         android:id="@+id/tab_container"
         android:layout_width="182dp"
-        android:focusable="false"
         android:layout_height="match_parent"
         android:background="@drawable/bg_left"
+        android:focusable="false"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_menutitle"
+            style="@style/Widget.TabIndicator"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:focusable="false"
             android:gravity="center"
             android:text="年份选择"
-            android:textSize="32dp"
-            android:focusable="false"
             android:textColor="@color/white"
-            style="@style/Widget.TabIndicator"
-            android:layout_marginTop="10dp"
-            android:layout_height="wrap_content"/>
+            android:textSize="32dp"/>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:background="@color/wheat"/>
-        <android.support.v7.widget.RecyclerView
+
+        <ImageView
+            android:id="@+id/iv_up"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_keyboard_arrow_up_white_36dp"
+            android:visibility="invisible"/>
+
+        <com.tuojin.tvfilm.widget.CustomRecycleViewVertical
             android:id="@+id/rv_menu"
             android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
             android:layout_height="0dp"
-            android:layout_weight="1"></android.support.v7.widget.RecyclerView>
+            android:layout_weight="1"></com.tuojin.tvfilm.widget.CustomRecycleViewVertical>
 
+        <ImageView
+            android:id="@+id/iv_down"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginBottom="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_keyboard_arrow_down_white_36dp"/>
     </LinearLayout>
 
 </RelativeLayout>

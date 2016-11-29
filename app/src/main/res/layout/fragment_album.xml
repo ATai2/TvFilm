@@ -3,5 +3,16 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_album"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:descendantFocusability="afterDescendants"
+        android:paddingBottom="20dp"
+        android:paddingLeft="120dp"
+        android:paddingRight="120dp"
+        android:scrollbars="none"/>
 </LinearLayout>

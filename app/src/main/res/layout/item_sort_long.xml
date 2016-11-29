@@ -4,6 +4,7 @@
              android:layout_width="500dp"
              android:layout_margin="5dp"
              android:layout_height="250dp"
+             android:background="@drawable/default_selector"
              style="@style/focusitem">
 
         <ImageView
@@ -14,6 +15,5 @@
             android:scaleType="fitXY"/>
         <TextView
             android:id="@+id/mTVCategory"
-            android:text="laj"
             style="@style/categoryitem"/>
 </FrameLayout>

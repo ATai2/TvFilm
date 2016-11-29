@@ -2,8 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:app="http://schemas.android.com/apk/res-auto"
              style="@style/focusitem"
+             android:background="@drawable/default_selector"
              android:layout_margin="5dp"
-             android:layout_width="245dp"
+             android:layout_width="250dp"
              android:layout_height="250dp"
             >
 
@@ -17,5 +18,5 @@
     <TextView
         android:id="@+id/mTVCategory"
         style="@style/categoryitem"
-        android:text="jssd"/>
+       />
 </FrameLayout>

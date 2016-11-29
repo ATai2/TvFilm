@@ -8,16 +8,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.base.BaseFragment;
 import com.tuojin.tvfilm.bean.FilmBean;
+import com.tuojin.tvfilm.bean.FilmTypeBean;
+import com.tuojin.tvfilm.bean.RecommBean;
 import com.tuojin.tvfilm.contract.FilmTypeContract;
+import com.tuojin.tvfilm.event.FilmTypeEvent;
 import com.tuojin.tvfilm.keybord.FocusGridLayoutManager;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
 import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
 import com.tuojin.tvfilm.modules.main.FilmDetailActivity;
 import com.tuojin.tvfilm.presenter.FilmTypePresenterImpl;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -41,7 +49,7 @@ public class OtherFragmentType extends BaseFragment<FilmTypeContract.View, FilmT
     private static CommonAdapter mOtherAdapter;
     private int mSortType;
     private FilmBean mValue;
-    private boolean aBoolean = true;
+//    private boolean aBoolean = true;
 
     @Override
     protected int getLayoutId() {
@@ -50,6 +58,7 @@ public class OtherFragmentType extends BaseFragment<FilmTypeContract.View, FilmT
 
     @Override
     protected void initView() {
+        EventBus.getDefault().register(this);
         mSortType = getArguments().getInt("filmType", 0);
         mGridLayoutManager = new FocusGridLayoutManager(mActivity, 5);
         mGridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -66,8 +75,22 @@ public class OtherFragmentType extends BaseFragment<FilmTypeContract.View, FilmT
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     protected FilmTypePresenterImpl initPresenter() {
         return new FilmTypePresenterImpl();
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onMessageEvent(FilmTypeEvent event) {
+        String msg = event.msg;
+        List<FilmBean> mDatas = new Gson().fromJson(msg, RecommBean.class).getData().getData();
+        mFilmBeen=mDatas;
+        mHandler.sendEmptyMessage(0);
     }
 
     Handler mHandler = new Handler() {
@@ -102,7 +125,12 @@ public class OtherFragmentType extends BaseFragment<FilmTypeContract.View, FilmT
 
     @Override
     public void initFilmFragment(List<FilmBean> data) {
-        mFilmBeen=data;
-        mHandler.sendEmptyMessage(0);
+//        mFilmBeen=data;
+//        mHandler.sendEmptyMessage(0);
+    }
+
+    @Override
+    public void initMenu(List<FilmTypeBean> list) {
+
     }
 }

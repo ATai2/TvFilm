@@ -11,17 +11,23 @@ package com.tuojin.tvfilm.bean;
  * 修改备注：
  */
 public class FilmDetailBean {
+
     /**
      * timeStamp :
      * status : 3
-     * data : {"data":{"score":"7.2","expiredate":"2017-03-31 23:59:59.0","type":"","publishdate":"2016-02-08","createtime":null,"filmlength":"93","movie_clickcount":0,"video":"/opt/video/nasbak/BESTV160422133926003485/DCP/023416ed-c7ed-48db-b1b3-78262fe7348e/wav_MeiRenYu_ac3_aud.mxf","movie_name":"美人鱼","filmhlength":"","audio":"/opt/video/nasbak/BESTV160422133926003485/DCP/023416ed-c7ed-48db-b1b3-78262fe7348e/avc_MeiRenYu_ac3_vid.mxf","status":0,"kdm_addr":"/opt/video/nasbak/BESTV160422133926003485/KDM/SMET15128361/023416ed-c7ed-48db-b1b3-78262fe7348e_SMET15128361_170331235959_9999.xml","director":"周星驰","moviecountry":"","file_desc":"","max_playtimes":0,"modifytime":null,"movieCountry":"","duration":"","movie_ename":"","cast":"邓超 / 罗志祥 / 张雨绮 / 林允 / 徐克 / 吴亦凡 / 李尚正 / 卢正雨 / 白客 / 孔连顺 / 田启文 / 文章 / 杨能 / 张美娥 / 李叶青 / 林子聪","poster":"/BESTV160422133926003485/POSTER/BESTV160422133926003485.jpg","filename":"美人鱼","uuid":"023416ed-c7ed-48db-b1b3-78262fe7348e","mid":"BESTV160422133926003485","brief":"白手起家的富豪刘轩（邓超 饰）新拍下了一块地皮，并联合了女强人李若兰（张雨绮 饰）使用恐怖的声纳技术驱赶鱼类，用于填海造地。人鱼一族长期居住在附近区域的海里，为了继续生存，带头大哥章鱼八哥（罗志祥 饰）派出了美人鱼珊珊（林允 饰）\u201c色诱\u201d刘轩，准备刺杀。没想到珊珊在卧底过程中与刘轩暗生情愫，一次次破坏暗杀计划，而李若兰却在准备一个更丧心病狂的邪恶计划\u2026\u2026"},"user":"PAD1465889962927"}
+     * data : {"data":{"score":"8.7","expiredate":"2017-03-31 23:59:59.0","charge_price":"0","type":"","publishdate":"1997-10-24","createtime":null,"filmlength":"106","movie_clickcount":0,"video":"/opt/video/nasbak/BESTV151105155454001712/DCP/30387f43-9aec-41d6-895d-cd1995e91f93/wav_d26c5f40-89fe-4446-af70-313a525db2d8_aud.mxf","charge_flag":"0","movie_name":"千钧一发-国语版(中文版)","filmhlength":"","audio":"/opt/video/nasbak/BESTV151105155454001712/DCP/30387f43-9aec-41d6-895d-cd1995e91f93/avc_7e3de007-f94d-4dfa-af47-03acff1c0447_vid.mxf","status":0,"kdm_addr":"/opt/video/nasbak/BESTV151105155454001712/KDM/SMET15128361/30387f43-9aec-41d6-895d-cd1995e91f93_SMET15128361_170331235959_9999.xml","director":"安德鲁·尼科尔","moviecountry":"","file_desc":"","max_playtimes":0,"modifytime":null,"movieCountry":"","duration":"","movie_ename":"","cast":"伊桑·霍克 / 乌玛·瑟曼 / 裘德·洛 / 艾伦·阿金 / 戈尔·维达尔 / 山德·贝克利 / 劳恩·迪恩","poster":"/BESTV151105155454001712/POSTER/BESTV151105155454001712.jpg","filename":"千钧一发-国语版","uuid":"30387f43-9aec-41d6-895d-cd1995e91f93","mid":"BESTV151105155454001712","brief":"未来的世界，科技的力量胜过一切，基因决定命运，几乎成为金科玉律。不幸文森特（伊桑\u2022霍克 Ethan Hawke 饰）是一个基因不良的人，出生以来就决定了他近视和心脏病的缺陷，他只能活到30岁。于是父母为文森特增添了一个有着优良基因的弟弟。 \n　　文森特的梦想是漫游太空，然而恶劣的基因令他无法圆梦，直到他遇到了太空中心的杰罗姆（裘德\u2022洛 Jude Law 饰）。杰罗姆有优秀的基因，却在一次意外中半身瘫痪。二人决定调换身份，文森特千方百计隐藏自己的基因信息，每天都认真清洗掉自己的皮屑毛发，不暴露任何蛛丝马迹。另一方面，杰罗姆帮他筹备进入太空前需要检查的基因物品。事情进展得非常顺利，然而一桩谋杀案和一根睫毛，让事情节外生枝。"},"user":"PAD1470022778326"}
      * msgType : getFilmDetail
      * code : 3
-     * user : PAD1465889962927
+     * user : PAD1470022778326
      */
 
     private String timeStamp;
     private int status;
+    /**
+     * data : {"score":"8.7","expiredate":"2017-03-31 23:59:59.0","charge_price":"0","type":"","publishdate":"1997-10-24","createtime":null,"filmlength":"106","movie_clickcount":0,"video":"/opt/video/nasbak/BESTV151105155454001712/DCP/30387f43-9aec-41d6-895d-cd1995e91f93/wav_d26c5f40-89fe-4446-af70-313a525db2d8_aud.mxf","charge_flag":"0","movie_name":"千钧一发-国语版(中文版)","filmhlength":"","audio":"/opt/video/nasbak/BESTV151105155454001712/DCP/30387f43-9aec-41d6-895d-cd1995e91f93/avc_7e3de007-f94d-4dfa-af47-03acff1c0447_vid.mxf","status":0,"kdm_addr":"/opt/video/nasbak/BESTV151105155454001712/KDM/SMET15128361/30387f43-9aec-41d6-895d-cd1995e91f93_SMET15128361_170331235959_9999.xml","director":"安德鲁·尼科尔","moviecountry":"","file_desc":"","max_playtimes":0,"modifytime":null,"movieCountry":"","duration":"","movie_ename":"","cast":"伊桑·霍克 / 乌玛·瑟曼 / 裘德·洛 / 艾伦·阿金 / 戈尔·维达尔 / 山德·贝克利 / 劳恩·迪恩","poster":"/BESTV151105155454001712/POSTER/BESTV151105155454001712.jpg","filename":"千钧一发-国语版","uuid":"30387f43-9aec-41d6-895d-cd1995e91f93","mid":"BESTV151105155454001712","brief":"未来的世界，科技的力量胜过一切，基因决定命运，几乎成为金科玉律。不幸文森特（伊桑\u2022霍克 Ethan Hawke 饰）是一个基因不良的人，出生以来就决定了他近视和心脏病的缺陷，他只能活到30岁。于是父母为文森特增添了一个有着优良基因的弟弟。 \n　　文森特的梦想是漫游太空，然而恶劣的基因令他无法圆梦，直到他遇到了太空中心的杰罗姆（裘德\u2022洛 Jude Law 饰）。杰罗姆有优秀的基因，却在一次意外中半身瘫痪。二人决定调换身份，文森特千方百计隐藏自己的基因信息，每天都认真清洗掉自己的皮屑毛发，不暴露任何蛛丝马迹。另一方面，杰罗姆帮他筹备进入太空前需要检查的基因物品。事情进展得非常顺利，然而一桩谋杀案和一根睫毛，让事情节外生枝。"}
+     * user : PAD1470022778326
+     */
+
     private DataBean data;
     private String msgType;
     private int code;
@@ -77,20 +83,22 @@ public class FilmDetailBean {
 
     public static class DataBean {
         /**
-         * score : 7.2
+         * score : 8.7
          * expiredate : 2017-03-31 23:59:59.0
+         * charge_price : 0
          * type :
-         * publishdate : 2016-02-08
+         * publishdate : 1997-10-24
          * createtime : null
-         * filmlength : 93
+         * filmlength : 106
          * movie_clickcount : 0
-         * video : /opt/video/nasbak/BESTV160422133926003485/DCP/023416ed-c7ed-48db-b1b3-78262fe7348e/wav_MeiRenYu_ac3_aud.mxf
-         * movie_name : 美人鱼
+         * video : /opt/video/nasbak/BESTV151105155454001712/DCP/30387f43-9aec-41d6-895d-cd1995e91f93/wav_d26c5f40-89fe-4446-af70-313a525db2d8_aud.mxf
+         * charge_flag : 0
+         * movie_name : 千钧一发-国语版(中文版)
          * filmhlength :
-         * audio : /opt/video/nasbak/BESTV160422133926003485/DCP/023416ed-c7ed-48db-b1b3-78262fe7348e/avc_MeiRenYu_ac3_vid.mxf
+         * audio : /opt/video/nasbak/BESTV151105155454001712/DCP/30387f43-9aec-41d6-895d-cd1995e91f93/avc_7e3de007-f94d-4dfa-af47-03acff1c0447_vid.mxf
          * status : 0
-         * kdm_addr : /opt/video/nasbak/BESTV160422133926003485/KDM/SMET15128361/023416ed-c7ed-48db-b1b3-78262fe7348e_SMET15128361_170331235959_9999.xml
-         * director : 周星驰
+         * kdm_addr : /opt/video/nasbak/BESTV151105155454001712/KDM/SMET15128361/30387f43-9aec-41d6-895d-cd1995e91f93_SMET15128361_170331235959_9999.xml
+         * director : 安德鲁·尼科尔
          * moviecountry :
          * file_desc :
          * max_playtimes : 0
@@ -98,12 +106,13 @@ public class FilmDetailBean {
          * movieCountry :
          * duration :
          * movie_ename :
-         * cast : 邓超 / 罗志祥 / 张雨绮 / 林允 / 徐克 / 吴亦凡 / 李尚正 / 卢正雨 / 白客 / 孔连顺 / 田启文 / 文章 / 杨能 / 张美娥 / 李叶青 / 林子聪
-         * poster : /BESTV160422133926003485/POSTER/BESTV160422133926003485.jpg
-         * filename : 美人鱼
-         * uuid : 023416ed-c7ed-48db-b1b3-78262fe7348e
-         * mid : BESTV160422133926003485
-         * brief : 白手起家的富豪刘轩（邓超 饰）新拍下了一块地皮，并联合了女强人李若兰（张雨绮 饰）使用恐怖的声纳技术驱赶鱼类，用于填海造地。人鱼一族长期居住在附近区域的海里，为了继续生存，带头大哥章鱼八哥（罗志祥 饰）派出了美人鱼珊珊（林允 饰）“色诱”刘轩，准备刺杀。没想到珊珊在卧底过程中与刘轩暗生情愫，一次次破坏暗杀计划，而李若兰却在准备一个更丧心病狂的邪恶计划……
+         * cast : 伊桑·霍克 / 乌玛·瑟曼 / 裘德·洛 / 艾伦·阿金 / 戈尔·维达尔 / 山德·贝克利 / 劳恩·迪恩
+         * poster : /BESTV151105155454001712/POSTER/BESTV151105155454001712.jpg
+         * filename : 千钧一发-国语版
+         * uuid : 30387f43-9aec-41d6-895d-cd1995e91f93
+         * mid : BESTV151105155454001712
+         * brief : 未来的世界，科技的力量胜过一切，基因决定命运，几乎成为金科玉律。不幸文森特（伊桑•霍克 Ethan Hawke 饰）是一个基因不良的人，出生以来就决定了他近视和心脏病的缺陷，他只能活到30岁。于是父母为文森特增添了一个有着优良基因的弟弟。
+         　　文森特的梦想是漫游太空，然而恶劣的基因令他无法圆梦，直到他遇到了太空中心的杰罗姆（裘德•洛 Jude Law 饰）。杰罗姆有优秀的基因，却在一次意外中半身瘫痪。二人决定调换身份，文森特千方百计隐藏自己的基因信息，每天都认真清洗掉自己的皮屑毛发，不暴露任何蛛丝马迹。另一方面，杰罗姆帮他筹备进入太空前需要检查的基因物品。事情进展得非常顺利，然而一桩谋杀案和一根睫毛，让事情节外生枝。
          */
 
         private FilmDetailDataBean data;
@@ -128,12 +137,14 @@ public class FilmDetailBean {
         public static class FilmDetailDataBean {
             private String score;
             private String expiredate;
+            private String charge_price;
             private String type;
             private String publishdate;
             private Object createtime;
             private String filmlength;
             private int movie_clickcount;
             private String video;
+            private String charge_flag;
             private String movie_name;
             private String filmhlength;
             private String audio;
@@ -168,6 +179,14 @@ public class FilmDetailBean {
 
             public void setExpiredate(String expiredate) {
                 this.expiredate = expiredate;
+            }
+
+            public String getCharge_price() {
+                return charge_price;
+            }
+
+            public void setCharge_price(String charge_price) {
+                this.charge_price = charge_price;
             }
 
             public String getType() {
@@ -216,6 +235,14 @@ public class FilmDetailBean {
 
             public void setVideo(String video) {
                 this.video = video;
+            }
+
+            public String getCharge_flag() {
+                return charge_flag;
+            }
+
+            public void setCharge_flag(String charge_flag) {
+                this.charge_flag = charge_flag;
             }
 
             public String getMovie_name() {

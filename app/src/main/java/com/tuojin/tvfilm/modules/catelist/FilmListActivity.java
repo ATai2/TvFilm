@@ -11,8 +11,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tuojin.tvfilm.R;
 import com.tuojin.tvfilm.bean.FilmBean;
+import com.tuojin.tvfilm.bean.LiteFilmCollectionBean;
 import com.tuojin.tvfilm.bean.RecommBean;
 import com.tuojin.tvfilm.keybord.FocusGridLayoutManager;
 import com.tuojin.tvfilm.modules.catelist.fragments.CommonAdapter;
@@ -20,6 +22,8 @@ import com.tuojin.tvfilm.modules.catelist.fragments.OnItemClickListener;
 import com.tuojin.tvfilm.modules.catelist.fragments.ViewHolder;
 import com.tuojin.tvfilm.modules.main.FilmDetailActivity;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -30,7 +34,7 @@ public class FilmListActivity extends AppCompatActivity {
 
     @BindView(R.id.iv_back)
     ImageButton mIvBack;
-    @BindView(R.id.title)
+    @BindView(R.id.title_topbar)
     TextView mTitle;
     @BindView(R.id.rv_container_filmlist)
     RecyclerView mRvContainerFilmlist;
@@ -43,8 +47,23 @@ public class FilmListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         String data = getIntent().getStringExtra("data");
-        String type = getIntent().getStringExtra("type");
-        mData = new Gson().fromJson(data, RecommBean.class).getData().getData();
+        final String type = getIntent().getStringExtra("type");
+
+//        data=data.replace('\\',' ').trim();
+        if (type.equals("收藏")) {
+            mData=new ArrayList<>();
+            ArrayList<LiteFilmCollectionBean> list=new Gson().fromJson(data, new TypeToken<ArrayList<LiteFilmCollectionBean>>() {
+            }.getType());
+            for (int i = 0; i < list.size(); i++) {
+                FilmBean bean = new Gson().fromJson(list.get(i).getFilmBean(), FilmBean.class);
+                mData.add(bean);
+            }
+            Collections.reverse(mData);
+        }else {
+            mData = new Gson().fromJson(data, RecommBean.class).getData().getData();
+        }
+
+
         if (mData != null) {
             mTitle.setText(type+"共有"+mData.size()+"部电影");
         }
@@ -54,7 +73,7 @@ public class FilmListActivity extends AppCompatActivity {
         mRvContainerFilmlist.setHasFixedSize(true);
         mRvContainerFilmlist.setLayoutManager(focusGridLayoutManager);
 
-        CommonAdapter<FilmBean> adapter = new CommonAdapter<FilmBean>(this, R.layout.item_other, mData, 0) {
+        final CommonAdapter<FilmBean> adapter = new CommonAdapter<FilmBean>(this, R.layout.item_other, mData, 0) {
             @Override
             public void convert(ViewHolder holder, FilmBean bean) {
                 holder.setText(R.id.movie_title_other, bean.getMovie_name());
@@ -69,6 +88,9 @@ public class FilmListActivity extends AppCompatActivity {
                 FilmBean bean = mData.get(position);
                 intent.putExtra("film", bean);
                 startActivity(intent);
+                if (type.equals("收藏")) {
+                    FilmListActivity.this.finish();
+                }
             }
         });
         mRvContainerFilmlist.setAdapter(adapter);
